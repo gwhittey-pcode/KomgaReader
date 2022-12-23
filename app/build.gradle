@@ -51,7 +51,7 @@ android {
         compose true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion '1.1.1'
+        kotlinCompilerExtensionVersion '1.3.2'
     }
     packagingOptions {
         resources {
@@ -95,12 +95,15 @@ dependencies {
 
     //Serialization
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.1.0"
+
     // Compose dependencies
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1"
     implementation "androidx.activity:activity-compose:1.7.0-alpha02"
     implementation 'com.google.accompanist:accompanist-swiperefresh:0.28.0'
 
-
+    // Compose Nav Destinations
+    implementation 'io.github.raamcosta.compose-destinations:core:1.7.27-beta'
+    ksp 'io.github.raamcosta.compose-destinations:ksp:1.7.27-beta'
     // Coil
     implementation("io.coil-kt:coil-compose:2.2.2")
 
@@ -113,7 +116,8 @@ dependencies {
     //moshi
     implementation "com.squareup.moshi:moshi-kotlin:$moshi"
     implementation 'com.squareup.retrofit2:converter-moshi:2.9.0'
-
+    //saved state
+    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.1"
 }
 // Allow references to generated code
 kapt {
