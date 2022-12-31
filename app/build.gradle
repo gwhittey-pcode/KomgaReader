@@ -118,6 +118,16 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-moshi:2.9.0'
     //saved state
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.1"
+   //DataStore
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
+
+    //Paging 3 Integration
+    implementation "androidx.room:room-paging:$room_version"
+
+    //paging compose
+    implementation "androidx.paging:paging-compose:1.0.0-alpha17"
+    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
+
 }
 // Allow references to generated code
 kapt {

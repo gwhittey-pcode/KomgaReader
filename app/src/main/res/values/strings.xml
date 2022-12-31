@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">KomagaReader</string>
+    <string name="wrn_no_games">Oops…! it seems that there is no games for the moment please try again</string>
+    <string name="recently_add_series">Recently Added Series</string>
+    <string name="recently_updated_series">Recently Updated Series</string>
+    <string name="recently_read_books">Recently Read Books</string>
+    <string name="recently_added_books">Recently Added Books</string>
+    <string name="keep_reading">Keep Reading</string>
+    <string name="on_deck">On Deck</string>
+    <string name="lbl_retry">Retry</string>
+    <string name="err_loading_series">Error Loading String</string>
+
 </resources>

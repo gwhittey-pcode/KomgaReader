@@ -4,7 +4,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import org.maddiesoftware.komagareader.core.data.local.ServerDao
+import org.maddiesoftware.komagareader.server_select.data.local.ServerDao
 import org.maddiesoftware.komagareader.server_select.data.repository.ServerRepositoryImpl
 import org.maddiesoftware.komagareader.server_select.domain.repository.ServerRepository
 import org.maddiesoftware.komagareader.server_select.domain.use_case.*

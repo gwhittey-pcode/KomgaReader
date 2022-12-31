@@ -11,9 +11,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.maddiesoftware.komagareader.core.domain.model.Server
-import org.maddiesoftware.komagareader.ui.theme.red
-import org.maddiesoftware.komagareader.ui.theme.white
+import org.maddiesoftware.komagareader.server_select.domain.model.Server
+import org.maddiesoftware.komagareader.core.presentation.theme.red
+import org.maddiesoftware.komagareader.core.presentation.theme.white
 
 
 @Composable

@@ -1,7 +1,6 @@
 package org.maddiesoftware.komagareader.server_select.presentation
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -23,12 +22,14 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
+import org.maddiesoftware.komagareader.core.presentation.DataStoreViewModel
+import org.maddiesoftware.komagareader.core.util.ServerInfoSingleton
+import org.maddiesoftware.komagareader.destinations.HomeScreenDestination
 import org.maddiesoftware.komagareader.destinations.ServerAddScreenDestination
-import org.maddiesoftware.komagareader.destinations.ServerHomeScreenDestination
 import org.maddiesoftware.komagareader.server_select.presentation.components.ServerUiListItem
 
-import org.maddiesoftware.komagareader.ui.theme.gray
-import org.maddiesoftware.komagareader.ui.theme.white
+import org.maddiesoftware.komagareader.core.presentation.theme.gray
+import org.maddiesoftware.komagareader.core.presentation.theme.white
 
 @RootNavGraph(start = true)
 @Destination
@@ -36,11 +37,14 @@ import org.maddiesoftware.komagareader.ui.theme.white
 @Composable
 fun ServerSelectScreen(
     navigator: DestinationsNavigator,
-    viewModel: ServerListViewModel = hiltViewModel()
+    viewModel: ServerListViewModel = hiltViewModel(),
+    dataStoreViewModel: DataStoreViewModel = hiltViewModel()
+
 ) {
     val scope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
     val state = viewModel.state.value
+
     Scaffold(
         scaffoldState = scaffoldState,
         floatingActionButton = {
@@ -84,15 +88,15 @@ fun ServerSelectScreen(
                     .background(gray)
                     .padding(10.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ){
-               items(
-                   state.servers,
-                   key = {serverListItem ->
-                       serverListItem.serverId!!
-                   }
-               ){
-                   Spacer(modifier = Modifier.width(16.dp))
+                   horizontalAlignment = Alignment.CenterHorizontally
+                   ){
+                   items(
+                       state.servers,
+                       key = {serverListItem ->
+                           serverListItem.serverId!!
+                       }
+                   ){
+                       Spacer(modifier = Modifier.width(16.dp))
                    ServerUiListItem(
                        it,
                        modifier = Modifier
@@ -100,7 +104,14 @@ fun ServerSelectScreen(
                            .clip(RoundedCornerShape(10.dp))
                            .border(1.dp, color = white, RoundedCornerShape(10.dp))
                            .clickable {
-                               navigator.navigate(ServerHomeScreenDestination(serverId= it.serverId!!))
+//                               dataStoreViewModel.savePassword(it.password)
+//                               dataStoreViewModel.saveUrl(it.url)
+//                               dataStoreViewModel.saveUserName(it.userName)
+                               ServerInfoSingleton.serverName = it.serverName
+                               ServerInfoSingleton.userName = it.userName
+                               ServerInfoSingleton.password = it.password
+                               ServerInfoSingleton.url = it.url
+                               navigator.navigate(HomeScreenDestination())
                            }
                            .padding(15.dp),
                        onDeleteClick = {

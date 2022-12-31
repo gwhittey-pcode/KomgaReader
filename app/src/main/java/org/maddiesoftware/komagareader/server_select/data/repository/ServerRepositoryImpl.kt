@@ -1,8 +1,8 @@
 package org.maddiesoftware.komagareader.server_select.data.repository
 
 import kotlinx.coroutines.flow.Flow
-import org.maddiesoftware.komagareader.core.data.local.ServerDao
-import org.maddiesoftware.komagareader.core.domain.model.Server
+import org.maddiesoftware.komagareader.server_select.data.local.ServerDao
+import org.maddiesoftware.komagareader.server_select.domain.model.Server
 import org.maddiesoftware.komagareader.server_select.domain.repository.ServerRepository
 import javax.inject.Inject
 

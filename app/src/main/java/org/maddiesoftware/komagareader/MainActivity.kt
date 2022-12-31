@@ -7,7 +7,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.graphics.toArgb
 import com.ramcosta.composedestinations.DestinationsNavHost
 import dagger.hilt.android.AndroidEntryPoint
-import org.maddiesoftware.komagareader.ui.theme.KomagaReaderTheme
+import org.maddiesoftware.komagareader.core.presentation.theme.KomagaReaderTheme
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

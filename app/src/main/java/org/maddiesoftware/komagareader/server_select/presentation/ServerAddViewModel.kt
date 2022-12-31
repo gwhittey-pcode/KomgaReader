@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.maddiesoftware.komagareader.core.domain.model.Server
+import org.maddiesoftware.komagareader.server_select.domain.model.Server
 import org.maddiesoftware.komagareader.server_select.domain.repository.ServerRepository
 import javax.inject.Inject
 

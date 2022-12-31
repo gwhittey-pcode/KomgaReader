@@ -24,8 +24,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.maddiesoftware.komagareader.destinations.ServerSelectScreenDestination
-import org.maddiesoftware.komagareader.ui.theme.gray
-import org.maddiesoftware.komagareader.ui.theme.red
+import org.maddiesoftware.komagareader.core.presentation.theme.gray
+import org.maddiesoftware.komagareader.core.presentation.theme.red
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Destination

@@ -13,7 +13,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import org.maddiesoftware.komagareader.core.domain.model.Server
+import org.maddiesoftware.komagareader.server_select.domain.model.Server
 //import org.maddiesoftware.komagareader.server_select_feature.domain.repository.ServerRepository
 import org.maddiesoftware.komagareader.server_select.domain.use_case.ServerUseCases
 import org.maddiesoftware.komagareader.server_select.presentation.state.ServerDetailListItem
@@ -24,6 +24,7 @@ import javax.inject.Inject
 class ServerListViewModel @Inject constructor(
 //   private  val serverRepository: ServerRepository,
    private val serverUseCases: ServerUseCases
+
 ): ViewModel() {
 
     private val _state = mutableStateOf(ServersState())
