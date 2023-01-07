@@ -7,7 +7,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.graphics.toArgb
 import com.ramcosta.composedestinations.DestinationsNavHost
 import dagger.hilt.android.AndroidEntryPoint
-import org.maddiesoftware.komagareader.core.presentation.theme.KomagaReaderTheme
+import org.maddiesoftware.komagareader.core.presentation.theme.KomgaReaderTheme
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -16,7 +16,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             window.statusBarColor =  MaterialTheme.colors.primary.toArgb()
             window.navigationBarColor = MaterialTheme.colors.primary.toArgb()
-            KomagaReaderTheme {
+            KomgaReaderTheme {
                 // A surface container using the 'background' color from the theme
                 DestinationsNavHost(navGraph = NavGraphs.root)
             }

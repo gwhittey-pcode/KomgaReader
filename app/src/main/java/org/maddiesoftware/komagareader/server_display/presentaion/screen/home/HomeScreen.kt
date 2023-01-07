@@ -1,8 +1,6 @@
 package org.maddiesoftware.komagareader.server_display.presentaion.screen.home
 
 import android.annotation.SuppressLint
-import android.util.Log
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -14,13 +12,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavBackStackEntry
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
 import org.maddiesoftware.komagareader.R
 import org.maddiesoftware.komagareader.core.presentation.DataStoreViewModel
+import org.maddiesoftware.komagareader.core.util.ServerInfoSingleton
 import org.maddiesoftware.komagareader.destinations.AllSeriesScreenDestination
 import org.maddiesoftware.komagareader.destinations.HomeScreenDestination
+import org.maddiesoftware.komagareader.destinations.SeriesByIdScreenDestination
 import org.maddiesoftware.komagareader.server_display.presentaion.activity.MainViewModule
 import org.maddiesoftware.komagareader.server_display.presentaion.componet.*
 
@@ -30,28 +32,35 @@ import org.maddiesoftware.komagareader.server_display.presentaion.componet.*
 fun HomeScreen(
 
     navigator: DestinationsNavigator,
+    navBackStackEntry: NavBackStackEntry,
     viewModel: HomeViewModule = hiltViewModel(),
     dataStoreViewModel: DataStoreViewModel = hiltViewModel(),
     mainViewModule: MainViewModule = hiltViewModel()
 //    lastUpdated: Resource<PageSeries>,
 
-){
+) {
     val state = viewModel.state
     val libraryList = mainViewModule.state.libraryList
-    val url = dataStoreViewModel.getUrl()
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
-    var newList:List<MenuItem> = emptyList()
+    val serverInfo = ServerInfoSingleton
+    val keepReadingState = viewModel.keepReadingState
+        .collectAsLazyPagingItems()
+    val onDeckBooksState = viewModel.onDeckBooksState
+        .collectAsLazyPagingItems()
+    val recentlyAddedBooks = viewModel.recentlyAddedBooks
+        .collectAsLazyPagingItems()
+    val newSeries = viewModel.newSeries
+        .collectAsLazyPagingItems()
+    val updatedSeries = viewModel.updatedSeries
+        .collectAsLazyPagingItems()
     if (state.error == null) {
-        if (libraryList != null) {
-            newList =  libraryList.map { it.toMenuItem() }
-        }
         Scaffold(
             scaffoldState = scaffoldState,
             topBar = {
                 NavBar(
-                    onNavigationIconClick = {
-                        Log.d("Komga12345","Open Nav")
+                    onNavigationIconClick = { navigator.navigateUp() },
+                    onMenuItemClick = {
                         scope.launch {
                             scaffoldState.drawerState.open()
                         }
@@ -61,30 +70,32 @@ fun HomeScreen(
             drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
             drawerContent = {
                 NavDrawer(
-                    items = newList,
-                    onItemClick = {
-
-                        if (it == "home"){
+                    libraryList = libraryList,
+                    viewModel = mainViewModule,
+                    onItemClick = { id ->
+                        if (id == "home") {
                             navigator.navigate(HomeScreenDestination())
-                        }else {
-                            navigator.navigate(AllSeriesScreenDestination(libraryId = it))
+                        } else {
+                            navigator.navigate(AllSeriesScreenDestination(libraryId = id))
                         }
                     }
                 )
+
             }
         ) {
+
 
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(MaterialTheme.colors.background)
+//            .background(Color.White)
                     .padding(16.dp)
             ) {
 
                 //----Keep Reading start
                 item{
                     Spacer(modifier = Modifier.height(height = 20.dp))
-                    Row() {
+                    Row {
                         Text(
                             text = stringResource(id = R.string.keep_reading),
                             color = Color.Black,
@@ -96,28 +107,22 @@ fun HomeScreen(
                     Spacer(modifier = Modifier.width(8.dp))
                 }
                 item {
-                    LazyRow(
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-//                Log.d("komga1","state.getLatestResult =$state")
-                        state.getKeepReading?.books?.let {
-                            items(it.size) { i ->
-                                val book = state.getKeepReading.books[i]
-//                        Log.d("komga1","series= ${series.name}")
-                                BookThumbCard(
-                                    url = "${url}api/v1/books/${book.id}/thumbnail",
-                                    book = book ,
-                                    modifier = Modifier
-                                        .padding(16.dp)
-                                        .fillMaxWidth()
-                                )
-                            }
+                    LazyRow {//Start Keep Reading items LazyRow
+                        items(keepReadingState.itemCount) { i ->
+                            val book = keepReadingState[i]
+                            BookThumbCard(
+                                url = "${serverInfo.url}api/v1/books/${book?.id}/thumbnail",
+                                book = book,
+                                modifier = Modifier
+                                    .padding(16.dp)
+                                    .fillMaxWidth(),
+//                        onItemClick = {}
+                            )
                         }
                     }
-                }//----Keep Reading end
+                }//End Keep Reading items LazyRo
 
-                //----On Deck start
-                item{
+                item{//-On Deck Start
                     Spacer(modifier = Modifier.height(height = 20.dp))
                     Row() {
                         Text(
@@ -131,32 +136,26 @@ fun HomeScreen(
                     Spacer(modifier = Modifier.width(8.dp))
                 }
                 item {
-                    LazyRow(
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-//                Log.d("komga1","state.getLatestResult =$state")
-                        state.getOnDeckBooks?.books?.let {
-                            items(it.size) { i ->
-                                val book = state.getOnDeckBooks.books[i]
-//                        Log.d("komga1","series= ${series.name}")
-                                BookThumbCard(
-                                    url = "${url}api/v1/books/${book.id}/thumbnail",
-                                    book = book ,
-                                    modifier = Modifier
-                                        .padding(16.dp)
-                                        .fillMaxWidth()
-                                )
-                            }
+                    LazyRow() {//Start  On Dek items LazyRow
+                        items(onDeckBooksState.itemCount) { i ->
+                            val onDeckBook = onDeckBooksState[i]
+                            BookThumbCard(
+                                url = "${serverInfo.url}api/v1/books/${onDeckBook?.id}/thumbnail",
+                                book = onDeckBook,
+                                modifier = Modifier
+                                    .padding(16.dp)
+                                    .fillMaxWidth(),
+//                        onItemClick = {}
+                            )
                         }
                     }
-                }//----On Deck end
-
-                //----Recently Added Books start
+                }//End On Dek items LazyRow
+                //----Keep recently_added_books start
                 item{
                     Spacer(modifier = Modifier.height(height = 20.dp))
-                    Row() {
+                    Row {
                         Text(
-                            text = "Thhis is the row",
+                            text = stringResource(id = R.string.recently_added_books),
                             color = Color.Black,
                             style = MaterialTheme.typography.h4,
 //                        color = MaterialTheme.colors.onBackground,
@@ -166,33 +165,27 @@ fun HomeScreen(
                     Spacer(modifier = Modifier.width(8.dp))
                 }
                 item {
-                    LazyRow(
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-//                Log.d("komga1","state.getLatestResult =$state")
-                        state.getRecentlyAddedBooks?.books?.let {
-                            items(it.size) { i ->
-                                val book = state.getRecentlyAddedBooks.books[i]
-                                Log.d("koomga12345", "Book = ${book.toString()}")
-//                        Log.d("komga1","series= ${series.name}")
-                                BookThumbCard(
-                                    url = "${url}api/v1/books/${book.id}/thumbnail",
-                                    book = book ,
-                                    modifier = Modifier
-                                        .padding(16.dp)
-                                        .fillMaxWidth()
-                                )
-                            }
+                    LazyRow {//Start recently_added_books items LazyRow
+                        items(recentlyAddedBooks.itemCount) { i ->
+                            val book = recentlyAddedBooks[i]
+                            BookThumbCard(
+                                url = "${serverInfo.url}api/v1/books/${book?.id}/thumbnail",
+                                book = book,
+                                modifier = Modifier
+                                    .padding(16.dp)
+                                    .fillMaxWidth(),
+//                        onItemClick = {}
+                            )
                         }
                     }
-                }//----Recently Added Books end
+                }//End recently_added_booksitems LazyRo
 
-                //----Recently Added Series start
+                //Start New Series
                 item{
                     Spacer(modifier = Modifier.height(height = 20.dp))
-                    Row() {
+                    Row {
                         Text(
-                            text = stringResource(id = R.string.recently_updated_series),
+                            text = stringResource(id = R.string.recently_add_series),
                             color = Color.Black,
                             style = MaterialTheme.typography.h4,
 //                        color = MaterialTheme.colors.onBackground,
@@ -202,30 +195,29 @@ fun HomeScreen(
                     Spacer(modifier = Modifier.width(8.dp))
                 }
                 item {
-                    LazyRow(
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-//                Log.d("komga1","state.getLatestResult =$state")
-                        state.getNewSeries?.series?.let {
-                            items(it.size) { i ->
-                                val series = state.getNewSeries.series[i]
-//                        Log.d("komga1","series= ${series.name}")
-                                SeriesThumbCard(
-                                    url = "${url}api/v1/series/${series.id}/thumbnail",
-                                    series = series,
-                                    modifier = Modifier
-                                        .padding(16.dp)
-                                        .fillMaxWidth()
-                                )
+                    LazyRow {//Start New Series items LazyRow
+                        items(newSeries.itemCount) { i ->
+                            val series = newSeries[i]
+                            SeriesThumbCard(
+                                url = "${serverInfo.url}api/v1/series/${series?.id}/thumbnail",
+                                booksCount = series?.booksCount,
+                                booksUnreadCount = series?.booksUnreadCount,
+                                id = series?.id.toString(),
+                                title = series?.metadata?.title,
+                                modifier = Modifier
+                                    .padding(16.dp)
+                                    .fillMaxWidth()
+                            ) {
+                                navigator.navigate(SeriesByIdScreenDestination(seriesId = it))
                             }
                         }
                     }
-                }//
+                }//End New Series
 
-                //----Recently Updated  Series start
+                //Start Updated Series
                 item{
                     Spacer(modifier = Modifier.height(height = 20.dp))
-                    Row() {
+                    Row {
                         Text(
                             text = stringResource(id = R.string.recently_updated_series),
                             color = Color.Black,
@@ -237,27 +229,26 @@ fun HomeScreen(
                     Spacer(modifier = Modifier.width(8.dp))
                 }
                 item {
-                    LazyRow(
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-//                Log.d("komga1","state.getLatestResult =$state")
-                        state.getUpdatedSeries?.series?.let {
-                            items(it.size) { i ->
-                                val series = state.getUpdatedSeries.series[i]
-//                        Log.d("komga1","series= ${series.name}")
-                                SeriesThumbCard(
-                                    url = "${url}api/v1/series/${series.id}/thumbnail",
-                                    series = series,
-                                    modifier = Modifier
-                                        .padding(16.dp)
-                                        .fillMaxWidth()
-                                )
+                    LazyRow {//Start New Series items LazyRow
+                        items(updatedSeries.itemCount) { i ->
+                            val series = updatedSeries[i]
+                            SeriesThumbCard(
+                                url = "${serverInfo.url}api/v1/series/${series?.id}/thumbnail",
+                                booksCount = series?.booksCount,
+                                booksUnreadCount = series?.booksUnreadCount,
+                                id = series?.id.toString(),
+                                title = series?.metadata?.title,
+                                modifier = Modifier
+                                    .padding(16.dp)
+                                    .fillMaxWidth()
+                            ) {
+                                navigator.navigate(SeriesByIdScreenDestination(seriesId = it))
                             }
                         }
                     }
-                }//----Recently Updated  Series end
+                }//End Updated Series
+            }//--End Main LazyColum
 
-            }
         }
 
     }

@@ -1,23 +1,17 @@
 package org.maddiesoftware.komagareader.server_display.presentaion.screen.allseries
 
 import android.annotation.SuppressLint
-import android.util.Log
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
@@ -25,14 +19,11 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.items
-
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
 import org.maddiesoftware.komagareader.R
 import org.maddiesoftware.komagareader.core.util.ServerInfoSingleton
-import org.maddiesoftware.komagareader.core.util.ServerInfoSingleton.url
 import org.maddiesoftware.komagareader.destinations.AllSeriesScreenDestination
 import org.maddiesoftware.komagareader.destinations.HomeScreenDestination
 import org.maddiesoftware.komagareader.server_display.domain.model.Series
@@ -65,8 +56,8 @@ fun AllSeriesScreen(
             scaffoldState = scaffoldState,
             topBar = {
                 NavBar(
-                    onNavigationIconClick = {
-                        Log.d("Komga12345","Open Nav")
+                    onNavigationIconClick = {navigator.navigateUp()},
+                    onMenuItemClick = {
                         scope.launch {
                             scaffoldState.drawerState.open()
                         }
@@ -75,14 +66,14 @@ fun AllSeriesScreen(
             },
             drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
             drawerContent = {
-                DrawerHeader()
-                DrawerBodySelectionScreen(
-                    items = newList,
-                    onItemClick = {
-                        if (it == "home"){
+                NavDrawer(
+                    libraryList=libraryList,
+                    viewModel=mainViewModule,
+                    onItemClick = {id ->
+                        if (id == "home"){
                             navigator.navigate(HomeScreenDestination())
                         }else {
-                            navigator.navigate(AllSeriesScreenDestination(libraryId = it))
+                            navigator.navigate(AllSeriesScreenDestination(libraryId = id))
                         }
                     }
                 )
@@ -118,11 +109,14 @@ fun AllSeriesScreen(
                         val series = seriesState[i]
                         SeriesThumbCard(
                             url = "${serverInfo.url}api/v1/series/${series?.id}/thumbnail",
-                            series = series,
+                            booksCount = series?.booksCount,
+                            booksUnreadCount = series?.booksUnreadCount,
+                            id = series?.id.toString(),
+                            title = series?.metadata?.title,
                             modifier = Modifier
                                 .padding(16.dp)
                                 .fillMaxWidth()
-                        )
+                        ) {}
 
                     }
                     item {
@@ -143,7 +137,7 @@ fun AllSeriesScreen(
                                                 .clickable(role = Role.Button) { seriesState.retry() },
                                             textDecoration = TextDecoration.Underline,
                                             fontWeight = FontWeight.Bold,
-                                            color = MaterialTheme.colors.onBackground
+                                            color = MaterialTheme.colors.onSecondary,
                                         )
                                     }
                                 )

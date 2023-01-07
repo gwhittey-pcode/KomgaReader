@@ -3,29 +3,28 @@ package org.maddiesoftware.komagareader.server_display.data.repository.paging
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import org.maddiesoftware.komagareader.server_display.data.remote.api.KomgaServerApi
-import org.maddiesoftware.komagareader.server_display.domain.model.Series
+import org.maddiesoftware.komagareader.server_display.domain.model.Book
 
-class AllSeriesRemotePagingSource(private val api:KomgaServerApi, private val libraryId: String?):PagingSource<Int, Series>() {
-    override fun getRefreshKey(state: PagingState<Int,  Series>): Int? {
+class SeriesByIdPagingSource(private val api: KomgaServerApi, private val seriesId: String?):
+    PagingSource<Int, Book>() {
+    override fun getRefreshKey(state: PagingState<Int, Book>): Int? {
         return state.anchorPosition
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int,Series> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Book> {
         val currentPage = params.key ?: 0
-
-        val response  = api.getAllSeries(page = currentPage, libraryId = this.libraryId,)
+        val response  = api.getBooksFromSeries(seriesId = seriesId.toString(), page = currentPage,)
 
         val endOfPaginationReached = response.content.isEmpty()
 
         return try {
             LoadResult.Page(
-                data = response.content.map { it.toSeries() } ,
+                data = response.content.map { it.toBook() } ,
                 prevKey = if(currentPage == 0) null else currentPage - 1,
                 nextKey = if(endOfPaginationReached) null else currentPage + 1
             )
         } catch(exp: Exception){
             LoadResult.Error(exp)
         }
-
     }
 }

@@ -24,8 +24,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.maddiesoftware.komagareader.destinations.ServerSelectScreenDestination
-import org.maddiesoftware.komagareader.core.presentation.theme.gray
-import org.maddiesoftware.komagareader.core.presentation.theme.red
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Destination
@@ -38,7 +36,7 @@ fun ServerAddScreen(
 
     Column {
         Scaffold(
-            backgroundColor = gray
+            backgroundColor = MaterialTheme.colors.surface
         ) {
             Box(modifier = Modifier.fillMaxSize()) {
                 ClickableText(
@@ -51,7 +49,7 @@ fun ServerAddScreen(
                         fontSize = 14.sp,
                         fontFamily = FontFamily.Default,
                         textDecoration = TextDecoration.Underline,
-                        color = red
+                        color = MaterialTheme.colors.error
                     )
                 )
             }

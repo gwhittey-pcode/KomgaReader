@@ -2,7 +2,7 @@ package org.maddiesoftware.komagareader.server_display.presentaion.componet
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -12,15 +12,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import org.maddiesoftware.komagareader.core.presentation.theme.GoldUnreadBookCount
-import org.maddiesoftware.komagareader.server_display.domain.model.Series
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SeriesThumbCard(
-    series: Series?,
+    booksCount: Int?,
+    booksUnreadCount: Int? = 0,
+    id: String,
+    title: String?,
     modifier: Modifier = Modifier,
     url: String,
+    onItemClick: (id: String) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -31,10 +35,13 @@ fun SeriesThumbCard(
     ) {
         Card(
             modifier = Modifier
-                .height(400.dp)
-                .width(195.dp)
+                .height(300.dp)
+                .width(155.dp)
                 .padding(5.dp)
-                .background(MaterialTheme.colors.surface),
+                .background(MaterialTheme.colors.surface)
+                .clickable {
+                     onItemClick(id) 
+                },
             elevation = 5.dp
         ){
 
@@ -50,12 +57,14 @@ fun SeriesThumbCard(
                     MyAsyncImage(
                         url = url,
                         modifier = Modifier
-                            .align(Alignment.TopEnd),
+                            .align(Alignment.TopEnd)
+                            .height(200.dp)
+                            .width(155.dp)
 
-                    )
-                    if(series?.booksUnreadCount != 0){
+                        )
+                    if(booksCount != 0){
                         Chip(
-                            modifier = Modifier.align(Alignment.TopEnd),
+                            modifier = Modifier.align(Alignment.TopEnd).offset((9).dp, (-8).dp),
                             shape = RectangleShape,
                             onClick = { /* Do something! */ },
                             border = BorderStroke(
@@ -68,30 +77,33 @@ fun SeriesThumbCard(
                             ),
                         ) {
                             Text(
-                                text = "${series?.booksUnreadCount}",
+                                text = "$booksUnreadCount",
                                 color = Color.White,
-                                fontWeight = FontWeight.Bold,                        )
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 18.sp
+                            )
                         }
                     }
-                    }
+                }
 
 
                 Box(modifier = Modifier.fillMaxSize().align(Alignment.Start)) {
                     Text(
-                        text = series?.metadata?.title.toString(),
+                        text = title.toString(),
                         color = MaterialTheme.colors.onSecondary,
                         modifier = Modifier
                             .align(Alignment.TopStart)
                             .padding(start = 5.dp, top = 5.dp),
-
-                    )
+                        fontSize = 14.sp
+                        )
 
                     Text(
-                        text = "${series?.booksCount.toString()} Books",
+                        text = "${booksCount.toString()} Books",
                         color = MaterialTheme.colors.onSecondary,
                         modifier = Modifier
                             .align(Alignment.BottomStart)
-                            .padding(start = 5.dp, bottom = 5.dp)
+                            .padding(start = 5.dp, bottom = 5.dp),
+                        fontSize = 14.sp
 
                     )
                 }

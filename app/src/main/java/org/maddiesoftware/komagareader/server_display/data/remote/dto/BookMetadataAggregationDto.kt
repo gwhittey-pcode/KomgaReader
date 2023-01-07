@@ -1,6 +1,5 @@
 package org.maddiesoftware.komagareader.server_display.data.remote.dto
 
-import org.maddiesoftware.komagareader.server_display.data.remote.dto.AuthorDto
 import org.maddiesoftware.komagareader.server_display.domain.model.BookMetadataAggregation
 
 

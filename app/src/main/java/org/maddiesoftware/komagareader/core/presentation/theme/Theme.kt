@@ -1,63 +1,66 @@
 package org.maddiesoftware.komagareader.core.presentation.theme
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.ProvideTextStyle
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color.Companion.White
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.Black
-import androidx.compose.ui.text.TextStyle
+
 
 @SuppressLint("ConflictingOnColor")
 private val LightThemeColors = lightColors(
-    primary = Color(0xFF546ee5),
-    primaryVariant = Color(0xFF8c9cff),
-    onPrimary = White,
-    secondary = Color(0xFF46807E),
-    secondaryVariant = Color(0xFF75b0ad),
-    onSecondary = Black1,
+    primary = Blue600,
+    primaryVariant = Blue400,
+    onPrimary = Black5,
+    secondary = Color.White,
+    secondaryVariant = Orange700,
+    onSecondary = Color.Black,
     error = RedErrorDark,
     onError = RedErrorLight,
-    background = White,
-    onBackground = White,
-    surface = White,
-    onSurface = Gray300,
+    background = Grey1,
+    onBackground = Color.Black,
+    surface = Color.White,
+    onSurface = Black5,
 )
 
 private val DarkThemeColors = darkColors(
-    primary = Color(0xFF546ee5),
-    primaryVariant = Color(0xFF8c9cff),
-    onPrimary = White,
-    secondary = Color(0xFF46807E),
-    secondaryVariant = Color(0xFF75b0ad),
+    primary = Blue700,
+    primaryVariant = Color.White,
+    onPrimary = Color.White,
+    secondary = Black3,
+    onSecondary = Color.White,
     error = RedErrorLight,
-    background = Black2,
-    onBackground = White,
+    background = Color.Black,
+    onBackground = Color.White,
     surface = Black3,
-    onSurface = White,
-    onSecondary = White,
-
+    onSurface = Color.White,
 )
 
 @Composable
-fun KomagaReaderTheme(
+fun KomgaReaderTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable () -> Unit
+    progressBarIsDisplayed: Boolean = false,
+    content: @Composable () -> Unit,
 ) {
     MaterialTheme(
         colors = if (darkTheme) DarkThemeColors else LightThemeColors,
-        typography = Typography,
+        typography = QuickSandTypography,
         shapes = AppShapes,
-        content = {
-            ProvideTextStyle(
-                value = TextStyle(color = White),
-                content = content
-            )
-        }
+    ){
 
-    )
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
+                .background(color = if(!darkTheme) Grey1 else Black5)
+        ){
+            content()
+//            CircularIndeterminateProgressBar(isDisplayed = progressBarIsDisplayed, 0.3f)
+        }
+    }
 }

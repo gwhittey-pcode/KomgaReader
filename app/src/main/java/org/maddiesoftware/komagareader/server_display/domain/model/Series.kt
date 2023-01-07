@@ -3,7 +3,6 @@ package org.maddiesoftware.komagareader.server_display.domain.model
 import org.maddiesoftware.komagareader.server_display.data.remote.dto.BookMetadataAggregationDto
 import org.maddiesoftware.komagareader.server_display.data.remote.dto.SeriesMetadataDto
 
-
 data class Series(
     val booksCount: Int?,
     val booksInProgressCount: Int?,

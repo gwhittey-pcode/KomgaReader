@@ -28,9 +28,6 @@ import org.maddiesoftware.komagareader.destinations.HomeScreenDestination
 import org.maddiesoftware.komagareader.destinations.ServerAddScreenDestination
 import org.maddiesoftware.komagareader.server_select.presentation.components.ServerUiListItem
 
-import org.maddiesoftware.komagareader.core.presentation.theme.gray
-import org.maddiesoftware.komagareader.core.presentation.theme.white
-
 @RootNavGraph(start = true)
 @Destination
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -57,7 +54,7 @@ fun ServerSelectScreen(
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = "fab_add_order",
-                    tint = white
+                    tint =MaterialTheme.colors.onSurface
                 )
             }
         },
@@ -66,10 +63,10 @@ fun ServerSelectScreen(
                 title = {
                     Text(
                         "Order overview",
-                        color = white
+                        color =MaterialTheme.colors.onSurface
                     )
                 },
-                backgroundColor = MaterialTheme.colors.primary
+                backgroundColor = MaterialTheme.colors.surface
             )
         }
     ){
@@ -85,7 +82,7 @@ fun ServerSelectScreen(
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(gray)
+                    .background(MaterialTheme.colors.surface)
                     .padding(10.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp),
                    horizontalAlignment = Alignment.CenterHorizontally
@@ -102,7 +99,7 @@ fun ServerSelectScreen(
                        modifier = Modifier
                            .fillMaxWidth(.7F)
                            .clip(RoundedCornerShape(10.dp))
-                           .border(1.dp, color = white, RoundedCornerShape(10.dp))
+                           .border(1.dp, color =MaterialTheme.colors.onSurface, RoundedCornerShape(10.dp))
                            .clickable {
 //                               dataStoreViewModel.savePassword(it.password)
 //                               dataStoreViewModel.saveUrl(it.url)

@@ -7,13 +7,12 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.maddiesoftware.komagareader.server_select.domain.model.Server
-import org.maddiesoftware.komagareader.core.presentation.theme.red
-import org.maddiesoftware.komagareader.core.presentation.theme.white
 
 
 @Composable
@@ -37,7 +36,7 @@ fun ServerUiListItem(
             Text(
                 serverListItem.serverName,
                 fontWeight = FontWeight.Bold,
-                color = white,
+                color = MaterialTheme.colors.onSurface,
                 fontSize = 20.sp
             )
             IconButton(
@@ -47,11 +46,11 @@ fun ServerUiListItem(
                 Icon(
                     imageVector = Icons.Default.Delete,
                     contentDescription = "Delete note",
-                    tint = red
+                    tint = Color.Red
                 )
             }
         }
-        Divider(color = white)
+        Divider(color = MaterialTheme.colors.onSurface)
         Row(
             modifier = Modifier
                 .fillMaxWidth(),
@@ -59,14 +58,14 @@ fun ServerUiListItem(
         ){
             Text(
                 serverListItem.userName,
-                color = white,
+                color = MaterialTheme.colors.onSurface,
                 fontSize = 16.sp,
                 modifier = Modifier.fillMaxWidth(.5F)
             )
             Spacer(modifier = Modifier.width(16.dp))
             Text(
                 serverListItem.url,
-                color = white,
+                color = MaterialTheme.colors.onSurface,
                 fontSize = 16.sp,
                 textAlign = TextAlign.Right,
                 modifier = Modifier.fillMaxWidth()

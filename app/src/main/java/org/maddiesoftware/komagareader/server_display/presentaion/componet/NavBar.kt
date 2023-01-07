@@ -1,19 +1,15 @@
 package org.maddiesoftware.komagareader.server_display.presentaion.componet
 
-import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
-import org.maddiesoftware.komagareader.R
 
 @Composable
 fun NavBar(
-    onNavigationIconClick: () -> Unit
+    onNavigationIconClick: () -> Unit,
+    onMenuItemClick: () -> Unit
 ) {
     TopAppBar(
         title = {
@@ -24,10 +20,18 @@ fun NavBar(
         navigationIcon = {
             IconButton(onClick = onNavigationIconClick) {
                 Icon(
-                    imageVector = Icons.Default.Menu,
-                    contentDescription = "Toggle drawer"
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Back"
                 )
             }
-        }
+
+        },
+        actions = {
+            IconButton(onClick = onMenuItemClick) {
+            Icon(
+                imageVector = Icons.Default.Menu,
+                contentDescription = "Toggle drawer"
+            )
+        }}
     )
 }
