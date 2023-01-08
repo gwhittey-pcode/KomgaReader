@@ -29,5 +29,6 @@ interface ApiRepository {
 
     fun getBooksFromSeries(pageSize: Int, seriesId: String): Flow<PagingData<Book>>
 
+    suspend fun getBookById(bookId: String): Resource<Book>
 
 }

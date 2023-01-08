@@ -138,4 +138,23 @@ class ApiRepositoryImpl @Inject constructor(
             )
         }
     }
+
+    override suspend fun getBookById(bookId: String): Resource<Book> {
+        return try {
+            val getBookById = api.getBookById(bookId=bookId)
+            Resource.Success(getBookById.toBook())
+        } catch(e: IOException) {
+            e.printStackTrace()
+            Log.d("komga1","I Errro2")
+            Resource.Error(
+                message = "Couldn't load Book info"
+            )
+        } catch(e: HttpException) {
+            e.printStackTrace()
+            Log.d("komga1"," HttpException")
+            Resource.Error(
+                message = "Couldn't load Book info"
+            )
+        }
+    }
 }

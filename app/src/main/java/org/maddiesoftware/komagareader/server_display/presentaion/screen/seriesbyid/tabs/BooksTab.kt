@@ -16,9 +16,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import org.maddiesoftware.komagareader.R
 import org.maddiesoftware.komagareader.core.util.ServerInfoSingleton
+import org.maddiesoftware.komagareader.destinations.BookInfoScreenDestination
 import org.maddiesoftware.komagareader.server_display.presentaion.componet.BookThumbCard
 import org.maddiesoftware.komagareader.server_display.presentaion.componet.PaginationStateHandler
 import org.maddiesoftware.komagareader.server_display.presentaion.componet.WarningMessage
@@ -27,7 +29,9 @@ import org.maddiesoftware.komagareader.server_display.presentaion.screen.seriesb
 @Composable
 fun BooksTab(
     viewModel: SeriesByIdViewModel = hiltViewModel(),
-){
+    onItemClick: (id: String) -> Unit,
+    ){
+    val navController = rememberNavController()
     val serverInfo = ServerInfoSingleton
     val bookState = viewModel.bookState
         .collectAsLazyPagingItems()
@@ -37,7 +41,6 @@ fun BooksTab(
 //            .background(Color.White)
             .padding(16.dp)
     ) {
-
         Spacer(modifier = Modifier.height(height = 20.dp))
         Spacer(modifier = Modifier.width(8.dp))
         LazyVerticalGrid(
@@ -54,9 +57,10 @@ fun BooksTab(
                     modifier = Modifier
                         .padding(16.dp)
                         .fillMaxWidth(),
-//                        onItemClick = {}
+                    onItemClick = {
+                        navController.navigate(BookInfoScreenDestination.invoke(bookId = it).route)
+                    }
                 )
-
             }
             item {
                 PaginationStateHandler(

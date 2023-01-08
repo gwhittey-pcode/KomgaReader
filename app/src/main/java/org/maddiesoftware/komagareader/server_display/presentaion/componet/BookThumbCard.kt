@@ -3,6 +3,7 @@ package org.maddiesoftware.komagareader.server_display.presentaion.componet
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -24,6 +25,8 @@ fun BookThumbCard(
     book: Book?,
     modifier: Modifier = Modifier,
     url: String,
+    onItemClick: (id: String) -> Unit,
+
 ) {
     Column(
         modifier = Modifier
@@ -46,7 +49,10 @@ fun BookThumbCard(
                 .height(300.dp)
                 .width(155.dp)
                 .padding(5.dp)
-                .background(MaterialTheme.colors.surface),
+                .background(MaterialTheme.colors.surface)
+                .clickable {
+                    onItemClick(book?.id.toString())
+                },
             elevation = 5.dp
         ) {
 
@@ -56,7 +62,6 @@ fun BookThumbCard(
                     .background(MaterialTheme.colors.surface),
                 horizontalAlignment = Alignment.Start,
                 verticalArrangement = Arrangement.Top,
-
                 ) {
                 Box(modifier = Modifier.fillMaxWidth()) {
                     MyAsyncImage(
@@ -86,11 +91,9 @@ fun BookThumbCard(
                                 text = "",
                                 color = Color.White,
                                 fontWeight = FontWeight.Bold,
-
                                 )
                         }
                     }
-
 
                 }
 
@@ -108,9 +111,7 @@ fun BookThumbCard(
                             .padding(start = 5.dp, top = 2.dp),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
-
                     )
-
                     Text(
                         text = "${book?.metadata?.number.toString()} - ${book?.metadata?.title.toString()}",
                         fontSize = 14.sp,
@@ -121,9 +122,7 @@ fun BookThumbCard(
                             .padding(start = 5.dp, top = 2.dp),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
-
                     )
-
                     Text(
                         text = "${book?.media?.pagesCount.toString()} Pages",
                         fontSize = 14.sp,
@@ -132,7 +131,6 @@ fun BookThumbCard(
                             .align(Alignment.BottomStart)
                             .offset(0.dp, (-15).dp)
                             .padding(start = 5.dp, bottom = 2.dp)
-
                     )
                     Log.d("percent", "PercentRead = $precentRead")
                     if (book?.readProgress?.completed == false || book?.readProgress === null) {
@@ -148,9 +146,7 @@ fun BookThumbCard(
                     }
                 }
             }
-
         }
-
     }
 }
 

@@ -21,6 +21,7 @@ import org.maddiesoftware.komagareader.R
 import org.maddiesoftware.komagareader.core.presentation.DataStoreViewModel
 import org.maddiesoftware.komagareader.core.util.ServerInfoSingleton
 import org.maddiesoftware.komagareader.destinations.AllSeriesScreenDestination
+import org.maddiesoftware.komagareader.destinations.BookInfoScreenDestination
 import org.maddiesoftware.komagareader.destinations.HomeScreenDestination
 import org.maddiesoftware.komagareader.destinations.SeriesByIdScreenDestination
 import org.maddiesoftware.komagareader.server_display.presentaion.activity.MainViewModule
@@ -83,8 +84,6 @@ fun HomeScreen(
 
             }
         ) {
-
-
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
@@ -116,7 +115,7 @@ fun HomeScreen(
                                 modifier = Modifier
                                     .padding(16.dp)
                                     .fillMaxWidth(),
-//                        onItemClick = {}
+                                onItemClick = {navigator.navigate(BookInfoScreenDestination(bookId = it))}
                             )
                         }
                     }
@@ -145,7 +144,7 @@ fun HomeScreen(
                                 modifier = Modifier
                                     .padding(16.dp)
                                     .fillMaxWidth(),
-//                        onItemClick = {}
+                                onItemClick = {navigator.navigate(BookInfoScreenDestination(bookId = it))}
                             )
                         }
                     }
@@ -174,7 +173,7 @@ fun HomeScreen(
                                 modifier = Modifier
                                     .padding(16.dp)
                                     .fillMaxWidth(),
-//                        onItemClick = {}
+                              onItemClick = {navigator.navigate(BookInfoScreenDestination(bookId = it))}
                             )
                         }
                     }
@@ -206,10 +205,9 @@ fun HomeScreen(
                                 title = series?.metadata?.title,
                                 modifier = Modifier
                                     .padding(16.dp)
-                                    .fillMaxWidth()
-                            ) {
-                                navigator.navigate(SeriesByIdScreenDestination(seriesId = it))
-                            }
+                                    .fillMaxWidth(),
+                                onItemClick = { navigator.navigate(SeriesByIdScreenDestination(seriesId = it))}
+                            )
                         }
                     }
                 }//End New Series
@@ -240,10 +238,9 @@ fun HomeScreen(
                                 title = series?.metadata?.title,
                                 modifier = Modifier
                                     .padding(16.dp)
-                                    .fillMaxWidth()
-                            ) {
-                                navigator.navigate(SeriesByIdScreenDestination(seriesId = it))
-                            }
+                                    .fillMaxWidth(),
+                                onItemClick = { navigator.navigate(SeriesByIdScreenDestination(seriesId = it))}
+                            )
                         }
                     }
                 }//End Updated Series

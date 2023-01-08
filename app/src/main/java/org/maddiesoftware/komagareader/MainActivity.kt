@@ -11,6 +11,7 @@ import org.maddiesoftware.komagareader.core.presentation.theme.KomgaReaderTheme
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -18,7 +19,8 @@ class MainActivity : ComponentActivity() {
             window.navigationBarColor = MaterialTheme.colors.primary.toArgb()
             KomgaReaderTheme {
                 // A surface container using the 'background' color from the theme
-                DestinationsNavHost(navGraph = NavGraphs.root)
+               DestinationsNavHost(navGraph = NavGraphs.root)
+
             }
         }
     }

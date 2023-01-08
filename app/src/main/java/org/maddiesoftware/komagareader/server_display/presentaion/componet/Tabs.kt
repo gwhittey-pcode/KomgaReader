@@ -27,7 +27,6 @@ fun Tabs(tabs: List<TabItem>, pagerState: PagerState){
         }
     ) {
         tabs.forEachIndexed{ index, tab ->
-
             LeadingIconTab(
                 icon = { Icon(painter = painterResource(id = tab.icon), contentDescription = "") },
                 text = { Text(text = tab.title, color =  MaterialTheme.colors.onSurface) },
