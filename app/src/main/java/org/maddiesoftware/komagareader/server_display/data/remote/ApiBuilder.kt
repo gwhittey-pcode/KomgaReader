@@ -2,7 +2,7 @@ package org.maddiesoftware.komagareader.server_display.data.remote
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import org.maddiesoftware.komagareader.core.util.ServerInfoSingleton.url
+import org.maddiesoftware.komagareader.core.data.local.ServerInfoSingleton.url
 
 import org.maddiesoftware.komagareader.server_display.data.remote.client.BasicAuthInterceptor
 import retrofit2.Retrofit

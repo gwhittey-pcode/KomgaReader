@@ -1,22 +1,28 @@
 package org.maddiesoftware.komagareader.server_display.presentaion.screen.seriesbyid
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
 import org.maddiesoftware.komagareader.destinations.AllSeriesScreenDestination
+import org.maddiesoftware.komagareader.destinations.BookInfoScreenDestination
 import org.maddiesoftware.komagareader.destinations.HomeScreenDestination
 import org.maddiesoftware.komagareader.server_display.presentaion.activity.MainViewModule
 import org.maddiesoftware.komagareader.server_display.presentaion.componet.*
+import org.maddiesoftware.komagareader.server_display.presentaion.screen.seriesbyid.tabs.BooksTab
+import org.maddiesoftware.komagareader.server_display.presentaion.screen.seriesbyid.tabs.SeriesTabInfo
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalPagerApi::class)
+
+@OptIn(ExperimentalPagerApi::class)
 @Destination
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -24,25 +30,17 @@ fun SeriesByIdScreen(
     seriesId: String? = null,
     navigator: DestinationsNavigator,
     mainViewModule: MainViewModule = hiltViewModel(),
-){
-
+) {
     val libraryList = mainViewModule.state.libraryList
     val scaffoldState = rememberScaffoldState()
+    val pagerState = rememberPagerState(pageCount = SeriesByIdTabPage.values().size)
     val scope = rememberCoroutineScope()
-
-    val tabs = listOf(
-        TabItem.Books,
-        TabItem.SeriesInfo,
-
-    )
-    val pagerState = rememberPagerState(pageCount = tabs.size)
-
 
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
             NavBar(
-                onNavigationIconClick = {navigator.navigateUp()},
+                onNavigationIconClick = { navigator.navigateUp() },
                 onMenuItemClick = {
                     scope.launch {
                         scaffoldState.drawerState.open()
@@ -53,22 +51,46 @@ fun SeriesByIdScreen(
         drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
         drawerContent = {
             NavDrawer(
-                libraryList=libraryList,
-                viewModel=mainViewModule,
-                onItemClick = {id ->
-                    if (id == "home"){
+                libraryList = libraryList,
+                viewModel = mainViewModule,
+                onItemClick = { id ->
+                    if (id == "home") {
                         navigator.navigate(HomeScreenDestination())
-                    }else {
+                    } else {
                         navigator.navigate(AllSeriesScreenDestination(libraryId = id))
                     }
                 }
             )
         }
     ) {
-
-        Column() {
-            Tabs(tabs = tabs, pagerState = pagerState)
-            TabsContent(tabs = tabs, pagerState = pagerState)
+        Column(
+            modifier = Modifier
+                .background(MaterialTheme.colors.surface)
+                .fillMaxSize()
+        ) {
+            Row {
+                SeriesByIdTabs(selectedTabIndex = pagerState.currentPage,
+                    onSelectedTav = {
+                        scope.launch {
+                            pagerState.animateScrollToPage(it.ordinal)
+                        }
+                    })
+            }
+            Row {
+                HorizontalPager(state = pagerState) { index ->
+                    Column(Modifier.fillMaxSize()) {
+                        when (index) {
+                            0 -> BooksTab(
+                                onItemClick = {
+                                    navigator.navigate(BookInfoScreenDestination(bookId = it))
+                                }
+                            )
+                            1 -> SeriesTabInfo()
+                        }
+                    }
+                }
+            }
         }
     }
 }
+

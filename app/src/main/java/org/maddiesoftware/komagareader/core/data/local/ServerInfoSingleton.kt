@@ -1,4 +1,4 @@
-package org.maddiesoftware.komagareader.core.util
+package org.maddiesoftware.komagareader.core.data.local
 
 import org.maddiesoftware.komagareader.server_display.domain.model.Library
 

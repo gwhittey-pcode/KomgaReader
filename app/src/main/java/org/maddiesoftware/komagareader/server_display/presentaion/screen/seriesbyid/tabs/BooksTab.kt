@@ -19,8 +19,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import org.maddiesoftware.komagareader.R
-import org.maddiesoftware.komagareader.core.util.ServerInfoSingleton
-import org.maddiesoftware.komagareader.destinations.BookInfoScreenDestination
+import org.maddiesoftware.komagareader.core.data.local.ServerInfoSingleton
 import org.maddiesoftware.komagareader.server_display.presentaion.componet.BookThumbCard
 import org.maddiesoftware.komagareader.server_display.presentaion.componet.PaginationStateHandler
 import org.maddiesoftware.komagareader.server_display.presentaion.componet.WarningMessage
@@ -57,9 +56,7 @@ fun BooksTab(
                     modifier = Modifier
                         .padding(16.dp)
                         .fillMaxWidth(),
-                    onItemClick = {
-                        navController.navigate(BookInfoScreenDestination.invoke(bookId = it).route)
-                    }
+                    onItemClick = onItemClick
                 )
             }
             item {

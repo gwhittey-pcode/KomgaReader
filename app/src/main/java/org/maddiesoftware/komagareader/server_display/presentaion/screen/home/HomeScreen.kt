@@ -19,7 +19,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
 import org.maddiesoftware.komagareader.R
 import org.maddiesoftware.komagareader.core.presentation.DataStoreViewModel
-import org.maddiesoftware.komagareader.core.util.ServerInfoSingleton
+import org.maddiesoftware.komagareader.core.data.local.ServerInfoSingleton
 import org.maddiesoftware.komagareader.destinations.AllSeriesScreenDestination
 import org.maddiesoftware.komagareader.destinations.BookInfoScreenDestination
 import org.maddiesoftware.komagareader.destinations.HomeScreenDestination

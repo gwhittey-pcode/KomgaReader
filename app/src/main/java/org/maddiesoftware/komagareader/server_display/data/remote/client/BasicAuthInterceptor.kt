@@ -2,7 +2,7 @@ package org.maddiesoftware.komagareader.server_display.data.remote.client
 
 import okhttp3.Credentials
 import okhttp3.Interceptor
-import org.maddiesoftware.komagareader.core.util.ServerInfoSingleton
+import org.maddiesoftware.komagareader.core.data.local.ServerInfoSingleton
 
 
 class BasicAuthInterceptor(

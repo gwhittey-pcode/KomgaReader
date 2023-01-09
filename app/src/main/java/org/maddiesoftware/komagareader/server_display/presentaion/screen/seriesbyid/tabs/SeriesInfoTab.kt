@@ -22,7 +22,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.maddiesoftware.komagareader.core.presentation.theme.GoldUnreadBookCount
-import org.maddiesoftware.komagareader.core.util.ServerInfoSingleton
+import org.maddiesoftware.komagareader.core.data.local.ServerInfoSingleton
 import org.maddiesoftware.komagareader.server_display.presentaion.activity.MainViewModule
 import org.maddiesoftware.komagareader.server_display.presentaion.componet.ExpandableText
 import org.maddiesoftware.komagareader.server_display.presentaion.componet.MyAsyncImage

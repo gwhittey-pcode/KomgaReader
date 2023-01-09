@@ -23,7 +23,7 @@ import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
 import org.maddiesoftware.komagareader.core.presentation.DataStoreViewModel
-import org.maddiesoftware.komagareader.core.util.ServerInfoSingleton
+import org.maddiesoftware.komagareader.core.data.local.ServerInfoSingleton
 import org.maddiesoftware.komagareader.destinations.HomeScreenDestination
 import org.maddiesoftware.komagareader.destinations.ServerAddScreenDestination
 import org.maddiesoftware.komagareader.server_select.presentation.components.ServerUiListItem
@@ -76,7 +76,7 @@ fun ServerSelectScreen(
                     .fillMaxSize(),
                 contentAlignment = Alignment.Center
             ){
-                Text("There are no orders yet")
+                Text("There are no Servers added yet")
             }
         }else{
             LazyColumn(
