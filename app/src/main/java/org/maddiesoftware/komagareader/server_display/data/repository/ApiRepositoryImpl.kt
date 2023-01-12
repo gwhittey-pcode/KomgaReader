@@ -8,10 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import org.maddiesoftware.komagareader.core.util.Resource
 import org.maddiesoftware.komagareader.server_display.data.remote.api.KomgaServerApi
 import org.maddiesoftware.komagareader.server_display.data.repository.paging.*
-import org.maddiesoftware.komagareader.server_display.domain.model.Book
-import org.maddiesoftware.komagareader.server_display.domain.model.Library
-import org.maddiesoftware.komagareader.server_display.domain.model.PageSeries
-import org.maddiesoftware.komagareader.server_display.domain.model.Series
+import org.maddiesoftware.komagareader.server_display.domain.model.*
 import org.maddiesoftware.komagareader.server_display.domain.repository.ApiRepository
 import retrofit2.HttpException
 import java.io.IOException
@@ -154,6 +151,25 @@ class ApiRepositoryImpl @Inject constructor(
             Log.d("komga1"," HttpException")
             Resource.Error(
                 message = "Couldn't load Book info"
+            )
+        }
+    }
+
+    override suspend fun getPages(bookId: String): Resource<List<Page>> {
+        return try {
+            val getPages = api.getPages(bookId=bookId)
+            Resource.Success(getPages.map { it.toPage() })
+        } catch(e: IOException) {
+            e.printStackTrace()
+            Log.d("komga1","I Errro2")
+            Resource.Error(
+                message = "Couldn't load Page info"
+            )
+        } catch(e: HttpException) {
+            e.printStackTrace()
+            Log.d("komga1"," HttpException")
+            Resource.Error(
+                message = "Couldn't load Page info"
             )
         }
     }

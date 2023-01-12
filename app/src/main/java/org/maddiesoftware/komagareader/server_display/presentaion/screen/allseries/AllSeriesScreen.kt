@@ -26,6 +26,7 @@ import org.maddiesoftware.komagareader.R
 import org.maddiesoftware.komagareader.core.data.local.ServerInfoSingleton
 import org.maddiesoftware.komagareader.destinations.AllSeriesScreenDestination
 import org.maddiesoftware.komagareader.destinations.HomeScreenDestination
+import org.maddiesoftware.komagareader.destinations.SeriesByIdScreenDestination
 import org.maddiesoftware.komagareader.server_display.domain.model.Series
 import org.maddiesoftware.komagareader.server_display.presentaion.activity.MainViewModule
 import org.maddiesoftware.komagareader.server_display.presentaion.componet.*
@@ -115,8 +116,9 @@ fun AllSeriesScreen(
                             title = series?.metadata?.title,
                             modifier = Modifier
                                 .padding(16.dp)
-                                .fillMaxWidth()
-                        ) {}
+                                .fillMaxWidth(),
+                            onItemClick = {navigator.navigate(SeriesByIdScreenDestination(seriesId = series?.id))}
+                        )
 
                     }
                     item {

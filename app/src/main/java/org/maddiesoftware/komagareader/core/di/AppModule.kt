@@ -13,8 +13,9 @@ import org.maddiesoftware.komagareader.core.data.repository.DataStoreRepositoryI
 import org.maddiesoftware.komagareader.server_display.data.remote.ApiBuilder
 import org.maddiesoftware.komagareader.server_display.data.remote.api.KomgaServerApi
 import org.maddiesoftware.komagareader.server_display.domain.repository.ApiRepository
-import org.maddiesoftware.komagareader.server_display.domain.usecase.*
+import org.maddiesoftware.komagareader.server_display.domain.use_case.*
 import org.maddiesoftware.komagareader.server_select.data.local.ServerDao
+import org.maddiesoftware.komagareader.server_select.domain.use_case.*
 import javax.inject.Singleton
 
 @Module
@@ -68,6 +69,17 @@ object AppModule {
             getRecentlyAddedBooks = GetRecentlyAddedBooks(apiRepository = apiRepository),
             getNewSeries = GetNewSeries(apiRepository = apiRepository),
             getUpdatedSeries = GetUpdatedSeries(apiRepository = apiRepository),
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun providesServerAddUseCase(): ServerAddUseCase {
+        return ServerAddUseCase(
+            validateServerName = ValidateServerName(),
+            validateUserName = ValidateUserName(),
+            validatePassword = ValidatePassword(),
+            validateUrl = ValidateUrl(),
         )
     }
 }

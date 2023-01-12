@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import org.maddiesoftware.komagareader.core.util.PAGE_SIZE
 import org.maddiesoftware.komagareader.server_display.domain.model.Book
 import org.maddiesoftware.komagareader.server_display.domain.model.Series
-import org.maddiesoftware.komagareader.server_display.domain.usecase.HomeScreenUseCases
+import org.maddiesoftware.komagareader.server_display.domain.use_case.HomeScreenUseCases
 import javax.inject.Inject
 
 @HiltViewModel

@@ -1,4 +1,4 @@
-package org.maddiesoftware.komagareader.server_display.domain.usecase
+package org.maddiesoftware.komagareader.server_display.domain.use_case
 
 data class AllSeriesUseCases(
     val getAllSeries:GetAllSeries,

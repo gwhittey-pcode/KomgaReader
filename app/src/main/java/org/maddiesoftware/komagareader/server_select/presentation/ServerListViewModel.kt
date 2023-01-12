@@ -33,7 +33,7 @@ class ServerListViewModel @Inject constructor(
     private var getServerJobs: Job? = null
     private var recentlyDeletedServer: Server? = null
 
-    var isServerDialogShown by mutableStateOf(false)
+    private var isServerDialogShown by mutableStateOf(false)
 
     var clickedServerItem by mutableStateOf<ServerDetailListItem?>(null)
         private set
@@ -41,15 +41,6 @@ class ServerListViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             setupServerList()
-//            serverRepository.insertServer(
-//                Server(
-//                    serverId = null,
-//                    "Komga122",
-//                    "gerard.whittey@gmail.com",
-//                    "187222",
-//                    "http://192.168.1.69:8080"
-//                )
-//            )
         }
     }
 
@@ -88,7 +79,6 @@ class ServerListViewModel @Inject constructor(
                 _state.value = state.value.copy(
                     servers = servers
                 )
-
             }
             .launchIn(viewModelScope)
 

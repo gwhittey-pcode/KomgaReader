@@ -33,13 +33,13 @@ fun SeriesByIdScreen(
 ) {
     val libraryList = mainViewModule.state.libraryList
     val scaffoldState = rememberScaffoldState()
-    val pagerState = rememberPagerState(pageCount = SeriesByIdTabPage.values().size)
+    val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()
-
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
             NavBar(
+
                 onNavigationIconClick = { navigator.navigateUp() },
                 onMenuItemClick = {
                     scope.launch {
@@ -77,7 +77,7 @@ fun SeriesByIdScreen(
                     })
             }
             Row {
-                HorizontalPager(state = pagerState) { index ->
+                HorizontalPager(count = SeriesByIdTabPage.values().size, state = pagerState) { index ->
                     Column(Modifier.fillMaxSize()) {
                         when (index) {
                             0 -> BooksTab(

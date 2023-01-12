@@ -5,13 +5,16 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 
 @Composable
 fun NavBar(
     onNavigationIconClick: () -> Unit,
-    onMenuItemClick: () -> Unit
+    onMenuItemClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     TopAppBar(
+        modifier = modifier,
         title = {
             Text(text = "KomgaReader")
         },

@@ -19,7 +19,7 @@ import org.maddiesoftware.komagareader.core.util.PAGE_SIZE
 import org.maddiesoftware.komagareader.core.util.Resource
 import org.maddiesoftware.komagareader.server_display.domain.model.Book
 import org.maddiesoftware.komagareader.server_display.domain.repository.ApiRepository
-import org.maddiesoftware.komagareader.server_display.domain.usecase.AllSeriesUseCases
+import org.maddiesoftware.komagareader.server_display.domain.use_case.AllSeriesUseCases
 import javax.inject.Inject
 
 @HiltViewModel

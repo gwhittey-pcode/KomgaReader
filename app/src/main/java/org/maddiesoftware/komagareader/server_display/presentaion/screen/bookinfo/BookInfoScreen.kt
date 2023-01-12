@@ -69,8 +69,8 @@ fun BookInfoScreen(
                     onClick = {
                         navigator.navigate(
                             BookReaderScreenDestination(
-                                bookId = bookInfo.id,
-                                bookPageCount = bookInfo.media?.pagesCount
+                                bookId = bookInfo.id.toString(),
+                                seriesId = bookInfo.seriesId.toString()
                             )
                         )
                     },

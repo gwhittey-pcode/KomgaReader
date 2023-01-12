@@ -1,30 +1,45 @@
 package org.maddiesoftware.komagareader.server_display.presentaion.componet
 
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import coil.compose.AsyncImage
+import coil.compose.AsyncImagePainter
+import coil.compose.SubcomposeAsyncImage
+import coil.compose.SubcomposeAsyncImageContent
 import coil.imageLoader
 import coil.request.ImageRequest
 
 
 @Composable
-fun MyAsyncImage(modifier: Modifier = Modifier, url: String = "") {
+fun MyAsyncImage(
+    modifier: Modifier = Modifier, url: String = "",
+    contentScale: ContentScale =ContentScale.FillBounds
+) {
     val request: ImageRequest = ImageRequest.Builder(LocalContext.current.applicationContext)
         .data(url)
         .build()
     LocalContext.current.applicationContext.imageLoader.enqueue(request)
-    AsyncImage(
+    SubcomposeAsyncImage(
         modifier = modifier,
         model = request,
         contentDescription = "None",
-        contentScale = ContentScale.FillBounds,
+        contentScale = contentScale,
         alignment = Alignment.TopStart,
+        ){
+
+        val state = painter.state
+
+        if (state is AsyncImagePainter.State.Loading || state is AsyncImagePainter.State.Error) {
+            CircularProgressIndicator()
+        } else {
+            SubcomposeAsyncImageContent()
+        }
 
 
-        )
+    }
 }
 
 

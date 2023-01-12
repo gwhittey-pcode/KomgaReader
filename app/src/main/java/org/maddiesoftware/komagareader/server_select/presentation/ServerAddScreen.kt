@@ -1,29 +1,20 @@
 package org.maddiesoftware.komagareader.server_select.presentation
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import org.maddiesoftware.komagareader.destinations.ServerSelectScreenDestination
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Destination
@@ -31,104 +22,152 @@ import org.maddiesoftware.komagareader.destinations.ServerSelectScreenDestinatio
 fun ServerAddScreen(
     serverId: Int = -1,
     navigator: DestinationsNavigator,
-    serverAddViewModel: ServerAddViewModel = hiltViewModel()
+    viewModel: ServerAddViewModel = hiltViewModel()
 ) {
 
-    Column {
-        Scaffold(
-            backgroundColor = MaterialTheme.colors.surface
-        ) {
-            Box(modifier = Modifier.fillMaxSize()) {
-                ClickableText(
-                    text = AnnotatedString("Enter Server Info"),
-                    modifier = Modifier
-                        .align(Alignment.BottomCenter)
-                        .padding(20.dp),
-                    onClick = { },
-                    style = TextStyle(
-                        fontSize = 14.sp,
-                        fontFamily = FontFamily.Default,
-                        textDecoration = TextDecoration.Underline,
-                        color = MaterialTheme.colors.error
-                    )
-                )
-            }
-            Column(
-                modifier = Modifier.padding(20.dp),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-
-                ) {
-
-                val username = remember { mutableStateOf(TextFieldValue()) }
-                val password = remember { mutableStateOf(TextFieldValue()) }
-                val serverName = remember { mutableStateOf(TextFieldValue()) }
-                val url = remember { mutableStateOf(TextFieldValue()) }
-                Text(
-                    text = "Server",
-                    style = TextStyle(fontSize = 40.sp, fontFamily = FontFamily.Cursive)
-                )
-
-                Spacer(modifier = Modifier.height(20.dp))
-                TextField(
-                    label = { Text(text = "Server Name") },
-                    value = serverName.value,
-                    onValueChange = { serverName.value = it },
-
-
-                )
-
-                Spacer(modifier = Modifier.height(20.dp))
-                TextField(
-                    label = { Text(text = "Username") },
-                    value = username.value,
-                    onValueChange = { username.value = it })
-
-                Spacer(modifier = Modifier.height(20.dp))
-                TextField(
-                    label = { Text(text = "Password") },
-                    value = password.value,
-                    visualTransformation = PasswordVisualTransformation(),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                    onValueChange = { password.value = it })
-                Spacer(modifier = Modifier.height(20.dp))
-                TextField(
-                    label = { Text(text = "Url") },
-                    value = url.value,
-                    onValueChange = { url.value = it })
-                Spacer(modifier = Modifier.height(20.dp))
-                Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
-                    Button(
-                        onClick = {
-                            serverAddViewModel.onAdd(
-                                serverName = serverName.value.text,
-                                username = username.value.text,
-                                password = password.value.text,
-                                url = url.value.text
-                            )
-                            navigator.navigate(ServerSelectScreenDestination())
-                        },
-                        shape = RoundedCornerShape(50.dp),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(50.dp)
-                    ) {
-                        Text(text = "Add Server")
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colors.background
+    ) {
+       
+        val state = viewModel.state
+        val context = LocalContext.current
+        LaunchedEffect(key1 = context) {
+            viewModel.validationEvents.collect { event ->
+                when (event) {
+                    is ServerAddViewModel.ValidationEvent.Success -> {
+                        Toast.makeText(
+                            context,
+                            "Server Added successful",
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
                 }
+            }
+        }
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(32.dp),
+            verticalArrangement = Arrangement.Center
+        ) {
+            TextField(
+                value = state.serverName,
+                onValueChange = {
+                    viewModel.onEvent(AddServerFormEvent.ServerNameChanged(it))
+                },
+                isError = state.serverNameError != null,
+                modifier = Modifier.fillMaxWidth(),
+                placeholder = {
+                    Text(text = "Server Name")
+                },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text
+                )
+            )
+            if (state.serverNameError != null) {
+                Text(
+                    text = state.serverNameError,
+                    color = MaterialTheme.colors.error,
+                    modifier = Modifier.align(Alignment.End)
+                )
+            }
+            Spacer(modifier = Modifier.height(16.dp))
 
-                Spacer(modifier = Modifier.height(20.dp))
-                //        ClickableText(
-                //            text = AnnotatedString("Forgot password?"),
-                //            onClick = { },
-                //            style = TextStyle(
-                //                fontSize = 14.sp,
-                //                fontFamily = FontFamily.Default
-                //            )
-                //        )
+            TextField(
+                value = state.username,
+                onValueChange = {
+                    viewModel.onEvent(AddServerFormEvent.UserNameChanged(it))
+                },
+                isError = state.usernameError != null,
+                modifier = Modifier.fillMaxWidth(),
+                placeholder = {
+                    Text(text = "User Name")
+                },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Email
+                )
+            )
+            if (state.usernameError != null) {
+                Text(
+                    text = state.usernameError,
+                    color = MaterialTheme.colors.error,
+                    modifier = Modifier.align(Alignment.End)
+                )
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+
+            TextField(
+                value = state.password,
+                onValueChange = {
+                    viewModel.onEvent(AddServerFormEvent.PasswordChanged(it))
+                },
+                isError = state.passwordError != null,
+                modifier = Modifier.fillMaxWidth(),
+                placeholder = {
+                    Text(text = "Password")
+                },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Password
+                )
+            )
+            if (state.passwordError != null) {
+                Text(
+                    text = state.passwordError,
+                    color = MaterialTheme.colors.error,
+                    modifier = Modifier.align(Alignment.End)
+                )
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+
+            TextField(
+                value = state.url,
+                onValueChange = {
+                    viewModel.onEvent(AddServerFormEvent.UrlChanged(it))
+                },
+                isError = state.urlError != null,
+                modifier = Modifier.fillMaxWidth(),
+                placeholder = {
+                    Text(text = "Url")
+                },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Uri
+                )
+            )
+            if (state.urlError != null) {
+                Text(
+                    text = state.urlError,
+                    color = MaterialTheme.colors.error,
+                    modifier = Modifier.align(Alignment.End)
+                )
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            Row(
+                horizontalArrangement  =  Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+
+                Button(
+                    onClick = {
+                        viewModel.onEvent(AddServerFormEvent.Submit)
+                    },
+                ) {
+                    Text(text = "Add Server")
+                }
+                Spacer(Modifier.weight(1f))
+                Button(
+                    onClick = {
+                        navigator.navigateUp()
+                    },
+                ) {
+                    Text(text = "Cancel")
+                }
+
+
             }
 
         }
     }
-
 }
+
+

@@ -106,6 +106,11 @@ interface KomgaServerApi {
     suspend fun getBookById(
         @Path("bookId") bookId: String
     ):BookDto
+
+    @GET("books/{bookId}/pages")
+    suspend fun getPages(
+        @Path("bookId") bookId: String
+    ):List<PageDto>
 }
 
 

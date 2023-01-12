@@ -3,10 +3,7 @@ package org.maddiesoftware.komagareader.server_display.domain.repository
 import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
 import org.maddiesoftware.komagareader.core.util.Resource
-import org.maddiesoftware.komagareader.server_display.domain.model.Book
-import org.maddiesoftware.komagareader.server_display.domain.model.Library
-import org.maddiesoftware.komagareader.server_display.domain.model.PageSeries
-import org.maddiesoftware.komagareader.server_display.domain.model.Series
+import org.maddiesoftware.komagareader.server_display.domain.model.*
 
 interface ApiRepository {
     suspend fun getLatest(): Resource<PageSeries?>
@@ -30,5 +27,7 @@ interface ApiRepository {
     fun getBooksFromSeries(pageSize: Int, seriesId: String): Flow<PagingData<Book>>
 
     suspend fun getBookById(bookId: String): Resource<Book>
+
+    suspend fun getPages(bookId: String): Resource<List<Page>>
 
 }

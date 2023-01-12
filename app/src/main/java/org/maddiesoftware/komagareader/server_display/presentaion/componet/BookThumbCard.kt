@@ -37,13 +37,7 @@ fun BookThumbCard(
     ) {
         val pageRead = book?.readProgress?.page?.toFloat()
         val totalPages = book?.media?.pagesCount?.toFloat()
-//        Log.d("percent", "id = ${book?.id}")
-//        Log.d("percent", "title = ${book?.metadata?.title}")
-//        Log.d("percent", "pageRead = $pageRead")
-//        Log.d("percent", "totalPages = $totalPages")
-//        Log.d("percent", "completed = ${book?.readProgress?.completed}")
-//        Log.d("percent", "############################################################")
-        val precentRead = pageRead?.div(totalPages!!)
+        val presentRead = pageRead?.div(totalPages!!)
         Card(
             modifier = Modifier
                 .height(300.dp)
@@ -132,11 +126,11 @@ fun BookThumbCard(
                             .offset(0.dp, (-15).dp)
                             .padding(start = 5.dp, bottom = 2.dp)
                     )
-                    Log.d("percent", "PercentRead = $precentRead")
+                    Log.d("percent", "PercentRead = $presentRead")
                     if (book?.readProgress?.completed == false || book?.readProgress === null) {
-                        if (precentRead != null && precentRead != 1f) {
+                        if (presentRead != null && presentRead != 1f) {
                             LinearProgressIndicator(
-                                progress = precentRead,
+                                progress = presentRead,
                                 modifier = Modifier
                                     .align(Alignment.BottomStart)
                                     .padding(10.dp),

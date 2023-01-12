@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import org.maddiesoftware.komagareader.core.util.LIBRARY_ID_KEY
 import org.maddiesoftware.komagareader.core.util.PAGE_SIZE
 import org.maddiesoftware.komagareader.server_display.domain.model.Series
-import org.maddiesoftware.komagareader.server_display.domain.usecase.AllSeriesUseCases
+import org.maddiesoftware.komagareader.server_display.domain.use_case.AllSeriesUseCases
 import javax.inject.Inject
 
 
