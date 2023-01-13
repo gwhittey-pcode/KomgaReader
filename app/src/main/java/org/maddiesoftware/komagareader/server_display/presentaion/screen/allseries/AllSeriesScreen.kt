@@ -71,6 +71,9 @@ fun AllSeriesScreen(
                 NavDrawer(
                     libraryList = libraryList,
                     onItemClick = { id ->
+                        scope.launch {
+                            scaffoldState.drawerState.close()
+                        }
                         when(id){
                             "home" -> {navigator.navigate(HomeScreenDestination())}
                             "settings" -> {navigator.navigate(SettingsScreenDestination())}

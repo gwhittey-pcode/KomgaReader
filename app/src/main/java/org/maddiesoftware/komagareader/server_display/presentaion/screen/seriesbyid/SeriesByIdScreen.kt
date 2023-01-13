@@ -40,7 +40,6 @@ fun SeriesByIdScreen(
         scaffoldState = scaffoldState,
         topBar = {
             NavBar(
-
                 onNavigationIconClick = { navigator.navigateUp() },
                 onMenuItemClick = {
                     scope.launch {
@@ -51,10 +50,12 @@ fun SeriesByIdScreen(
         },
         drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
         drawerContent = {
-
             NavDrawer(
                 libraryList = libraryList,
                 onItemClick = { id ->
+                    scope.launch {
+                        scaffoldState.drawerState.close()
+                    }
                     when(id){
                         "home" -> {navigator.navigate(HomeScreenDestination())}
                         "settings" -> {navigator.navigate(SettingsScreenDestination())}
