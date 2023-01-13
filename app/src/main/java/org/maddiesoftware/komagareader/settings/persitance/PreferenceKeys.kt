@@ -1,4 +1,4 @@
-package org.maddiesoftware.komagareader.preference.persitance
+package org.maddiesoftware.komagareader.settings.persitance
 
 import androidx.datastore.preferences.core.booleanPreferencesKey
 

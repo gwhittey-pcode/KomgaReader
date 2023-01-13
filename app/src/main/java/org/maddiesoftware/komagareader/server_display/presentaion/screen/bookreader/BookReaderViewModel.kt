@@ -18,8 +18,8 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import org.maddiesoftware.komagareader.core.data.local.ReaderPreferenceSingleton.useDblPageSplit
 import org.maddiesoftware.komagareader.core.util.Resource
-import org.maddiesoftware.komagareader.preference.data.repository.DataStoreManager
-import org.maddiesoftware.komagareader.preference.persitance.PreferenceKeys
+import org.maddiesoftware.komagareader.settings.data.repository.DataStoreManager
+import org.maddiesoftware.komagareader.settings.persitance.PreferenceKeys
 import org.maddiesoftware.komagareader.server_display.domain.repository.ApiRepository
 import javax.inject.Inject
 

@@ -1,4 +1,4 @@
-package org.maddiesoftware.komagareader.preference.presentation
+package org.maddiesoftware.komagareader.settings.presentation
 
 import android.annotation.SuppressLint
 import androidx.compose.material.Scaffold

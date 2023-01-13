@@ -1,4 +1,4 @@
-package org.maddiesoftware.komagareader.preference.presentation
+package org.maddiesoftware.komagareader.settings.presentation
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -8,8 +8,8 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import org.maddiesoftware.komagareader.core.data.local.ReaderPreferenceSingleton
-import org.maddiesoftware.komagareader.preference.data.repository.DataStoreManager
-import org.maddiesoftware.komagareader.preference.persitance.PreferenceKeys
+import org.maddiesoftware.komagareader.settings.data.repository.DataStoreManager
+import org.maddiesoftware.komagareader.settings.persitance.PreferenceKeys
 import javax.inject.Inject
 
 

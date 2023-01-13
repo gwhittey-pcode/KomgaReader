@@ -1,4 +1,4 @@
-package org.maddiesoftware.komagareader.preference.data.repository
+package org.maddiesoftware.komagareader.settings.data.repository
 
 import android.content.Context
 import androidx.datastore.core.DataStore
