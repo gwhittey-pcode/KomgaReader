@@ -27,6 +27,7 @@ import org.maddiesoftware.komagareader.core.data.local.ServerInfoSingleton
 import org.maddiesoftware.komagareader.destinations.AllSeriesScreenDestination
 import org.maddiesoftware.komagareader.destinations.HomeScreenDestination
 import org.maddiesoftware.komagareader.destinations.SeriesByIdScreenDestination
+import org.maddiesoftware.komagareader.destinations.SettingsScreenDestination
 import org.maddiesoftware.komagareader.server_display.domain.model.Series
 import org.maddiesoftware.komagareader.server_display.presentaion.activity.MainViewModule
 import org.maddiesoftware.komagareader.server_display.presentaion.componet.*
@@ -68,13 +69,12 @@ fun AllSeriesScreen(
             drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
             drawerContent = {
                 NavDrawer(
-                    libraryList=libraryList,
-                    viewModel=mainViewModule,
-                    onItemClick = {id ->
-                        if (id == "home"){
-                            navigator.navigate(HomeScreenDestination())
-                        }else {
-                            navigator.navigate(AllSeriesScreenDestination(libraryId = id))
+                    libraryList = libraryList,
+                    onItemClick = { id ->
+                        when(id){
+                            "home" -> {navigator.navigate(HomeScreenDestination())}
+                            "settings" -> {navigator.navigate(SettingsScreenDestination())}
+                            else -> {navigator.navigate(AllSeriesScreenDestination(libraryId = id))}
                         }
                     }
                 )

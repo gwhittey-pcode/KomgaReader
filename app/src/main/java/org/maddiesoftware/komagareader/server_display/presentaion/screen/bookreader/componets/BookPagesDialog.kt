@@ -1,7 +1,6 @@
 package org.maddiesoftware.komagareader.server_display.presentaion.screen.bookreader.componets
 
 import android.annotation.SuppressLint
-import android.graphics.Bitmap
 import android.util.Log
 import android.view.Gravity
 import androidx.compose.foundation.background
@@ -19,7 +18,6 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -45,23 +43,25 @@ fun BookPagesDialog(
     setShowDialog: (Boolean) -> Unit,
     screenWidth: Dp,
     onItemClick: (page: Int) -> Unit,
-    currentPage:Int,
-    pagerPages:List<BookPage>,
+    currentPage: Int,
+    pagerPages: List<BookPage>,
 //    pagerBooks:
 
-    ) {
-    val bitmap = remember {  mutableStateOf<Bitmap?>(null) }
+) {
     val viewModel: BookReaderViewModel = hiltViewModel()
     val bookInfo = viewModel.state.bookInfo
-    var pageCount: Int = 0
     val serverInfo = ServerInfoSingleton
     val composableScope = rememberCoroutineScope()
     val scrollState = LazyListState()
-    val context = LocalContext.current
-    var scrollToThis: Int = 0
-    val usePageSplit = remember { mutableStateOf(true) }
-    if (bookInfo?.media?.pagesCount != null) {
-        pageCount = bookInfo.media.pagesCount.toInt()
+    val usePageSplit = false
+    var pageName:String = ""
+    var theCount: Int = 0
+    if(!usePageSplit){
+        theCount = if (bookInfo != null) {
+            bookInfo.media?.pagesCount?.toInt()!!
+        }else{
+            pagerPages.size
+        }
     }
     Dialog(
         onDismissRequest = { setShowDialog(false) },
@@ -77,86 +77,96 @@ fun BookPagesDialog(
 
         val dialogWindowProvider = LocalView.current.parent as DialogWindowProvider
         dialogWindowProvider.window.setGravity(Gravity.BOTTOM)
-        Box(){
-        LazyRow(modifier = Modifier
-            .width(screenWidth.minus(20.dp))
-            .height(250.dp)
-            .border(5.dp, GoldUnreadBookCount)
-            .align(Alignment.BottomStart),
-            state = scrollState
-        ) {
-            Log.d("pagerPages.size","pagerPages.size=${pagerPages.size}")
-            items(pagerPages.size) { page ->
-                Card(
-                    modifier = Modifier
-                        .height(300.dp)
-                        .width(155.dp)
-                        .padding(top=5.dp, bottom = 5.dp, end = 5.dp)
-                        .background(MaterialTheme.colors.surface)
-                        .clickable {
-                            onItemClick(page)
-                        },
-                    elevation = 5.dp
-                ) {
-                    Column(
+
+        Box() {
+            LazyRow(
+                modifier = Modifier
+                    .width(screenWidth.minus(20.dp))
+                    .height(250.dp)
+                    .border(5.dp, GoldUnreadBookCount)
+                    .align(Alignment.BottomStart),
+                state = scrollState
+            ) {
+                items(theCount) { index ->
+                    Card(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .background(MaterialTheme.colors.surface),
+                            .height(300.dp)
+                            .width(155.dp)
+                            .padding(top = 5.dp, bottom = 5.dp, end = 5.dp)
+                            .background(MaterialTheme.colors.surface)
+                            .clickable {
+                                onItemClick(index)
+                            },
+                        elevation = 5.dp
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(MaterialTheme.colors.surface),
 //                        horizontalAlignment = Alignment.Start,
 //                        verticalArrangement = Arrangement.Bottom,
-                        verticalArrangement = Arrangement.spacedBy(10.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Box(modifier = Modifier.fillMaxWidth()) {
-                            if (usePageSplit.value){
-                                val bookPage = pagerPages[page]
-                                BookPageThumb(
-                                    bookPage =bookPage ,
-                                    id = bookInfo?.id.toString(),
-                                    modifier = Modifier.align(Alignment.TopStart)
-                                )
-                            }else{
-                                MyAsyncImage(
-                                    url = "${serverInfo.url}api/v1/books/${bookInfo?.id}/pages/${page.plus(1)}/thumbnail",
-                                    contentScale = ContentScale.FillBounds,
-                                    modifier = Modifier
-                                        .height(200.dp)
-                                        .width(150.dp)
-                                        .align(Alignment.TopStart)
-                                )
-                            }
-
-
-                        }
-                        var boxColor:Color = MaterialTheme.colors.surface
-                        if (currentPage == page){
-                            boxColor = GoldUnreadBookCount
-                        }
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .align(Alignment.Start)
-                                .background(boxColor)
+                            verticalArrangement = Arrangement.spacedBy(10.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            val bookPage = pagerPages[page]
-                           Text(
-                               text ="Page  ${bookPage.pageName}",
-                               fontWeight = FontWeight.Bold,
-                               fontSize = 18.sp,
-                               color = MaterialTheme.colors.onSecondary,
-                               modifier = Modifier
-                                   .align(Alignment.BottomStart)
-                                   .padding(start = 5.dp, top = 2.dp),
-                               maxLines = 1,
-                               overflow = TextOverflow.Ellipsis
-                           )
+                            Box(modifier = Modifier.fillMaxWidth()) {
+                                if (usePageSplit) {
+                                    val bookPage = pagerPages[index]
+                                    BookPageThumb(
+                                        bookPage = bookPage,
+                                        id = bookInfo?.id.toString(),
+                                        modifier = Modifier.align(Alignment.TopStart)
+                                    )
+                                } else {
+                                    Log.d("dblCheck", "Running MyAsync")
+                                    MyAsyncImage(
+                                        url = "${serverInfo.url}api/v1/books/${bookInfo?.id}/pages/${
+                                            index.plus(
+                                                1
+                                            )
+                                        }/thumbnail",
+                                        contentScale = ContentScale.FillBounds,
+                                        modifier = Modifier
+                                            .height(200.dp)
+                                            .width(150.dp)
+                                            .align(Alignment.TopStart)
+                                    )
+                                }
+                            }
+                            var boxColor: Color = MaterialTheme.colors.surface
+                            if (currentPage == index) {
+                                boxColor = GoldUnreadBookCount
+                            }
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .align(Alignment.Start)
+                                    .background(boxColor)
+                            ) {
+                                if(usePageSplit){
+                                    val bookPage = pagerPages[index]
+                                    pageName = bookPage.pageName
+                                }else{
+                                    pageName = index.and(1).toString()
+                                }
 
+                                Text(
+                                    text = "Page  $pageName",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 18.sp,
+                                    color = MaterialTheme.colors.onSecondary,
+                                    modifier = Modifier
+                                        .align(Alignment.BottomStart)
+                                        .padding(start = 5.dp, top = 2.dp),
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
+                                )
+
+                            }
                         }
                     }
                 }
-            }
 
-        }
+            }
         }
         composableScope.launch {
             scrollState.scrollToItem(currentPage)

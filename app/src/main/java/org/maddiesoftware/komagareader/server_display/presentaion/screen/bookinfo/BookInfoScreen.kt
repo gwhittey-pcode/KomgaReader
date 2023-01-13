@@ -34,6 +34,7 @@ import org.maddiesoftware.komagareader.core.presentation.theme.GoldUnreadBookCou
 import org.maddiesoftware.komagareader.destinations.AllSeriesScreenDestination
 import org.maddiesoftware.komagareader.destinations.BookReaderScreenDestination
 import org.maddiesoftware.komagareader.destinations.HomeScreenDestination
+import org.maddiesoftware.komagareader.destinations.SettingsScreenDestination
 import org.maddiesoftware.komagareader.server_display.domain.model.TriangleShape
 import org.maddiesoftware.komagareader.server_display.presentaion.activity.MainViewModule
 import org.maddiesoftware.komagareader.server_display.presentaion.componet.ExpandableText
@@ -109,12 +110,11 @@ fun BookInfoScreen(
             drawerContent = {
                 NavDrawer(
                     libraryList = libraryList,
-                    viewModel = mainViewModule,
                     onItemClick = { id ->
-                        if (id == "home") {
-                            navigator.navigate(HomeScreenDestination())
-                        } else {
-                            navigator.navigate(AllSeriesScreenDestination(libraryId = id))
+                        when(id){
+                            "home" -> {navigator.navigate(HomeScreenDestination())}
+                            "settings" -> {navigator.navigate(SettingsScreenDestination())}
+                            else -> {navigator.navigate(AllSeriesScreenDestination(libraryId = id))}
                         }
                     }
                 )

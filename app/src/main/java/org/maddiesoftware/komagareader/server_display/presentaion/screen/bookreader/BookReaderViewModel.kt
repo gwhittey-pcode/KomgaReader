@@ -16,7 +16,10 @@ import coil.request.SuccessResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import org.maddiesoftware.komagareader.core.data.local.ReaderPreferenceSingleton.useDblPageSplit
 import org.maddiesoftware.komagareader.core.util.Resource
+import org.maddiesoftware.komagareader.preference.data.repository.DataStoreManager
+import org.maddiesoftware.komagareader.preference.persitance.PreferenceKeys
 import org.maddiesoftware.komagareader.server_display.domain.repository.ApiRepository
 import javax.inject.Inject
 
@@ -25,6 +28,7 @@ import javax.inject.Inject
 class BookReaderViewModel @Inject constructor(
     private val apiRepository: ApiRepository,
     savedStateHandle: SavedStateHandle,
+    private val dataStore: DataStoreManager
 ): ViewModel()  {
 
     private var bookId: String? = null
@@ -43,6 +47,8 @@ class BookReaderViewModel @Inject constructor(
         Log.d("viewmodelT","bookId = $bookId")
         getBookById()
         getPages()
+        writeUseDblPageSplit()
+        readUseDblPageSplit()
 
     }
 
@@ -108,6 +114,21 @@ class BookReaderViewModel @Inject constructor(
 //        val resizedBitmap = Bitmap.createScaledBitmap(
 //            bitmap, 80, 80, true);
         return bitmap
+    }
+    private fun writeUseDblPageSplit(){
+        viewModelScope.launch {
+            dataStore.storeValue(PreferenceKeys.DBL_PAGE_SPLIT,false)
+        }
+    }
+    private fun readUseDblPageSplit() {
+        viewModelScope.launch {
+            dataStore.readValue(PreferenceKeys.DBL_PAGE_SPLIT) {
+                useDblPageSplit = this
+                state = state.copy(
+                    useDblPageSplit = this,
+                )
+            }
+        }
     }
 
 }

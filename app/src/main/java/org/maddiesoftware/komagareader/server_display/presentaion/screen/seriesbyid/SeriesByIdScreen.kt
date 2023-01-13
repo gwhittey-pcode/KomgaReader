@@ -16,6 +16,7 @@ import kotlinx.coroutines.launch
 import org.maddiesoftware.komagareader.destinations.AllSeriesScreenDestination
 import org.maddiesoftware.komagareader.destinations.BookInfoScreenDestination
 import org.maddiesoftware.komagareader.destinations.HomeScreenDestination
+import org.maddiesoftware.komagareader.destinations.SettingsScreenDestination
 import org.maddiesoftware.komagareader.server_display.presentaion.activity.MainViewModule
 import org.maddiesoftware.komagareader.server_display.presentaion.componet.*
 import org.maddiesoftware.komagareader.server_display.presentaion.screen.seriesbyid.tabs.BooksTab
@@ -50,14 +51,14 @@ fun SeriesByIdScreen(
         },
         drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
         drawerContent = {
+
             NavDrawer(
                 libraryList = libraryList,
-                viewModel = mainViewModule,
                 onItemClick = { id ->
-                    if (id == "home") {
-                        navigator.navigate(HomeScreenDestination())
-                    } else {
-                        navigator.navigate(AllSeriesScreenDestination(libraryId = id))
+                    when(id){
+                        "home" -> {navigator.navigate(HomeScreenDestination())}
+                        "settings" -> {navigator.navigate(SettingsScreenDestination())}
+                        else -> {navigator.navigate(AllSeriesScreenDestination(libraryId = id))}
                     }
                 }
             )

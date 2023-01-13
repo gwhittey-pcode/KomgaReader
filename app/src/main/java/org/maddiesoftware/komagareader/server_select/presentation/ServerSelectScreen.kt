@@ -22,8 +22,8 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
-import org.maddiesoftware.komagareader.core.presentation.DataStoreViewModel
 import org.maddiesoftware.komagareader.core.data.local.ServerInfoSingleton
+import org.maddiesoftware.komagareader.core.presentation.DataStoreViewModel
 import org.maddiesoftware.komagareader.destinations.HomeScreenDestination
 import org.maddiesoftware.komagareader.destinations.ServerAddScreenDestination
 import org.maddiesoftware.komagareader.server_select.presentation.components.ServerUiListItem
@@ -70,6 +70,7 @@ fun ServerSelectScreen(
             )
         }
     ){
+
         if(viewModel.state.value.servers.isEmpty()){
             Box(
                 modifier = Modifier
