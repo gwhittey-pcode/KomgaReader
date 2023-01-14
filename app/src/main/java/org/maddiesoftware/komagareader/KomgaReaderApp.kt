@@ -6,7 +6,7 @@ import coil.ImageLoaderFactory
 import dagger.hilt.android.HiltAndroidApp
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import org.maddiesoftware.komagareader.server_display.data.remote.client.BasicAuthInterceptor
+import org.maddiesoftware.komagareader.komga_server.data.remote.client.BasicAuthInterceptor
 
 @HiltAndroidApp
 class KomgaReaderApp:Application(), ImageLoaderFactory {

@@ -15,6 +15,7 @@ private val QuickSand = FontFamily(
     Font(R.font.quicksand_medium, FontWeight.W500),
     Font(R.font.quicksand_bold, FontWeight.W600)
 )
+val Poppins = FontFamily(Font(R.font.poppins))
 
 val QuickSandTypography = Typography(
     h1 = TextStyle(

@@ -10,10 +10,10 @@ import dagger.hilt.components.SingletonComponent
 import org.maddiesoftware.komagareader.core.data.datastore.DataStoreRepository
 import org.maddiesoftware.komagareader.core.data.local.database.ApplicationDatabase
 import org.maddiesoftware.komagareader.core.data.repository.DataStoreRepositoryImpl
-import org.maddiesoftware.komagareader.server_display.data.remote.ApiBuilder
-import org.maddiesoftware.komagareader.server_display.data.remote.api.KomgaServerApi
-import org.maddiesoftware.komagareader.server_display.domain.repository.ApiRepository
-import org.maddiesoftware.komagareader.server_display.domain.use_case.*
+import org.maddiesoftware.komagareader.komga_server.data.remote.ApiBuilder
+import org.maddiesoftware.komagareader.komga_server.data.remote.api.KomgaServerApi
+import org.maddiesoftware.komagareader.komga_server.domain.repository.ApiRepository
+import org.maddiesoftware.komagareader.komga_server.domain.use_case.*
 import org.maddiesoftware.komagareader.server_select.data.local.ServerDao
 import org.maddiesoftware.komagareader.server_select.domain.use_case.*
 import javax.inject.Singleton

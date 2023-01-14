@@ -1,6 +1,6 @@
 package org.maddiesoftware.komagareader.core.data.local
 
-import org.maddiesoftware.komagareader.server_display.domain.model.Library
+import org.maddiesoftware.komagareader.komga_server.domain.model.Library
 
 object ServerInfoSingleton {
     var serverName: String = ""
