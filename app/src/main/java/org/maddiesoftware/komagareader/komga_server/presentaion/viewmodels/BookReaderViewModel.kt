@@ -46,7 +46,6 @@ class BookReaderViewModel @Inject constructor(
             }
         }
         Log.d("viewmodelT","bookId = $bookId")
-        writeUseDblPageSplit()
         readUseDblPageSplit()
         getBookById()
         getPages()
@@ -115,11 +114,7 @@ class BookReaderViewModel @Inject constructor(
 //            bitmap, 80, 80, true);
         return (result as BitmapDrawable).bitmap
     }
-    private fun writeUseDblPageSplit(){
-        viewModelScope.launch {
-            dataStore.storeValue(PreferenceKeys.DBL_PAGE_SPLIT,true)
-        }
-    }
+
     private fun readUseDblPageSplit() {
         viewModelScope.launch {
             dataStore.readValue(PreferenceKeys.DBL_PAGE_SPLIT) {

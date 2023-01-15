@@ -19,7 +19,6 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
 import org.maddiesoftware.komagareader.R
 import org.maddiesoftware.komagareader.core.data.local.ServerInfoSingleton
-import org.maddiesoftware.komagareader.core.presentation.DataStoreViewModel
 import org.maddiesoftware.komagareader.destinations.*
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.*
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.NavBar
@@ -36,7 +35,6 @@ fun HomeScreen(
     navigator: DestinationsNavigator,
     navBackStackEntry: NavBackStackEntry,
     viewModel: HomeViewModule = hiltViewModel(),
-    dataStoreViewModel: DataStoreViewModel = hiltViewModel(),
     mainViewModule: MainViewModule = hiltViewModel()
 //    lastUpdated: Resource<PageSeries>,
 

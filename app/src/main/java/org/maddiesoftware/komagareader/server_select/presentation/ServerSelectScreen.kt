@@ -23,7 +23,6 @@ import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
 import org.maddiesoftware.komagareader.core.data.local.ServerInfoSingleton
-import org.maddiesoftware.komagareader.core.presentation.DataStoreViewModel
 import org.maddiesoftware.komagareader.destinations.HomeScreenDestination
 import org.maddiesoftware.komagareader.destinations.ServerAddScreenDestination
 import org.maddiesoftware.komagareader.server_select.presentation.components.ServerUiListItem
@@ -35,8 +34,7 @@ import org.maddiesoftware.komagareader.server_select.presentation.components.Ser
 fun ServerSelectScreen(
     navigator: DestinationsNavigator,
     viewModel: ServerListViewModel = hiltViewModel(),
-    dataStoreViewModel: DataStoreViewModel = hiltViewModel()
-
+    serverAddViewModel: ServerAddViewModel = hiltViewModel(),
 ) {
     val scope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
@@ -100,7 +98,11 @@ fun ServerSelectScreen(
                        modifier = Modifier
                            .fillMaxWidth(.7F)
                            .clip(RoundedCornerShape(10.dp))
-                           .border(1.dp, color =MaterialTheme.colors.onSurface, RoundedCornerShape(10.dp))
+                           .border(
+                               1.dp,
+                               color = MaterialTheme.colors.onSurface,
+                               RoundedCornerShape(10.dp)
+                           )
                            .clickable {
 //                               dataStoreViewModel.savePassword(it.password)
 //                               dataStoreViewModel.saveUrl(it.url)

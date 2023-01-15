@@ -29,7 +29,7 @@ fun ServerAddScreen(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colors.background
     ) {
-       
+
         val state = viewModel.state
         val context = LocalContext.current
         LaunchedEffect(key1 = context) {
@@ -41,6 +41,7 @@ fun ServerAddScreen(
                             "Server Added successful",
                             Toast.LENGTH_LONG
                         ).show()
+                        navigator.navigateUp()
                     }
                 }
             }
@@ -150,6 +151,7 @@ fun ServerAddScreen(
                 Button(
                     onClick = {
                         viewModel.onEvent(AddServerFormEvent.Submit)
+
                     },
                 ) {
                     Text(text = "Add Server")

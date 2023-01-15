@@ -29,8 +29,8 @@ fun BookPageThumb(
     bookPage: BookPage,
     id:String,
     modifier: Modifier = Modifier,
-    imageHeight: Dp = 200.dp,
-    imageWidth: Dp = 155.dp
+    imageHeight: Dp = 225.dp,
+    imageWidth: Dp = 150.dp
 ){
 
     val viewModel: BookReaderViewModel = hiltViewModel()

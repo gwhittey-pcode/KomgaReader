@@ -1,17 +1,16 @@
 package org.maddiesoftware.komagareader.core.presentation
 
-import android.icu.lang.UProperty.AGE
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import org.maddiesoftware.komagareader.core.data.datastore.DataStoreRepository
+import org.maddiesoftware.komagareader.core.data.datastore.ServersDataStoreRepository
 import javax.inject.Inject
 
 @HiltViewModel
-class DataStoreViewModel @Inject constructor(
-    private val repository: DataStoreRepository
+class ServersDataStoreViewModel @Inject constructor(
+    private val repository: ServersDataStoreRepository
 ) : ViewModel() {
 
     fun saveServerName(value: String) {

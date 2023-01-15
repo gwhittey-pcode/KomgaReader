@@ -75,18 +75,14 @@ fun BookReaderScreen(
     val screenWidthPx = with(density) { configuration.screenWidthDp.dp.roundToPx() }
     val screenHeightPx = with(density) { configuration.screenHeightDp.dp.roundToPx() }
     val serverInfo = ServerInfoSingleton
+
     var pageNum: Int = 0
     var startPage: Int = 0
-    if (bookInfo?.media?.pagesCount != null) {
-        pageNum = bookInfo.media.pagesCount
-    }
-    if (bookInfo?.readProgress?.page != null) {
-        startPage = bookInfo.readProgress.page
-    }
+
+
     val libraryList = mainViewModule.state.libraryList
     val scaffoldState = rememberScaffoldState()
     val pagerState = rememberPagerState(startPage)
-    val composableScope = rememberCoroutineScope()
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
     val showPageNavDialog = remember { mutableStateOf(false) }
@@ -140,7 +136,30 @@ fun BookReaderScreen(
     }
     Log.d("theCount-vm","theCount = $theCount")
     pagerPages.forEach(){
-        Log.d("Pager","index = ${it.index} pageName = ${it.pageName} doSplit = ${it.doSplit}")
+        Log.d("Pager","index = ${it.index} pageName = ${it.pageName}  doSplit = ${it.doSplit} number = ${it.number}" )
+    }
+    if(!usePageSplit){
+        if (bookInfo?.media?.pagesCount != null) {
+            pageNum = bookInfo.media.pagesCount
+        }
+    }else{
+        pageNum = pagerPages.size
+    }
+
+    if (bookInfo?.readProgress?.page != null) {
+        if(!usePageSplit){
+            startPage = bookInfo.readProgress.page
+            if(startPage !=0) startPage-=1
+            Log.d("startPAge","!usePageSplit startPAge = $startPage")
+        }else{
+            startPage = pagerPages.indexOfFirst  { it.number == bookInfo.readProgress.page }
+            Log.d("startPAge","usePageSplit startPAge = $startPage")
+        }
+
+        LaunchedEffect(pagerState) {
+
+            pagerState.animateScrollToPage(startPage)
+        }
     }
 
     if (showPageNavDialog.value) {
@@ -150,7 +169,7 @@ fun BookReaderScreen(
             screenWidth = screenWidth,
             currentPage = pagerState.currentPage,
             onItemClick = {
-                composableScope.launch {
+                scope.launch {
                     pagerState.animateScrollToPage(it)
                     showPageNavDialog.value = false
                 }
@@ -158,6 +177,7 @@ fun BookReaderScreen(
         )
 
     }
+
     if (showSeriesBookNavDialog.value) {
         SeriesBooksDialog(
             setShowDialog = { showSeriesBookNavDialog.value = it },
@@ -240,8 +260,6 @@ fun BookReaderScreen(
                                 bottom.linkTo(parent.bottom)
                             }
                     ) {
-
-
                         Zoomable(
                             modifier = Modifier.graphicsLayer {
                                 clip = true
@@ -287,7 +305,7 @@ fun BookReaderScreen(
 
                             },
                         onClick = {
-                            composableScope.launch {
+                            scope.launch {
                                 if (page != pageNum - 1) {
                                     pagerState.animateScrollToPage(page + 1)
                                 } else {
@@ -312,7 +330,7 @@ fun BookReaderScreen(
 
                             },
                         onClick = {
-                            composableScope.launch {
+                            scope.launch {
                                 if (page != 0) {
                                     pagerState.animateScrollToPage(page - 1)
                                 } else {
@@ -385,7 +403,9 @@ fun BookReaderScreen(
 
             }
 
-        }
+
+
+            }
 
     }
 

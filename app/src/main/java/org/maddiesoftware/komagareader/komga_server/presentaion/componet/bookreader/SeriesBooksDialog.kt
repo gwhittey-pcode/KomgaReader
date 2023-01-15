@@ -63,7 +63,7 @@ fun SeriesBooksDialog(
             shape = RoundedCornerShape(16.dp),
             color = Color.White
         ) {
-            LazyRow(modifier = Modifier.width(screenWidth).height(320.dp))
+            LazyRow(modifier = Modifier.width(screenWidth).height(300.dp))
             {
                 items(bookState.itemCount) { i ->
                     val book = bookState[i]

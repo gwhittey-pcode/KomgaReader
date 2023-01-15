@@ -44,7 +44,6 @@ private val DarkThemeColors = darkColors(
 @Composable
 fun KomgaReaderTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    progressBarIsDisplayed: Boolean = false,
     content: @Composable () -> Unit,
 ) {
     MaterialTheme(

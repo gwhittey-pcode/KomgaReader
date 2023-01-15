@@ -40,15 +40,16 @@ fun BookThumbCard(
         val totalPages = book?.media?.pagesCount?.toFloat()
         val presentRead = pageRead?.div(totalPages!!)
         Card(
+            elevation = 5.dp,
             modifier = Modifier
-                .height(300.dp)
+                .height(295.dp)
                 .width(155.dp)
                 .padding(5.dp)
                 .background(MaterialTheme.colors.surface)
                 .clickable {
                     onItemClick(book?.id.toString())
                 },
-            elevation = 5.dp
+
         ) {
 
             Column(

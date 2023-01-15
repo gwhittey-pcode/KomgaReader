@@ -8,16 +8,16 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.first
-import org.maddiesoftware.komagareader.core.data.datastore.DataStoreRepository
+import org.maddiesoftware.komagareader.core.data.datastore.ServersDataStoreRepository
 import javax.inject.Inject
 
 private const val PREFERENCES_NAME = "my_preferences"
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = PREFERENCES_NAME)
 
-class DataStoreRepositoryImpl @Inject constructor(
+class ServersDataStoreRepositoryImpl @Inject constructor(
     private val context: Context
-) : DataStoreRepository {
+) : ServersDataStoreRepository {
 
     override suspend fun putString(key: String, value: String) {
         val preferencesKey = stringPreferencesKey(key)

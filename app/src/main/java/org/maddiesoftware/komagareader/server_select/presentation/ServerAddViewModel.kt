@@ -1,14 +1,17 @@
 package org.maddiesoftware.komagareader.server_select.presentation
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import org.maddiesoftware.komagareader.server_select.domain.model.Server
 import org.maddiesoftware.komagareader.server_select.domain.repository.ServerRepository
 import org.maddiesoftware.komagareader.server_select.domain.use_case.ServerAddUseCase
 import org.maddiesoftware.komagareader.server_select.presentation.state.AddServerFormState
@@ -48,10 +51,15 @@ class ServerAddViewModel @Inject constructor(
     }
 
     private fun submitData() {
+        Log.d("submitData","Start")
         val serverNameResult = serverAddUseCase.validateServerName.execute(state.serverName)
+        Log.d("submitData","serverNameResult = $serverNameResult")
         val userNameResult = serverAddUseCase.validateUserName.execute(state.username)
+        Log.d("submitData","userNameResult = $userNameResult")
         val passwordResult = serverAddUseCase.validatePassword.execute(state.password)
+        Log.d("submitData","passwordResult = $passwordResult")
         val urlResult = serverAddUseCase.validateUrl.execute(state.url)
+        Log.d("submitData","urlResult = $urlResult")
         val hasError = listOf(
             serverNameResult,
             urlResult,
@@ -69,34 +77,50 @@ class ServerAddViewModel @Inject constructor(
             return
         }
         viewModelScope.launch {
+//              serverRepository.insertServer(
+//                  Server(
+//                      serverId = serverId,
+//                      serverName = state.serverName,
+//                      userName = state.username,
+//                      password = password,
+//                      url = state.url
+//
+//                  )
+//              )
             validationEventChannel.send(ValidationEvent.Success)
+            state = state.copy(addServerDone = true)
+            addServer(
+                serverName = state.serverName,
+                username = state.username,
+                password = state.password,
+                url = state.url
+            )
         }
     }
 
 //    init {
 //        viewModelScope.launch {}
 //    }
-//      fun onAdd(
-//        serverId: Int? = null,
-//        serverName: String,
-//        username:String,
-//        password: String,
-//        url:String
-//    ){
-//
-//          viewModelScope.launch(Dispatchers.IO) {
-//              serverRepository.insertServer(
-//                  Server(
-//                      serverId = serverId,
-//                      serverName = serverName,
-//                      userName = username,
-//                      password = password,
-//                      url = url
-//
-//                  )
-//              )
-//          }
-//    }
+private fun addServer(
+        serverId: Int? = null,
+        serverName: String,
+        username:String,
+        password: String,
+        url:String
+    ){
+          viewModelScope.launch(Dispatchers.IO) {
+              serverRepository.insertServer(
+                  Server(
+                      serverId = serverId,
+                      serverName = serverName,
+                      userName = username,
+                      password = password,
+                      url = url
+                  )
+              )
+
+          }
+    }
     sealed class ValidationEvent{
         object Success: ValidationEvent()
     }

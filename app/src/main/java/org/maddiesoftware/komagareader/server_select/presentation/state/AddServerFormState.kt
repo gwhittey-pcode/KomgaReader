@@ -8,5 +8,6 @@ data class AddServerFormState(
     val password: String = "",
     val passwordError: String? = null,
     val url:String = "",
-    val urlError: String? = null
+    val urlError: String? = null,
+    var addServerDone: Boolean = false
 )

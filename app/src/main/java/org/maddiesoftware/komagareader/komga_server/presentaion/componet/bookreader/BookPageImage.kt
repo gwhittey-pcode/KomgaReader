@@ -67,7 +67,7 @@ fun BookPageImage(
             val newBitmap:Bitmap = Bitmap.createBitmap(bitmap.value!!, start, 0, newWidth, height)
             Image(bitmap = newBitmap.asImageBitmap(),contentDescription = "",
                 contentScale = ContentScale.FillBounds,
-                modifier = Modifier
+                modifier = modifier
 //               .aspectRatio(size.width / size.height)
                     .fillMaxSize()
                     .width(screenWidth)

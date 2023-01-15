@@ -22,7 +22,7 @@ class SettingsViewModel @Inject constructor(
     init {
         readUseDblPageSplit()
     }
-    private fun writeUseDblPageSplit(value:Boolean){
+    fun writeUseDblPageSplit(value:Boolean){
         viewModelScope.launch {
             dataStore.storeValue(PreferenceKeys.DBL_PAGE_SPLIT,value)
             ReaderPreferenceSingleton.useDblPageSplit = value

@@ -8,8 +8,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -19,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -55,14 +58,19 @@ fun BookPagesDialog(
     val usePageSplit = viewModel.state.useDblPageSplit
     var pageName:String = ""
     var theCount: Int = 0
+    Log.d("usePageSplit", "usePageSplit = $usePageSplit")
     if(!usePageSplit){
-        theCount = if (bookInfo != null) {
-            bookInfo.media?.pagesCount?.toInt()!!
-        }else{
-            pagerPages.size
+         if (bookInfo != null) {
+             theCount = bookInfo.media?.pagesCount?.toInt()!!
+            Log.d("TopBookPagesDialog", "bookInfo")
         }
+    }else{
+        Log.d("TopBookPagesDialog", "pagerPages")
+        theCount = pagerPages.size
     }
+
     Dialog(
+
         onDismissRequest = { setShowDialog(false) },
         properties = DestinationStyle.Dialog.properties.let {
             DialogProperties(
@@ -76,28 +84,31 @@ fun BookPagesDialog(
 
         val dialogWindowProvider = LocalView.current.parent as DialogWindowProvider
         dialogWindowProvider.window.setGravity(Gravity.BOTTOM)
-
-        Box() {
+        Surface(
+            shape = RoundedCornerShape(16.dp),
+            color = Color.White
+        ) {
             LazyRow(
+                state = scrollState,
                 modifier = Modifier
                     .width(screenWidth.minus(20.dp))
-                    .padding(10.dp)
-                    .height(300.dp)
+                    .height(280.dp)
 //                    .border(5.dp, GoldUnreadBookCount)
-                    .align(Alignment.BottomStart),
-                state = scrollState
+
+
             ) {
+                Log.d("BookPagesDialog", "theCount = $theCount")
                 items(theCount) { index ->
                     Card(
+                        elevation = 5.dp,
                         modifier = Modifier
-                            .height(275.dp)
+                            .height(265.dp)
                             .width(155.dp)
-                            .padding(top = 5.dp, end = 5.dp)
+                            .padding(5.dp)
                             .background(MaterialTheme.colors.surface)
                             .clickable {
                                 onItemClick(index)
                             },
-                        elevation = 5.dp
                     ) {
                         Column(
                             modifier = Modifier
@@ -114,7 +125,10 @@ fun BookPagesDialog(
                                     BookPageThumb(
                                         bookPage = bookPage,
                                         id = bookInfo?.id.toString(),
-                                        modifier = Modifier.align(Alignment.TopStart),
+                                        modifier = Modifier
+                                            .align(Alignment.TopStart)
+                                            .height(225.dp)
+                                            .width(150.dp),
                                     )
                                 } else {
                                     Log.d("dblCheck", "Running MyAsync")
@@ -142,25 +156,30 @@ fun BookPagesDialog(
                                     .align(Alignment.Start)
                                     .background(boxColor)
                             ) {
-                                pageName = if(usePageSplit){
+                                if (usePageSplit){
                                     val bookPage = pagerPages[index]
-                                    bookPage.pageName
-                                }else{
-                                    index.and(1).toString()
+                                    pageName = bookPage.pageName
                                 }
 
-                                Text(
-                                    text = "Page  $pageName",
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 18.sp,
-                                    color = MaterialTheme.colors.onSecondary,
-                                    modifier = Modifier
-                                        .align(Alignment.BottomStart)
-                                        .padding(start = 5.dp, top = 2.dp),
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis
-                                )
-                                Spacer(modifier = Modifier.fillMaxHeight(1f))
+                                if (!usePageSplit) {
+                                    pageName = index.plus(1).toString()
+                                }
+                                Row(modifier = Modifier.align(Alignment.TopStart)){
+                                    Spacer(modifier = Modifier.fillMaxWidth(.25f))
+                                    Text(
+                                        text = "Page  $pageName",
+                                        textAlign = TextAlign.Center,
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 18.sp,
+                                        color = MaterialTheme.colors.onSecondary,
+                                        modifier = Modifier
+                                            .padding(start = 5.dp, top = 2.dp),
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis
+                                    )
+
+                                }
+
 
                             }
                         }
@@ -169,6 +188,7 @@ fun BookPagesDialog(
 
             }
         }
+
         composableScope.launch {
             scrollState.scrollToItem(currentPage)
         }
