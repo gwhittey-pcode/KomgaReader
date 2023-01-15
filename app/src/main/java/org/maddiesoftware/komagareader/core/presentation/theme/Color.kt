@@ -44,3 +44,10 @@ val Black5 = Color(0xFF000000)
 
 val RedErrorDark = Color(0xFFB00020)
 val RedErrorLight = Color(0xFFEF5350)
+
+val PrimaryColor = Color(0xFFFDA858)
+val BackgroundColor = Color(0xFFFFE8F0)
+val LightTextColor = Color(0xFF758684)
+val SecondaryColor = Color(0xFF593153)
+val PlaceholderColor = Color(0xFFE5E5E5)
+val LightPrimaryColor = Color(0xFFFFF6EE)

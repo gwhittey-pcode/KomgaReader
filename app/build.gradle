@@ -90,18 +90,21 @@ dependencies {
     kapt "androidx.hilt:hilt-compiler:1.0.0"
 
     //Room
-    def room_version = "2.4.3"
+    def room_version = "2.5.0"
     implementation "androidx.room:room-runtime:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
+
+    //Paging 3 Integration
+    implementation "androidx.room:room-paging:$room_version"
 
     //Serialization
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.1.0"
 
     // Compose dependencies
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1"
-    implementation "androidx.activity:activity-compose:1.7.0-alpha02"
+    implementation "androidx.activity:activity-compose:1.7.0-alpha03"
     implementation 'com.google.accompanist:accompanist-swiperefresh:0.28.0'
 
     // Compose Nav Destinations
@@ -124,15 +127,16 @@ dependencies {
    //DataStore
     implementation "androidx.datastore:datastore-preferences:1.0.0"
 
-    //Paging 3 Integration
-    implementation "androidx.room:room-paging:$room_version"
+
 
     //paging compose
     implementation "androidx.paging:paging-compose:1.0.0-alpha17"
     implementation "androidx.paging:paging-runtime-ktx:$paging_version"
+
     //accompanist pager
-    implementation("com.google.accompanist:accompanist-pager:0.27.0")
-    implementation("com.google.accompanist:accompanist-pager-indicators:0.19.0")
+    implementation("com.google.accompanist:accompanist-pager:0.28.0")
+    implementation("com.google.accompanist:accompanist-pager-indicators:0.28.0")
+
     //Zoomable
     implementation("com.mxalbert.zoomable:zoomable:1.5.1")
 
