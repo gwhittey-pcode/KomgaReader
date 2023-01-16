@@ -9,5 +9,9 @@
     <string name="on_deck">On Deck</string>
     <string name="lbl_retry">Retry</string>
     <string name="err_loading_string">Error Loading String</string>
+    <string name="home_screen">Home</string>
+    <string name="series_screen">Series</string>
+    <string name="read_list_screen">Read List</string>
+    <string name="collections_screen">Collections</string>
 
 </resources>

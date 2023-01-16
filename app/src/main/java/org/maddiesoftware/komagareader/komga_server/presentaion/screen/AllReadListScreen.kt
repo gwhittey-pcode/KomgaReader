@@ -26,6 +26,7 @@ import org.maddiesoftware.komagareader.R
 import org.maddiesoftware.komagareader.core.data.local.ServerInfoSingleton
 import org.maddiesoftware.komagareader.destinations.*
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.*
+import org.maddiesoftware.komagareader.komga_server.presentaion.navigation.BottomBar
 import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.AllReadListViewModel
 import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.MainViewModule
 
@@ -50,6 +51,17 @@ fun AllReadListScreen(
 
     Scaffold(
         scaffoldState = scaffoldState,
+        bottomBar = {
+            BottomBar(
+                onItemClick = {
+                    when(it){
+                        "Series" -> {navigator.navigate(AllSeriesScreenDestination(libraryId = libraryId))}
+                        "Read List" -> {navigator.navigate(AllReadListScreenDestination(libraryId = libraryId))}
+                        "Collections" -> {}
+                    }
+                }
+            )
+        },
         topBar = {
             NavBar(
                 onNavigationIconClick = { navigator.navigateUp() },

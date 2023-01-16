@@ -24,11 +24,9 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
 import org.maddiesoftware.komagareader.R
 import org.maddiesoftware.komagareader.core.data.local.ServerInfoSingleton
-import org.maddiesoftware.komagareader.destinations.AllSeriesScreenDestination
-import org.maddiesoftware.komagareader.destinations.HomeScreenDestination
-import org.maddiesoftware.komagareader.destinations.SeriesByIdScreenDestination
-import org.maddiesoftware.komagareader.destinations.SettingsScreenDestination
+import org.maddiesoftware.komagareader.destinations.*
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.*
+import org.maddiesoftware.komagareader.komga_server.presentaion.navigation.BottomBar
 import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.AllSeriesViewModel
 import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.MainViewModule
 
@@ -40,7 +38,6 @@ fun AllSeriesScreen(
     viewModel: AllSeriesViewModel = hiltViewModel(),
     mainViewModule: MainViewModule = hiltViewModel(),
     libraryId: String? = null,
-
     ) {
     val serverInfo = ServerInfoSingleton
     val seriesState = viewModel.seriesState
@@ -52,6 +49,17 @@ fun AllSeriesScreen(
     val scope = rememberCoroutineScope()
     Scaffold(
         scaffoldState = scaffoldState,
+        bottomBar = {
+            BottomBar(
+                onItemClick = {
+                    when(it){
+                        "Series" -> {navigator.navigate(AllSeriesScreenDestination(libraryId = libraryId))}
+                        "Read List" -> {navigator.navigate(AllReadListScreenDestination(libraryId = libraryId))}
+                        "Collections" -> {}
+                    }
+                }
+            )
+        },
         topBar = {
             NavBar(
                 onNavigationIconClick = { navigator.navigateUp() },
