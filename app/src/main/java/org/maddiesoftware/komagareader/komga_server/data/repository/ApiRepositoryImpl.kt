@@ -11,6 +11,7 @@ import org.maddiesoftware.komagareader.komga_server.data.repository.paging.*
 import org.maddiesoftware.komagareader.komga_server.domain.model.*
 import org.maddiesoftware.komagareader.komga_server.domain.repository.ApiRepository
 import retrofit2.HttpException
+import retrofit2.Response
 import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -172,5 +173,41 @@ class ApiRepositoryImpl @Inject constructor(
                 message = "Couldn't load Page info"
             )
         }
+    }
+
+    override suspend fun updateReadProgress(
+        bookId: String,
+        page: Int,
+        completed: Boolean
+    ) : Resource<Response<Unit>> {
+        val newReadProgress = NewReadProgress(
+            page=page,
+            completed=completed
+        )
+        return try {
+            val updateReadProgress = api.updateReadProgress(bookId=bookId,newReadProgress )
+            Resource.Success(updateReadProgress)
+        } catch(e: IOException) {
+            e.printStackTrace()
+            Log.d("komga1","I Errro2")
+            Resource.Error(
+                message = "IOException updateReadProgress"
+            )
+        } catch(e: HttpException) {
+            e.printStackTrace()
+            Log.d("komga1"," HttpException")
+            Resource.Error(
+                message = "HttpException updateReadProgress"
+            )
+        }
+
+
+//        return try {
+//            val updateReadProgress = api.updateReadProgress(
+//                bookId = bookId,
+//                updatedProgress = UpdateReadProgress.Companion.NewReadProgress
+//            )
+
+
     }
 }

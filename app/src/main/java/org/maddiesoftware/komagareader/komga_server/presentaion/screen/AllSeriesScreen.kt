@@ -1,4 +1,4 @@
-package org.maddiesoftware.komagareader.komga_server.presentaion.screen.allseries
+package org.maddiesoftware.komagareader.komga_server.presentaion.screen
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
@@ -42,7 +42,7 @@ fun AllSeriesScreen(
     mainViewModule: MainViewModule = hiltViewModel(),
     libraryId: String? = null,
 
-    ){
+    ) {
     val serverInfo = ServerInfoSingleton
     val seriesState = viewModel.seriesState
         .collectAsLazyPagingItems()
@@ -51,46 +51,52 @@ fun AllSeriesScreen(
     val libraryList = mainViewModule.state.libraryList
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
-        Scaffold(
-            scaffoldState = scaffoldState,
-            topBar = {
-                NavBar(
-                    onNavigationIconClick = {navigator.navigateUp()},
-                    onMenuItemClick = {
-                        scope.launch {
-                            scaffoldState.drawerState.open()
+    Scaffold(
+        scaffoldState = scaffoldState,
+        topBar = {
+            NavBar(
+                onNavigationIconClick = { navigator.navigateUp() },
+                onMenuItemClick = {
+                    scope.launch {
+                        scaffoldState.drawerState.open()
+                    }
+                }
+            )
+        },
+        drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
+        drawerContent = {
+            NavDrawer(
+                libraryList = libraryList,
+                onItemClick = { id ->
+                    scope.launch {
+                        scaffoldState.drawerState.close()
+                    }
+                    when (id) {
+                        "home" -> {
+                            navigator.navigate(HomeScreenDestination())
+                        }
+                        "settings" -> {
+                            navigator.navigate(SettingsScreenDestination())
+                        }
+                        else -> {
+                            navigator.navigate(AllSeriesScreenDestination(libraryId = id))
                         }
                     }
-                )
-            },
-            drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
-            drawerContent = {
-                NavDrawer(
-                    libraryList = libraryList,
-                    onItemClick = { id ->
-                        scope.launch {
-                            scaffoldState.drawerState.close()
-                        }
-                        when(id){
-                            "home" -> {navigator.navigate(HomeScreenDestination())}
-                            "settings" -> {navigator.navigate(SettingsScreenDestination())}
-                            else -> {navigator.navigate(AllSeriesScreenDestination(libraryId = id))}
-                        }
-                    }
-                )
-            }
+                }
+            )
+        }
+    ) {
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.White)
+                .padding(16.dp)
         ) {
 
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.White)
-                    .padding(16.dp)
-            ) {
 
-
-                Spacer(modifier = Modifier.height(height = 20.dp))
-                Row() {
+            Spacer(modifier = Modifier.height(height = 20.dp))
+            Row {
 //                    Text(
 //                        text = stringResource(id = R.string.recently_add_series),
 //                        color = Color.Black,
@@ -98,63 +104,66 @@ fun AllSeriesScreen(
 ////                        color = MaterialTheme.colors.onBackground,
 //                        modifier = Modifier.padding(vertical = 10.dp)
 //                    )
-                }
-                Spacer(modifier = Modifier.width(8.dp))
-                LazyVerticalGrid(
-                    columns = GridCells.Adaptive(200.dp),
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(5.dp)
-                ) {
-                    items(seriesState.itemCount) { i ->
-                        val series = seriesState[i]
-                        SeriesThumbCard(
-                            url = "${serverInfo.url}api/v1/series/${series?.id}/thumbnail",
-                            booksCount = series?.booksCount,
-                            booksUnreadCount = series?.booksUnreadCount,
-                            id = series?.id.toString(),
-                            title = series?.metadata?.title,
-                            modifier = Modifier
-                                .padding(16.dp)
-                                .fillMaxWidth(),
-                            onItemClick = {navigator.navigate(SeriesByIdScreenDestination(seriesId = series?.id))}
-                        )
+            }
+            Spacer(modifier = Modifier.width(8.dp))
+            LazyVerticalGrid(
+                columns = GridCells.Adaptive(200.dp),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(5.dp)
+            ) {
+                items(seriesState.itemCount) { i ->
+                    val series = seriesState[i]
+                    SeriesThumbCard(
+                        url = "${serverInfo.url}api/v1/series/${series?.id}/thumbnail",
+                        booksCount = series?.booksCount,
+                        booksUnreadCount = series?.booksUnreadCount,
+                        id = series?.id.toString(),
+                        title = series?.metadata?.title,
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .fillMaxWidth(),
+                        onItemClick = { navigator.navigate(SeriesByIdScreenDestination(seriesId = series?.id)) }
+                    )
 
-                    }
-                    item {
-                        PaginationStateHandler(
-                            paginationState = seriesState,
-                            loadingComponent = {
-                                Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                                    CircularProgressIndicator()
-                                }
-                            },
-                            errorComponent = {
-                                WarningMessage(
-                                    text = stringResource(id = R.string.err_loading_series),
-                                    trailingContent = {
-                                        Text(
-                                            text  = stringResource(id = R.string.lbl_retry),
-                                            modifier = Modifier.padding(start = 3.dp)
-                                                .clickable(role = Role.Button) { seriesState.retry() },
-                                            textDecoration = TextDecoration.Underline,
-                                            fontWeight = FontWeight.Bold,
-                                            color = MaterialTheme.colors.onSecondary,
-                                        )
-                                    }
-                                )
+                }
+                item {
+                    PaginationStateHandler(
+                        paginationState = seriesState,
+                        loadingComponent = {
+                            Box(
+                                modifier = Modifier.fillMaxWidth(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                CircularProgressIndicator()
                             }
-                        )
-                    }
+                        },
+                        errorComponent = {
+                            WarningMessage(
+                                text = stringResource(id = R.string.err_loading_series),
+                                trailingContent = {
+                                    Text(
+                                        text = stringResource(id = R.string.lbl_retry),
+                                        modifier = Modifier
+                                            .padding(start = 3.dp)
+                                            .clickable(role = Role.Button) { seriesState.retry() },
+                                        textDecoration = TextDecoration.Underline,
+                                        fontWeight = FontWeight.Bold,
+                                        color = MaterialTheme.colors.onSecondary,
+                                    )
+                                }
+                            )
+                        }
+                    )
                 }
             }
         }
+    }
 
 
-    
 }
 
 @Composable
-fun TvShowItem(series: Series , modifier: Modifier, onClick: () -> Unit) {
+fun TvShowItem(series: Series, modifier: Modifier, onClick: () -> Unit) {
     Text(text = series.name)
 }
