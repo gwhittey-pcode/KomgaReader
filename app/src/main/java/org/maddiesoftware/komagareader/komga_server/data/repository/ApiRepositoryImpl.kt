@@ -202,12 +202,15 @@ class ApiRepositoryImpl @Inject constructor(
         }
 
 
-//        return try {
-//            val updateReadProgress = api.updateReadProgress(
-//                bookId = bookId,
-//                updatedProgress = UpdateReadProgress.Companion.NewReadProgress
-//            )
 
 
+
+    }
+
+    override fun getAllReadList(pageSize: Int, libraryId: String?): Flow<PagingData<ReadList>> {
+        return Pager(
+            config = PagingConfig(pageSize = pageSize),
+            pagingSourceFactory = { AllReadListsRemotePagingSource(api = api, libraryId = libraryId) }
+        ).flow
     }
 }

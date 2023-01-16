@@ -17,6 +17,8 @@ import org.maddiesoftware.komagareader.komga_server.domain.books.UpdateReadProgr
 import org.maddiesoftware.komagareader.komga_server.domain.repository.ApiRepository
 import org.maddiesoftware.komagareader.komga_server.domain.use_case.*
 import org.maddiesoftware.komagareader.komga_server.domain.use_case.homescreen.*
+import org.maddiesoftware.komagareader.komga_server.domain.use_case.readlists.GetAllReadList
+import org.maddiesoftware.komagareader.komga_server.domain.use_case.readlists.ReadListUseCases
 import org.maddiesoftware.komagareader.komga_server.domain.use_case.series.AllSeriesUseCases
 import org.maddiesoftware.komagareader.komga_server.domain.use_case.series.GetAllSeries
 import org.maddiesoftware.komagareader.komga_server.domain.use_case.series.GetBooksFromSeries
@@ -96,5 +98,13 @@ object AppModule {
             updateReadProgress = UpdateReadProgress(apiRepository = apiRepository)
         )
 
+    }
+
+    @Singleton
+    @Provides
+    fun provideReadListUseCases(apiRepository: ApiRepository): ReadListUseCases{
+        return ReadListUseCases(
+            getAllReadList = GetAllReadList(apiRepository=apiRepository)
+        )
     }
 }
