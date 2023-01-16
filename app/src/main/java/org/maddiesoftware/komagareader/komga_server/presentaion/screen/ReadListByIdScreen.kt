@@ -1,7 +1,6 @@
 package org.maddiesoftware.komagareader.komga_server.presentaion.screen
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -11,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
@@ -19,37 +17,42 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.rememberPagerState
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
 import org.maddiesoftware.komagareader.R
 import org.maddiesoftware.komagareader.core.data.local.ServerInfoSingleton
 import org.maddiesoftware.komagareader.destinations.AllSeriesScreenDestination
+import org.maddiesoftware.komagareader.destinations.BookInfoScreenDestination
 import org.maddiesoftware.komagareader.destinations.HomeScreenDestination
-import org.maddiesoftware.komagareader.destinations.SeriesByIdScreenDestination
 import org.maddiesoftware.komagareader.destinations.SettingsScreenDestination
-import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.*
-import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.AllSeriesViewModel
+import org.maddiesoftware.komagareader.komga_server.presentaion.componet.BookThumbCard
+import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.NavBar
+import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.NavDrawer
+import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.PaginationStateHandler
+import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.WarningMessage
 import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.MainViewModule
+import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.ReadListByIdViewModel
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter", "SuspiciousIndentation")
+@OptIn(ExperimentalPagerApi::class)
 @Destination
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun AllSeriesScreen(
+fun ReadListByIdScreen(
+    readListId: String? = null,
     navigator: DestinationsNavigator,
-    viewModel: AllSeriesViewModel = hiltViewModel(),
     mainViewModule: MainViewModule = hiltViewModel(),
-    libraryId: String? = null,
-
-    ) {
-    val serverInfo = ServerInfoSingleton
-    val seriesState = viewModel.seriesState
+    viewModel: ReadListByIdViewModel = hiltViewModel(),
+) {
+    val bookState = viewModel.bookState
         .collectAsLazyPagingItems()
-
-
     val libraryList = mainViewModule.state.libraryList
     val scaffoldState = rememberScaffoldState()
+    val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()
+    val serverInfo = ServerInfoSingleton
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
@@ -85,55 +88,42 @@ fun AllSeriesScreen(
             )
         }
     ) {
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.White)
+//            .background(Color.White)
                 .padding(16.dp)
         ) {
-
-
             Spacer(modifier = Modifier.height(height = 20.dp))
-            Row {
-//                    Text(
-//                        text = stringResource(id = R.string.recently_add_series),
-//                        color = Color.Black,
-//                        style = MaterialTheme.typography.h4,
-////                        color = MaterialTheme.colors.onBackground,
-//                        modifier = Modifier.padding(vertical = 10.dp)
-//                    )
-            }
             Spacer(modifier = Modifier.width(8.dp))
             LazyVerticalGrid(
-                columns = GridCells.Adaptive(200.dp),
+                columns = GridCells.Adaptive(155.dp),
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(5.dp)
             ) {
-                items(seriesState.itemCount) { i ->
-                    val series = seriesState[i]
-                    SeriesThumbCard(
-                        url = "${serverInfo.url}api/v1/series/${series?.id}/thumbnail",
-                        booksCount = series?.booksCount,
-                        booksUnreadCount = series?.booksUnreadCount,
-                        id = series?.id.toString(),
-                        title = series?.metadata?.title,
+                items(bookState.itemCount) { i ->
+                    val book = bookState[i]
+                    BookThumbCard(
+                        url = "${serverInfo.url}api/v1/books/${book?.id}/thumbnail",
+                        book = book,
                         modifier = Modifier
                             .padding(16.dp)
                             .fillMaxWidth(),
-                        onItemClick = { navigator.navigate(SeriesByIdScreenDestination(seriesId = series?.id)) }
+                        onItemClick = {
+                            navigator.navigate(BookInfoScreenDestination(
+                                bookId = it,
+                                groupType = "Read List",
+                                readListId = readListId
+                            ))
+                        }
                     )
-
                 }
                 item {
                     PaginationStateHandler(
-                        paginationState = seriesState,
+                        paginationState = bookState,
                         loadingComponent = {
-                            Box(
-                                modifier = Modifier.fillMaxWidth(),
-                                contentAlignment = Alignment.Center
-                            ) {
+                            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                                 CircularProgressIndicator()
                             }
                         },
@@ -142,10 +132,10 @@ fun AllSeriesScreen(
                                 text = stringResource(id = R.string.err_loading_string),
                                 trailingContent = {
                                     Text(
-                                        text = stringResource(id = R.string.lbl_retry),
+                                        text  = stringResource(id = R.string.lbl_retry),
                                         modifier = Modifier
                                             .padding(start = 3.dp)
-                                            .clickable(role = Role.Button) { seriesState.retry() },
+                                            .clickable(role = Role.Button) { bookState.retry() },
                                         textDecoration = TextDecoration.Underline,
                                         fontWeight = FontWeight.Bold,
                                         color = MaterialTheme.colors.onSecondary,
@@ -157,6 +147,6 @@ fun AllSeriesScreen(
                 }
             }
         }
+
     }
 }
-

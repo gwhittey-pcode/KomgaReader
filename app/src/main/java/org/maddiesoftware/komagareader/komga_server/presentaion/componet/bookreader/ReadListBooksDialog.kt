@@ -14,7 +14,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -33,16 +32,16 @@ import org.maddiesoftware.komagareader.core.data.local.ServerInfoSingleton
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.BookThumbCard
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.PaginationStateHandler
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.WarningMessage
-import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.SeriesByIdViewModel
+import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.ReadListByIdViewModel
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun SeriesBooksDialog(
+fun ReadListBooksDialog(
     setShowDialog: (Boolean) -> Unit,
     screenWidth:Dp,
     onItemClick: (id: String) -> Unit,
     ) {
-    val viewModel: SeriesByIdViewModel = hiltViewModel()
+    val viewModel: ReadListByIdViewModel = hiltViewModel()
     val serverInfo = ServerInfoSingleton
     val bookState = viewModel.bookState
         .collectAsLazyPagingItems()
@@ -102,25 +101,6 @@ fun SeriesBooksDialog(
                         }
                     )
                 }
-            }
-        }
-    }
-}
-
-enum class CustomDialogPosition {
-    BOTTOM, TOP
-}
-
-fun Modifier.customDialogModifier(pos: CustomDialogPosition) = layout { measurable, constraints ->
-
-    val placeable = measurable.measure(constraints);
-    layout(constraints.maxWidth, constraints.maxHeight){
-        when(pos) {
-            CustomDialogPosition.BOTTOM -> {
-                placeable.place(0, constraints.maxHeight - placeable.height, 10f)
-            }
-            CustomDialogPosition.TOP -> {
-                placeable.place(0,0,10f)
             }
         }
     }

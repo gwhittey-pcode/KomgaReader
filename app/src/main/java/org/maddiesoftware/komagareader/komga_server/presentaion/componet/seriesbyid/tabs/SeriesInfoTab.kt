@@ -21,16 +21,16 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
-import org.maddiesoftware.komagareader.core.presentation.theme.GoldUnreadBookCount
 import org.maddiesoftware.komagareader.core.data.local.ServerInfoSingleton
-import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.MainViewModule
+import org.maddiesoftware.komagareader.core.presentation.theme.GoldUnreadBookCount
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.ExpandableText
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.MyAsyncImage
+import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.MainViewModule
 import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.SeriesByIdViewModel
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun SeriesTabInfo(
+fun SeriesInfoTab(
     viewModel: SeriesByIdViewModel = hiltViewModel(),
     mainViewModule: MainViewModule = hiltViewModel(),
 ) {

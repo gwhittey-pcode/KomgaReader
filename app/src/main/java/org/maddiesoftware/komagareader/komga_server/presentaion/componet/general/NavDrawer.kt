@@ -7,6 +7,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -61,6 +62,29 @@ fun DrawerBodySelectionScreen(
 
     ) {
     Column {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    onItemClick("readList")
+                }
+                .padding(16.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.List,
+                contentDescription = "ReadList",
+                tint = MaterialTheme.colors.onSecondary,
+            )
+            Spacer(modifier = Modifier.width(16.dp))
+            Text(
+                text = "readList",
+                style = itemTextStyle,
+                modifier = Modifier.weight(1f),
+                fontSize = MaterialTheme.typography.h4.fontSize,
+                fontWeight = FontWeight.ExtraBold,
+                color = MaterialTheme.colors.primary,
+            )
+        }
         Row(
             modifier = Modifier
                 .fillMaxWidth()

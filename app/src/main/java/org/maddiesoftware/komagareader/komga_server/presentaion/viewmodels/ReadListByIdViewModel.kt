@@ -19,37 +19,36 @@ import org.maddiesoftware.komagareader.core.util.PAGE_SIZE
 import org.maddiesoftware.komagareader.core.util.Resource
 import org.maddiesoftware.komagareader.komga_server.domain.model.Book
 import org.maddiesoftware.komagareader.komga_server.domain.repository.ApiRepository
-import org.maddiesoftware.komagareader.komga_server.domain.use_case.series.AllSeriesUseCases
-import org.maddiesoftware.komagareader.komga_server.presentaion.state.SeriesByIdState
+import org.maddiesoftware.komagareader.komga_server.domain.use_case.readlists.ReadListUseCases
+import org.maddiesoftware.komagareader.komga_server.presentaion.state.ReadListByIdState
 import javax.inject.Inject
 
 @HiltViewModel
-class SeriesByIdViewModel @Inject constructor(
+class ReadListByIdViewModel @Inject constructor(
     private val apiRepository: ApiRepository,
-    private val allSeriesUseCases: AllSeriesUseCases,
+    private val readListUseCases: ReadListUseCases,
     savedStateHandle: SavedStateHandle,
 
     ): ViewModel()  {
-    private var seriesId: String? = null
+    private var readListId: String? = null
     private val _bookState: MutableStateFlow<PagingData<Book>> =
         MutableStateFlow(value = PagingData.empty())
     val bookState: StateFlow<PagingData<Book>>
         get() = _bookState
-    var state by mutableStateOf(SeriesByIdState())
+    var state by mutableStateOf(ReadListByIdState())
     init {
-        savedStateHandle.get<String>(key = "seriesId")?.let { it ->
-            seriesId = it
-            if(seriesId == "null"){
-                seriesId = null
+        savedStateHandle.get<String>(key = "readListId")?.let { it ->
+            readListId = it
+            if(readListId == "null"){
+                readListId = null
             }
         }
-        getBooksFromSeries()
-        getSeriesById()
+        getBooksFromReadList()
     }
 
-    private fun getBooksFromSeries(){
+    private fun getBooksFromReadList(){
         viewModelScope.launch {
-            allSeriesUseCases.getBooksFromSeries.invoke(pageSize = PAGE_SIZE, seriesId = seriesId)
+            readListUseCases.getBooksFromReadList.invoke(pageSize = PAGE_SIZE, readListId = readListId)
                 .distinctUntilChanged()
                 .cachedIn(viewModelScope)
                 .collect {
@@ -59,15 +58,15 @@ class SeriesByIdViewModel @Inject constructor(
 
     }
 
-    private fun getSeriesById(){
+    private fun getReadListById(){
         viewModelScope.launch {
             Log.d("komga-launch", "Launch")
             state = state.copy(isLoading = true)
-            val seriesByIdResult = async { apiRepository.getSeriesById(seriesId = seriesId.toString()) }
-            when(val result = seriesByIdResult.await()) {
+            val readListByIdResult = async { apiRepository.getReadListById(readListId = readListId.toString()) }
+            when(val result = readListByIdResult.await()) {
                 is Resource.Success -> {
                     state = state.copy(
-                        seriesInfo = result.data,
+                        readListInfo = result.data,
                         isLoading = false,
                         error = null
                     )
@@ -76,7 +75,7 @@ class SeriesByIdViewModel @Inject constructor(
                     state = state.copy(
                         isLoading = false,
                         error = result.message,
-                        seriesInfo = null
+                        readListInfo = null
                     )
                     Log.d("komga1", "error = $result.message ")
                 }

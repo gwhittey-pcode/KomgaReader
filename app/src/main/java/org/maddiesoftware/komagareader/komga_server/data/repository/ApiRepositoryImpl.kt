@@ -72,7 +72,7 @@ class ApiRepositoryImpl @Inject constructor(
     override fun getAllSeries(pageSize: Int, libraryId: String?): Flow<PagingData<Series>> {
         return Pager(
             config = PagingConfig(pageSize = pageSize),
-            pagingSourceFactory = { AllSeriesRemotePagingSource(api = api, libraryId = libraryId) }
+            pagingSourceFactory = { AllSeriesRemotePagingSource(api = api, libraryId = libraryId,sort="booksCount,desc") }
         ).flow
     }
 
@@ -111,12 +111,6 @@ class ApiRepositoryImpl @Inject constructor(
         ).flow
     }
 
-    override fun getBooksFromSeries(pageSize: Int, seriesId: String): Flow<PagingData<Book>> {
-        return Pager(
-            config = PagingConfig(pageSize = pageSize),
-            pagingSourceFactory = { SeriesByIdPagingSource(api = api, seriesId = seriesId) }
-        ).flow
-    }
 
     override suspend fun getSeriesById(seriesId: String): Resource<Series?> {
         return try {
@@ -135,6 +129,12 @@ class ApiRepositoryImpl @Inject constructor(
                 message = "Couldn't load Series info"
             )
         }
+    }
+    override fun getBooksFromSeries(pageSize: Int, seriesId: String): Flow<PagingData<Book>> {
+        return Pager(
+            config = PagingConfig(pageSize = pageSize),
+            pagingSourceFactory = { BookFromSeriesRemotePagingSource(api = api, seriesId = seriesId) }
+        ).flow
     }
 
     override suspend fun getBookById(bookId: String): Resource<Book> {
@@ -200,14 +200,38 @@ class ApiRepositoryImpl @Inject constructor(
                 message = "HttpException updateReadProgress"
             )
         }
+    }
 
+    override fun getAllReadList(pageSize: Int, libraryId: String?): Flow<PagingData<ReadList>> {
+        return Pager(
+            config = PagingConfig(pageSize = pageSize),
+            pagingSourceFactory = { AllReadListsRemotePagingSource(api = api, libraryId = libraryId) }
+        ).flow
+    }
 
-//        return try {
-//            val updateReadProgress = api.updateReadProgress(
-//                bookId = bookId,
-//                updatedProgress = UpdateReadProgress.Companion.NewReadProgress
-//            )
+    override suspend fun getReadListById(readListId: String): Resource<ReadList> {
+        return try {
+            val getReadListById = api.getReadListById(readListId=readListId)
+            Resource.Success(getReadListById.toReadList())
+        } catch(e: IOException) {
+            e.printStackTrace()
+            Log.d("komga1","I Errro2")
+            Resource.Error(
+                message = "Couldn't load Read List info"
+            )
+        } catch(e: HttpException) {
+            e.printStackTrace()
+            Log.d("komga1"," HttpException")
+            Resource.Error(
+                message = "Couldn't Read List Series info"
+            )
+        }
+    }
 
-
+    override fun getBooksFromReadList(pageSize: Int, readListId: String): Flow<PagingData<Book>> {
+        return Pager(
+            config = PagingConfig(pageSize = pageSize),
+            pagingSourceFactory = { BookFromReadListRemotePagingSource(api = api, readListId = readListId) }
+        ).flow
     }
 }

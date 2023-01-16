@@ -21,6 +21,8 @@ class BookInfoViewModel @Inject constructor(
 ): ViewModel()  {
 
     private var bookId: String? = null
+    private var groupType: String? = null
+    private var readListId: String? = null
     var state by mutableStateOf(BookInfoState())
 
     init {
@@ -28,6 +30,18 @@ class BookInfoViewModel @Inject constructor(
             bookId = it
             if(bookId == "null"){
                 bookId = null
+            }
+        }
+        savedStateHandle.get<String>(key = "groupType")?.let { it ->
+            groupType = it
+            if(groupType == "null"){
+                groupType = null
+            }
+        }
+        savedStateHandle.get<String>(key = "readListId")?.let { it ->
+            readListId = it
+            if(readListId == "null"){
+                readListId = null
             }
         }
         getBookById()

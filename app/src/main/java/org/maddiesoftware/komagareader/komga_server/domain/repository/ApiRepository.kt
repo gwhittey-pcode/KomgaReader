@@ -33,4 +33,10 @@ interface ApiRepository {
 
     suspend fun updateReadProgress(bookId: String,page: Int,completed:Boolean): Resource<Response<Unit>>
 
+    fun getAllReadList(pageSize: Int, libraryId: String?): Flow<PagingData<ReadList>>
+
+    suspend fun getReadListById(readListId:String): Resource<ReadList>
+
+    fun getBooksFromReadList(pageSize: Int, readListId: String): Flow<PagingData<Book>>
+
 }

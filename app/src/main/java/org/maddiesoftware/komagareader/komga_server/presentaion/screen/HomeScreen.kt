@@ -31,7 +31,6 @@ import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.MainV
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun HomeScreen(
-
     navigator: DestinationsNavigator,
     navBackStackEntry: NavBackStackEntry,
     viewModel: HomeViewModule = hiltViewModel(),
@@ -81,6 +80,9 @@ fun HomeScreen(
                             }
                             "settings" -> {
                                 navigator.navigate(SettingsScreenDestination())
+                            }
+                            "readList" ->{
+                                navigator.navigate(AllReadListScreenDestination(libraryId = "09YPSVS759MM2"))
                             }
                             else -> {
                                 navigator.navigate(AllSeriesScreenDestination(libraryId = id))

@@ -12,23 +12,23 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import org.maddiesoftware.komagareader.core.util.LIBRARY_ID_KEY
 import org.maddiesoftware.komagareader.core.util.PAGE_SIZE
-import org.maddiesoftware.komagareader.komga_server.domain.model.Series
-import org.maddiesoftware.komagareader.komga_server.domain.use_case.series.AllSeriesUseCases
+import org.maddiesoftware.komagareader.komga_server.domain.model.ReadList
+import org.maddiesoftware.komagareader.komga_server.domain.use_case.readlists.ReadListUseCases
 import javax.inject.Inject
 
-
 @HiltViewModel
-class AllSeriesViewModel @Inject constructor(
-    private val allSeriesUseCases: AllSeriesUseCases,
-    savedStateHandle: SavedStateHandle
-
+class AllReadListViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
+    readListUseCases: ReadListUseCases
 
 ): ViewModel() {
+
     private var libraryId: String? = null
-    private val _seriesState: MutableStateFlow<PagingData<Series>> =
+    private val _readListState: MutableStateFlow<PagingData<ReadList>> =
         MutableStateFlow(value = PagingData.empty())
-    val seriesState: StateFlow<PagingData<Series>>
-        get() = _seriesState
+    val readListState: StateFlow<PagingData<ReadList>>
+        get() = _readListState
+
 
     init {
         savedStateHandle.get<String>(key = LIBRARY_ID_KEY)?.let { it ->
@@ -38,14 +38,13 @@ class AllSeriesViewModel @Inject constructor(
             }
         }
         viewModelScope.launch {
-            allSeriesUseCases.getAllSeries.invoke(pageSize = PAGE_SIZE, libraryId = libraryId)
+            readListUseCases.getAllReadList.invoke(pageSize = PAGE_SIZE, libraryId = libraryId)
                 .distinctUntilChanged()
                 .cachedIn(viewModelScope)
                 .collect {
-                    _seriesState.value = it
+                    _readListState.value = it
                 }
-            }
+        }
 
     }
-
 }

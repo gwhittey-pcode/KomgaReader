@@ -52,6 +52,8 @@ import java.util.*
 @Composable
 fun BookInfoScreen(
     bookId: String? = null,
+    groupType: String? = null,
+    readListId: String? = null,
     viewModel: BookInfoViewModel = hiltViewModel(),
     mainViewModule: MainViewModule = hiltViewModel(),
     navigator: DestinationsNavigator,
@@ -72,7 +74,10 @@ fun BookInfoScreen(
                         navigator.navigate(
                             BookReaderScreenDestination(
                                 bookId = bookInfo.id.toString(),
-                                seriesId = bookInfo.seriesId.toString()
+                                seriesId = bookInfo.seriesId.toString(),
+                                groupType = groupType,
+                                readListId = readListId
+
                             )
                         )
                     },
