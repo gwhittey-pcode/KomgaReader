@@ -106,7 +106,7 @@ fun AllSeriesScreen(
             }
             Spacer(modifier = Modifier.width(8.dp))
             LazyVerticalGrid(
-                columns = GridCells.Adaptive(200.dp),
+                columns = GridCells.Adaptive(155.dp),
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(5.dp)
