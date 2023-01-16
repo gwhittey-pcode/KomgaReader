@@ -8,6 +8,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -65,7 +66,9 @@ fun ReadListThumbCard(
                         modifier = Modifier
                             .align(Alignment.TopStart)
                             .padding(start = 5.dp, top = 5.dp),
-                        fontSize = 14.sp
+                        fontSize = 14.sp,
+                        maxLines = 3,
+                        overflow = TextOverflow.Ellipsis
                         )
 
                     Text(

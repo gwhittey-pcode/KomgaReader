@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.maddiesoftware.komagareader.core.presentation.theme.GoldUnreadBookCount
@@ -95,7 +96,9 @@ fun SeriesThumbCard(
                         modifier = Modifier
                             .align(Alignment.TopStart)
                             .padding(start = 5.dp, top = 5.dp),
-                        fontSize = 14.sp
+                        fontSize = 14.sp,
+                        maxLines = 3,
+                        overflow = TextOverflow.Ellipsis
                         )
 
                     Text(

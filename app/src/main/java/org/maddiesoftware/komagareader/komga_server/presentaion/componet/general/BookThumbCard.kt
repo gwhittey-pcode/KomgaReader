@@ -116,7 +116,7 @@ fun BookThumbCard(
                             .align(Alignment.CenterStart)
                             .offset(0.dp, (-10).dp)
                             .padding(start = 5.dp, top = 2.dp),
-                        maxLines = 1,
+                        maxLines = 3,
                         overflow = TextOverflow.Ellipsis
                     )
                     Text(
