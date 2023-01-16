@@ -131,6 +131,23 @@ interface KomgaServerApi {
         @Query("page") page: Int? = null,
         @Query("size") size: Int? = null,
     ): ResponseItems<ReadListDto>
+
+    @GET("readlists/{readListId}")
+    suspend fun getReadListById(@Path("readListId") readListId:String): ReadListDto
+
+    @GET("readlists/{readListId}/books")
+    suspend fun getBooksFromReadList(
+        @Path("readListId") readListId: String,
+        @Query("media_status") mediaStatus: List<String>? = null,
+        @Query("read_status") readStatus: List<String>? = null,
+        @Query("tag") tag: List<String>? = null,
+        @Query("unpaged") unpaged: Boolean? = null,
+        @Query("page") page: Int? = null,
+        @Query("size") size: Int? = null,
+        @Query("sort") sort: List<String>? = null,
+        @Query("author") author: List<String>? = null
+    ): ResponseItems<BookDto>
+
 }
 
 

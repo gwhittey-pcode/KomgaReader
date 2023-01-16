@@ -38,10 +38,7 @@ import org.maddiesoftware.komagareader.destinations.BookReaderScreenDestination
 import org.maddiesoftware.komagareader.destinations.HomeScreenDestination
 import org.maddiesoftware.komagareader.destinations.SettingsScreenDestination
 import org.maddiesoftware.komagareader.komga_server.domain.BookPage
-import org.maddiesoftware.komagareader.komga_server.presentaion.componet.bookreader.BookPageImage
-import org.maddiesoftware.komagareader.komga_server.presentaion.componet.bookreader.BookPagesDialog
-import org.maddiesoftware.komagareader.komga_server.presentaion.componet.bookreader.BookReaderButton
-import org.maddiesoftware.komagareader.komga_server.presentaion.componet.bookreader.SeriesBooksDialog
+import org.maddiesoftware.komagareader.komga_server.presentaion.componet.bookreader.*
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.MyAsyncImage
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.NavBar
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.NavDrawer
@@ -58,6 +55,8 @@ import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.MainV
 fun BookReaderScreen(
     bookId: String,
     seriesId: String,
+    readListId:String? = null,
+    groupType: String? = null,
     viewModel: BookReaderViewModel = hiltViewModel(),
     mainViewModule: MainViewModule = hiltViewModel(),
 //    viewModel: BookInfoViewModel = hiltViewModel(),
@@ -68,7 +67,7 @@ fun BookReaderScreen(
     val configuration = LocalConfiguration.current
     val bookInfo = viewModel.state.bookInfo
     val pagesInfo = viewModel.state.pagesInfo
-    var doingUpdateReadProgress = viewModel.state.doingUpdateReadProgress
+    val doingUpdateReadProgress = viewModel.state.doingUpdateReadProgress
     val usePageSplit = viewModel.state.useDblPageSplit
     val screenHeight = configuration.screenHeightDp.dp
     val screenWidth = configuration.screenWidthDp.dp
@@ -181,19 +180,40 @@ fun BookReaderScreen(
     }
 
     if (showSeriesBookNavDialog.value) {
-        SeriesBooksDialog(
-            setShowDialog = { showSeriesBookNavDialog.value = it },
-            screenWidth = screenWidth,
-            onItemClick = {
-                showSeriesBookNavDialog.value = false
-                navigator.navigate(
-                    BookReaderScreenDestination(
-                        bookId = it,
-                        seriesId = bookInfo?.seriesId.toString()
+        if(groupType=="Read List"){
+            ReadListBooksDialog(
+                setShowDialog = { showSeriesBookNavDialog.value = it },
+                screenWidth = screenWidth,
+                onItemClick = {
+                    showSeriesBookNavDialog.value = false
+                    navigator.navigate(
+                        BookReaderScreenDestination(
+                            bookId = it,
+                            readListId=readListId,
+                            groupType = groupType,
+                            seriesId = seriesId
+                        )
                     )
-                )
-            }
-        )
+                }
+            )
+        }else{
+            SeriesBooksDialog(
+                setShowDialog = { showSeriesBookNavDialog.value = it },
+                screenWidth = screenWidth,
+                onItemClick = {
+                    showSeriesBookNavDialog.value = false
+                    navigator.navigate(
+                        BookReaderScreenDestination(
+                            bookId = it,
+                            readListId=readListId,
+                            groupType = groupType,
+                            seriesId = seriesId
+                        )
+                    )
+                }
+            )
+        }
+
     }
     Scaffold(
         scaffoldState = scaffoldState,

@@ -33,26 +33,27 @@ class BookReaderViewModel @Inject constructor(
 ) : ViewModel() {
 
     private var bookId: String? = null
+    private var groupType: String? = null
     var state by mutableStateOf(BookReaderState())
 
     init {
-        Log.d("viewmodelT", "VM Start")
         savedStateHandle.get<String>(key = "bookId")?.let { it ->
-            Log.d("viewmodelT", "savedStateRedo")
             bookId = it
             if (bookId == "null") {
-                Log.d("viewmodelT", "bookId = null")
                 bookId = null
             }
         }
-        Log.d("viewmodelT", "bookId = $bookId")
+        savedStateHandle.get<String>(key = "groupType")?.let { it ->
+            groupType = it
+            if (groupType == "null") {
+                groupType = null
+            }
+        }
         readUseDblPageSplit()
         getBookById()
         getPages()
 
     }
-
-
     private fun getBookById() {
         viewModelScope.launch {
             state = state.copy(isLoading = true)

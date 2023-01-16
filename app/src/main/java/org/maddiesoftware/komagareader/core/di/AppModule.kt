@@ -18,6 +18,7 @@ import org.maddiesoftware.komagareader.komga_server.domain.repository.ApiReposit
 import org.maddiesoftware.komagareader.komga_server.domain.use_case.*
 import org.maddiesoftware.komagareader.komga_server.domain.use_case.homescreen.*
 import org.maddiesoftware.komagareader.komga_server.domain.use_case.readlists.GetAllReadList
+import org.maddiesoftware.komagareader.komga_server.domain.use_case.readlists.GetBooksFromReadList
 import org.maddiesoftware.komagareader.komga_server.domain.use_case.readlists.ReadListUseCases
 import org.maddiesoftware.komagareader.komga_server.domain.use_case.series.AllSeriesUseCases
 import org.maddiesoftware.komagareader.komga_server.domain.use_case.series.GetAllSeries
@@ -104,7 +105,8 @@ object AppModule {
     @Provides
     fun provideReadListUseCases(apiRepository: ApiRepository): ReadListUseCases{
         return ReadListUseCases(
-            getAllReadList = GetAllReadList(apiRepository=apiRepository)
+            getAllReadList = GetAllReadList(apiRepository=apiRepository),
+            getBooksFromReadList = GetBooksFromReadList(apiRepository = apiRepository)
         )
     }
 }

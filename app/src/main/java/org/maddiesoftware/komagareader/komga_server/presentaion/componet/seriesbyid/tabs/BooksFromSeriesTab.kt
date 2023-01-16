@@ -26,7 +26,7 @@ import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general
 import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.SeriesByIdViewModel
 
 @Composable
-fun BooksTab(
+fun BooksFromSeriesTab(
     viewModel: SeriesByIdViewModel = hiltViewModel(),
     onItemClick: (id: String) -> Unit,
     ){
@@ -69,7 +69,7 @@ fun BooksTab(
                     },
                     errorComponent = {
                         WarningMessage(
-                            text = stringResource(id = R.string.err_loading_series),
+                            text = stringResource(id = R.string.err_loading_string),
                             trailingContent = {
                                 Text(
                                     text  = stringResource(id = R.string.lbl_retry),

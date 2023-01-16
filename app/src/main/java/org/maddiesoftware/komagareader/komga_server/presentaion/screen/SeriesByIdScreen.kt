@@ -21,8 +21,8 @@ import org.maddiesoftware.komagareader.komga_server.presentaion.componet.*
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.NavBar
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.NavDrawer
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.seriesbyid.SeriesByIdTabs
-import org.maddiesoftware.komagareader.komga_server.presentaion.componet.seriesbyid.tabs.BooksTab
-import org.maddiesoftware.komagareader.komga_server.presentaion.componet.seriesbyid.tabs.SeriesTabInfo
+import org.maddiesoftware.komagareader.komga_server.presentaion.componet.seriesbyid.tabs.BooksFromSeriesTab
+import org.maddiesoftware.komagareader.komga_server.presentaion.componet.seriesbyid.tabs.SeriesInfoTab
 import org.maddiesoftware.komagareader.komga_server.presentaion.state.SeriesByIdTabPage
 import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.MainViewModule
 
@@ -95,12 +95,12 @@ fun SeriesByIdScreen(
                 ) { index ->
                     Column(Modifier.fillMaxSize()) {
                         when (index) {
-                            0 -> BooksTab(
+                            0 -> BooksFromSeriesTab(
                                 onItemClick = {
                                     navigator.navigate(BookInfoScreenDestination(bookId = it))
                                 }
                             )
-                            1 -> SeriesTabInfo()
+                            1 -> SeriesInfoTab()
                         }
                     }
                 }

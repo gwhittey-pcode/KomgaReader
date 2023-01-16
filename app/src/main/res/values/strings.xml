@@ -8,6 +8,6 @@
     <string name="keep_reading">Keep Reading</string>
     <string name="on_deck">On Deck</string>
     <string name="lbl_retry">Retry</string>
-    <string name="err_loading_series">Error Loading String</string>
+    <string name="err_loading_string">Error Loading String</string>
 
 </resources>

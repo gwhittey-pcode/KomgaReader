@@ -5,7 +5,7 @@ import androidx.paging.PagingState
 import org.maddiesoftware.komagareader.komga_server.data.remote.api.KomgaServerApi
 import org.maddiesoftware.komagareader.komga_server.domain.model.Book
 
-class SeriesByIdPagingSource(private val api: KomgaServerApi, private val seriesId: String?):
+class BookFromSeriesRemotePagingSource(private val api: KomgaServerApi, private val seriesId: String?):
     PagingSource<Int, Book>() {
     override fun getRefreshKey(state: PagingState<Int, Book>): Int? {
         return state.anchorPosition

@@ -24,10 +24,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
 import org.maddiesoftware.komagareader.R
 import org.maddiesoftware.komagareader.core.data.local.ServerInfoSingleton
-import org.maddiesoftware.komagareader.destinations.AllSeriesScreenDestination
-import org.maddiesoftware.komagareader.destinations.HomeScreenDestination
-import org.maddiesoftware.komagareader.destinations.SeriesByIdScreenDestination
-import org.maddiesoftware.komagareader.destinations.SettingsScreenDestination
+import org.maddiesoftware.komagareader.destinations.*
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.*
 import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.AllReadListViewModel
 import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.MainViewModule
@@ -120,7 +117,7 @@ fun AllReadListScreen(
                         modifier = Modifier
                             .padding(16.dp)
                             .fillMaxWidth(),
-                        onItemClick = { navigator.navigate(SeriesByIdScreenDestination(seriesId = readList?.id)) }
+                        onItemClick = { navigator.navigate(ReadListByIdScreenDestination(readListId = readList?.id)) }
                     )
 
                 }
@@ -137,7 +134,7 @@ fun AllReadListScreen(
                         },
                         errorComponent = {
                             WarningMessage(
-                                text = stringResource(id = R.string.err_loading_series),
+                                text = stringResource(id = R.string.err_loading_string),
                                 trailingContent = {
                                     Text(
                                         text = stringResource(id = R.string.lbl_retry),

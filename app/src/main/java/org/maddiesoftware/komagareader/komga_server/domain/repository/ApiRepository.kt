@@ -35,4 +35,8 @@ interface ApiRepository {
 
     fun getAllReadList(pageSize: Int, libraryId: String?): Flow<PagingData<ReadList>>
 
+    suspend fun getReadListById(readListId:String): Resource<ReadList>
+
+    fun getBooksFromReadList(pageSize: Int, readListId: String): Flow<PagingData<Book>>
+
 }
