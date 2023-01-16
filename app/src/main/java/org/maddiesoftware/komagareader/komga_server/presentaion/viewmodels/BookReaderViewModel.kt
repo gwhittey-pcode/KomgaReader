@@ -30,22 +30,22 @@ class BookReaderViewModel @Inject constructor(
     private val apiRepository: ApiRepository,
     savedStateHandle: SavedStateHandle,
     private val dataStore: DataStoreManager
-): ViewModel()  {
+) : ViewModel() {
 
     private var bookId: String? = null
     var state by mutableStateOf(BookReaderState())
 
     init {
-        Log.d("viewmodelT","VM Start")
+        Log.d("viewmodelT", "VM Start")
         savedStateHandle.get<String>(key = "bookId")?.let { it ->
-            Log.d("viewmodelT","savedStateRedo")
+            Log.d("viewmodelT", "savedStateRedo")
             bookId = it
-            if(bookId == "null"){
-                Log.d("viewmodelT","bookId = null")
+            if (bookId == "null") {
+                Log.d("viewmodelT", "bookId = null")
                 bookId = null
             }
         }
-        Log.d("viewmodelT","bookId = $bookId")
+        Log.d("viewmodelT", "bookId = $bookId")
         readUseDblPageSplit()
         getBookById()
         getPages()
@@ -53,12 +53,11 @@ class BookReaderViewModel @Inject constructor(
     }
 
 
-
-    private fun getBookById(){
+    private fun getBookById() {
         viewModelScope.launch {
             state = state.copy(isLoading = true)
             val bookByIdResult = async { apiRepository.getBookById(bookId = bookId.toString()) }
-            when(val result = bookByIdResult.await()) {
+            when (val result = bookByIdResult.await()) {
                 is Resource.Success -> {
                     state = state.copy(
                         bookInfo = result.data,
@@ -78,18 +77,17 @@ class BookReaderViewModel @Inject constructor(
         }
     }
 
-    private fun getPages(){
+    private fun getPages() {
         viewModelScope.launch {
             state = state.copy(isLoading = true)
             val pagesResult = async { apiRepository.getPages(bookId = bookId.toString()) }
-            when(val result = pagesResult.await()) {
+            when (val result = pagesResult.await()) {
                 is Resource.Success -> {
                     state = state.copy(
                         pagesInfo = result.data,
                         isLoading = false,
                         error = null
                     )
-
                 }
                 is Resource.Error -> {
                     state = state.copy(
@@ -103,6 +101,7 @@ class BookReaderViewModel @Inject constructor(
             }
         }
     }
+
     suspend fun uriToBitmap(context: Context, uri: String?): Bitmap {
         val request = ImageRequest.Builder(context)
             .data(uri)
@@ -124,6 +123,32 @@ class BookReaderViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    suspend fun updateReadProgress(page: Int, pageCount: Int, bookId: String) {
+        var completed: Boolean = false
+        if (page >= pageCount) completed = true
+        viewModelScope.launch {
+            val updateReadProgress = async {
+                apiRepository.updateReadProgress(
+                    bookId = bookId,
+                    page = page,
+                    completed = completed
+                )
+            }
+            state = state.copy(doingUpdateReadProgress=true)
+            when (val result = updateReadProgress.await()) {
+                is Resource.Success -> {
+                    Log.d("updateReadProgress","Sucess")
+                    state = state.copy(doingUpdateReadProgress=false)
+                }
+                is Resource.Error -> {
+                    Log.d("updateReadProgress","result = ${result.message}")
+                }
+                else -> Unit
+            }
+        }
+
     }
 
 }

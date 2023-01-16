@@ -60,10 +60,16 @@ fun SeriesByIdScreen(
                     scope.launch {
                         scaffoldState.drawerState.close()
                     }
-                    when(id){
-                        "home" -> {navigator.navigate(HomeScreenDestination())}
-                        "settings" -> {navigator.navigate(SettingsScreenDestination())}
-                        else -> {navigator.navigate(AllSeriesScreenDestination(libraryId = id))}
+                    when (id) {
+                        "home" -> {
+                            navigator.navigate(HomeScreenDestination())
+                        }
+                        "settings" -> {
+                            navigator.navigate(SettingsScreenDestination())
+                        }
+                        else -> {
+                            navigator.navigate(AllSeriesScreenDestination(libraryId = id))
+                        }
                     }
                 }
             )
@@ -83,7 +89,10 @@ fun SeriesByIdScreen(
                     })
             }
             Row {
-                HorizontalPager(count = SeriesByIdTabPage.values().size, state = pagerState) { index ->
+                HorizontalPager(
+                    count = SeriesByIdTabPage.values().size,
+                    state = pagerState
+                ) { index ->
                     Column(Modifier.fillMaxSize()) {
                         when (index) {
                             0 -> BooksTab(

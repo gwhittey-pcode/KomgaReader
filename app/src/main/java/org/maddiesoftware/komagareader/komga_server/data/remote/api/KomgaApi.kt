@@ -1,6 +1,8 @@
 package org.maddiesoftware.komagareader.komga_server.data.remote.api
 
 import org.maddiesoftware.komagareader.komga_server.data.remote.dto.*
+import org.maddiesoftware.komagareader.komga_server.domain.model.NewReadProgress
+import retrofit2.Response
 import retrofit2.http.*
 
 interface KomgaServerApi {
@@ -111,6 +113,12 @@ interface KomgaServerApi {
     suspend fun getPages(
         @Path("bookId") bookId: String
     ):List<PageDto>
+
+    @PATCH("books/{bookId}/read-progress")
+    suspend fun updateReadProgress(
+        @Path("bookId") bookId: String,
+        @Body newReadProgress: NewReadProgress
+    ): Response<Unit>
 }
 
 

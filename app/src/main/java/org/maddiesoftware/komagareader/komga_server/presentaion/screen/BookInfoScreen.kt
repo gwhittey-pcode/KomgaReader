@@ -63,7 +63,7 @@ fun BookInfoScreen(
     val date = bookInfo?.metadata?.releaseDate
 
 //    val formattedDate  =  date.format(formatter)
-    if(bookInfo != null) {
+    if (bookInfo != null) {
         Scaffold(
             scaffoldState = scaffoldState,
             floatingActionButton = {
@@ -79,12 +79,12 @@ fun BookInfoScreen(
                     backgroundColor = MaterialTheme.colors.primary,
                     shape = CircleShape
                 ) {
-                    Row(modifier = Modifier.width(125.dp)){
+                    Row(modifier = Modifier.width(125.dp)) {
                         Spacer(modifier = Modifier.width(16.dp))
                         Icon(
                             imageVector = Icons.Default.MenuBook,
                             contentDescription = "fab_add_order",
-                            tint =MaterialTheme.colors.onSurface
+                            tint = MaterialTheme.colors.onSurface
                         )
                         Spacer(modifier = Modifier.width(16.dp))
                         Text(
@@ -115,10 +115,16 @@ fun BookInfoScreen(
                         scope.launch {
                             scaffoldState.drawerState.close()
                         }
-                        when(id){
-                            "home" -> {navigator.navigate(HomeScreenDestination())}
-                            "settings" -> {navigator.navigate(SettingsScreenDestination())}
-                            else -> {navigator.navigate(AllSeriesScreenDestination(libraryId = id))}
+                        when (id) {
+                            "home" -> {
+                                navigator.navigate(HomeScreenDestination())
+                            }
+                            "settings" -> {
+                                navigator.navigate(SettingsScreenDestination())
+                            }
+                            else -> {
+                                navigator.navigate(AllSeriesScreenDestination(libraryId = id))
+                            }
                         }
                     }
                 )
@@ -141,7 +147,7 @@ fun BookInfoScreen(
 //                .background(Color.Red)
                 )
                 MyAsyncImage(
-                    url = "${serverInfo.url}api/v1/books/${bookInfo?.id}/thumbnail",
+                    url = "${serverInfo.url}api/v1/books/${bookInfo.id}/thumbnail",
                     modifier = Modifier
                         .height(300.dp)
                         .width(195.dp)
@@ -150,7 +156,7 @@ fun BookInfoScreen(
                             top.linkTo(topSpacer.bottom)
                         }
                 )
-                if (bookInfo.readProgress?.completed == false || bookInfo?.readProgress === null) {
+                if (bookInfo.readProgress?.completed == false || bookInfo.readProgress === null) {
                     Chip(
                         modifier = Modifier
                             .size(30.dp)
@@ -179,7 +185,7 @@ fun BookInfoScreen(
                 Text(
                     text = bookInfo.seriesTitle.toString(),
                     fontWeight = FontWeight.Bold,
-                    fontSize = 24.sp,
+                    fontSize = 20.sp,
                     modifier = Modifier
                         .constrainAs(bookSeriesTitle) {
                             start.linkTo(endGuideLine, 5.dp)
@@ -201,11 +207,10 @@ fun BookInfoScreen(
                         }
                 )
                 Text(
-                    text = " #${bookInfo.metadata?.number.toString()}" +
-                            " - ${bookInfo.media?.pagesCount.toString()} Pages" +
+                    text = "${bookInfo.readProgress?.page?:0} of ${bookInfo.media?.pagesCount.toString()} Pages Read -" +
                             "    ${genMonth(date.toString())}   ",
                     fontWeight = FontWeight.Normal,
-                    fontSize = 18.sp,
+                    fontSize = 15.sp,
                     modifier = Modifier
                         .constrainAs(bookNumber) {
                             start.linkTo(endGuideLine, 5.dp)
@@ -221,7 +226,7 @@ fun BookInfoScreen(
                         end.linkTo(parent.end, 20.dp)
                         width = Dimension.fillToConstraints
                     }
-                ){
+                ) {
                     item {
                         ExpandableText(
                             text = "${bookInfo.metadata?.summary}",
@@ -256,15 +261,13 @@ fun genMonth(pubDate: String): String {
     return simpleDateFormat.format(current as Date).toString()
 
 
-
 }
 
 
-
-fun genDay(date: String){
+fun genDay(date: String) {
 
 }
 
-fun genYear(date: String){
+fun genYear(date: String) {
 
 }
