@@ -101,7 +101,7 @@ fun AllReadListScreen(
                 .background(Color.White)
                 .padding(16.dp)
         ) {
-            Spacer(modifier = Modifier.height(height = 20.dp))
+
             Row {
 //                    Text(
 //                        text = stringResource(id = R.string.recently_add_series),
@@ -113,14 +113,13 @@ fun AllReadListScreen(
             }
             Spacer(modifier = Modifier.width(8.dp))
             LazyVerticalGrid(
-                columns = GridCells.Adaptive(200.dp),
+                columns = GridCells.Adaptive(155.dp),
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(5.dp)
             ) {
                 items(readListState.itemCount) { i ->
                     val readList = readListState[i]
-
                     ReadListThumbCard(
                         url = "${serverInfo.url}api/v1/readlists/${readList?.id}/thumbnail",
                         booksCount = readList?.bookIds?.size,

@@ -20,10 +20,10 @@ import org.maddiesoftware.komagareader.destinations.SettingsScreenDestination
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.*
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.NavBar
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.NavDrawer
+import org.maddiesoftware.komagareader.komga_server.presentaion.componet.seriesbyid.SeriesByIdTabPage
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.seriesbyid.SeriesByIdTabs
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.seriesbyid.tabs.BooksFromSeriesTab
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.seriesbyid.tabs.SeriesInfoTab
-import org.maddiesoftware.komagareader.komga_server.presentaion.state.SeriesByIdTabPage
 import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.MainViewModule
 
 
@@ -82,7 +82,7 @@ fun SeriesByIdScreen(
         ) {
             Row {
                 SeriesByIdTabs(selectedTabIndex = pagerState.currentPage,
-                    onSelectedTav = {
+                    onSelectedTab = {
                         scope.launch {
                             pagerState.animateScrollToPage(it.ordinal)
                         }

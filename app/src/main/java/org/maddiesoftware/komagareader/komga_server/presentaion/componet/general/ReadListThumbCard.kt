@@ -31,7 +31,7 @@ fun ReadListThumbCard(
     ) {
         Card(
             modifier = Modifier
-                .height(300.dp)
+                .height(295.dp)
                 .width(155.dp)
                 .padding(5.dp)
                 .background(MaterialTheme.colors.surface)
@@ -55,7 +55,7 @@ fun ReadListThumbCard(
                         modifier = Modifier
                             .align(Alignment.TopEnd)
                             .height(200.dp)
-                            .width(155.dp)
+                            .width(150.dp)
 
                         )
                 }

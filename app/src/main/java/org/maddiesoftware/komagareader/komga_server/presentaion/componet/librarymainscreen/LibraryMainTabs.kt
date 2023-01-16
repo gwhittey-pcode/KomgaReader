@@ -1,20 +1,20 @@
-package org.maddiesoftware.komagareader.komga_server.presentaion.componet.seriesbyid
+package org.maddiesoftware.komagareader.komga_server.presentaion.componet.librarymainscreen
 
 import androidx.compose.foundation.background
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-
+import org.maddiesoftware.komagareader.komga_server.presentaion.componet.seriesbyid.SeriesByIdTabIndicator
 
 @Composable
-fun SeriesByIdTabs(selectedTabIndex: Int, onSelectedTab: (SeriesByIdTabPage) -> Unit) {
+fun LibraryMainTabs(selectedTabIndex: Int, onSelectedTab: (LibraryMainTabPage) -> Unit) {
     TabRow(
         selectedTabIndex = selectedTabIndex,
         modifier = Modifier.background(MaterialTheme.colors.surface),
         indicator = { SeriesByIdTabIndicator(tabPosition = it, index = selectedTabIndex) }
     ) {
-        SeriesByIdTabPage.values().forEachIndexed { index, tabPage ->
+        LibraryMainTabPage.values().forEachIndexed { index, tabPage ->
             Tab(
                 selected = index == selectedTabIndex,
                 onClick = { onSelectedTab(tabPage) },

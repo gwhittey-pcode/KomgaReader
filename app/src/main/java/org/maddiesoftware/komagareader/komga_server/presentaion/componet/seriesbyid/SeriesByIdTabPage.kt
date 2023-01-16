@@ -1,4 +1,4 @@
-package org.maddiesoftware.komagareader.komga_server.presentaion.state
+package org.maddiesoftware.komagareader.komga_server.presentaion.componet.seriesbyid
 
 import org.maddiesoftware.komagareader.R
 

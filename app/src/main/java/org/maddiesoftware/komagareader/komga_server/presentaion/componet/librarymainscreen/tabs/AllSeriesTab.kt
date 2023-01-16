@@ -1,4 +1,4 @@
-package org.maddiesoftware.komagareader.komga_server.presentaion.screen
+package org.maddiesoftware.komagareader.komga_server.presentaion.componet.librarymainscreen.tabs
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
@@ -19,7 +19,6 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
 import org.maddiesoftware.komagareader.R
@@ -30,19 +29,18 @@ import org.maddiesoftware.komagareader.komga_server.presentaion.navigation.Botto
 import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.AllSeriesViewModel
 import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.MainViewModule
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter", "SuspiciousIndentation")
-@Destination
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun AllSeriesScreen(
-    navigator: DestinationsNavigator,
-    viewModel: AllSeriesViewModel = hiltViewModel(),
-    mainViewModule: MainViewModule = hiltViewModel(),
-    libraryId: String? = null,
-    ) {
+fun AllSeriesTab(
+     navigator: DestinationsNavigator,
+     viewModel: AllSeriesViewModel = hiltViewModel(),
+     mainViewModule: MainViewModule = hiltViewModel(),
+     libraryId: String? = null,
+) {
     val serverInfo = ServerInfoSingleton
     val seriesState = viewModel.seriesState
         .collectAsLazyPagingItems()
-
 
     val libraryList = mainViewModule.state.libraryList
     val scaffoldState = rememberScaffoldState()
@@ -93,7 +91,6 @@ fun AllSeriesScreen(
             )
         }
     ) {
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -154,4 +151,3 @@ fun AllSeriesScreen(
         }
     }
 }
-
