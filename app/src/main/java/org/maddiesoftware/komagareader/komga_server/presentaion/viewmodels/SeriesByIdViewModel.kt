@@ -19,7 +19,7 @@ import org.maddiesoftware.komagareader.core.util.PAGE_SIZE
 import org.maddiesoftware.komagareader.core.util.Resource
 import org.maddiesoftware.komagareader.komga_server.domain.model.Book
 import org.maddiesoftware.komagareader.komga_server.domain.repository.ApiRepository
-import org.maddiesoftware.komagareader.komga_server.domain.use_case.AllSeriesUseCases
+import org.maddiesoftware.komagareader.komga_server.domain.use_case.series.AllSeriesUseCases
 import org.maddiesoftware.komagareader.komga_server.presentaion.state.SeriesByIdState
 import javax.inject.Inject
 

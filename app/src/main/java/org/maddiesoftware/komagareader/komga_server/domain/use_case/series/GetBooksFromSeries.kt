@@ -1,4 +1,4 @@
-package org.maddiesoftware.komagareader.komga_server.domain.use_case
+package org.maddiesoftware.komagareader.komga_server.domain.use_case.series
 
 import android.util.Log
 import androidx.paging.PagingData

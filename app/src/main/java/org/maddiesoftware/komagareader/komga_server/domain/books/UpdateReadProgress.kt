@@ -1,4 +1,4 @@
-package org.maddiesoftware.komagareader.komga_server.domain.use_case
+package org.maddiesoftware.komagareader.komga_server.domain.books
 
 import org.maddiesoftware.komagareader.core.util.Resource
 import org.maddiesoftware.komagareader.komga_server.domain.repository.ApiRepository

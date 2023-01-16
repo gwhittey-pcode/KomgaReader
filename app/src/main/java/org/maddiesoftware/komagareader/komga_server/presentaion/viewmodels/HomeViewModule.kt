@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import org.maddiesoftware.komagareader.core.util.PAGE_SIZE
 import org.maddiesoftware.komagareader.komga_server.domain.model.Book
 import org.maddiesoftware.komagareader.komga_server.domain.model.Series
-import org.maddiesoftware.komagareader.komga_server.domain.use_case.HomeScreenUseCases
+import org.maddiesoftware.komagareader.komga_server.domain.use_case.homescreen.HomeScreenUseCases
 import org.maddiesoftware.komagareader.komga_server.presentaion.state.HomeState
 import javax.inject.Inject
 

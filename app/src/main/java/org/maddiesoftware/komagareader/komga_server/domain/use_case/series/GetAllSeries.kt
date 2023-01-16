@@ -1,6 +1,5 @@
-package org.maddiesoftware.komagareader.komga_server.domain.use_case
+package org.maddiesoftware.komagareader.komga_server.domain.use_case.series
 
-import android.util.Log
 import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
 import org.maddiesoftware.komagareader.komga_server.domain.model.Series
@@ -8,7 +7,6 @@ import org.maddiesoftware.komagareader.komga_server.domain.repository.ApiReposit
 
 class GetAllSeries(private val apiRepository: ApiRepository) {
     operator fun invoke(pageSize: Int, libraryId: String?): Flow<PagingData<Series>> {
-        Log.d("komaga12345","Invoke GetAllSeries")
         return apiRepository.getAllSeries(pageSize = pageSize, libraryId =libraryId)
     }
 }

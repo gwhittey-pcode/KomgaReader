@@ -1,4 +1,4 @@
-package org.maddiesoftware.komagareader.komga_server.domain.use_case
+package org.maddiesoftware.komagareader.komga_server.domain.use_case.homescreen
 
 import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow

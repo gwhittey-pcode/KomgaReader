@@ -1,5 +1,7 @@
 package org.maddiesoftware.komagareader.komga_server.data.remote.dto
 
+import org.maddiesoftware.komagareader.komga_server.domain.model.Library
+
 data class LibraryDto(
 //    val analyzeDimensions: Boolean?,
 //    val convertToCbz: Boolean?,
@@ -26,8 +28,8 @@ data class LibraryDto(
 //    val seriesCover: String?,
 
 ){
-    fun toLibrary(): org.maddiesoftware.komagareader.komga_server.domain.model.Library {
-        return org.maddiesoftware.komagareader.komga_server.domain.model.Library(
+    fun toLibrary(): Library {
+        return Library(
             id = id,
             name = name,
             unavailable = unavailable

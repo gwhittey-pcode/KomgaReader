@@ -72,7 +72,7 @@ class ApiRepositoryImpl @Inject constructor(
     override fun getAllSeries(pageSize: Int, libraryId: String?): Flow<PagingData<Series>> {
         return Pager(
             config = PagingConfig(pageSize = pageSize),
-            pagingSourceFactory = { AllSeriesRemotePagingSource(api = api, libraryId = libraryId) }
+            pagingSourceFactory = { AllSeriesRemotePagingSource(api = api, libraryId = libraryId,sort="booksCount,desc") }
         ).flow
     }
 

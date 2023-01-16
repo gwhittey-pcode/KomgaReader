@@ -1,5 +1,7 @@
 package org.maddiesoftware.komagareader.komga_server.data.remote.dto
 
+import org.maddiesoftware.komagareader.komga_server.domain.model.PageReadList
+
 data class PageReadListDto(
     val content: List<ReadListDto>?,
     val empty: Boolean?,
@@ -12,4 +14,10 @@ data class PageReadListDto(
     val sort: SortDtoX?,
     val totalElements: Int?,
     val totalPages: Int?
-)
+){
+    fun toPageReadList(): PageReadList{
+        return PageReadList(
+            readlists = content?.map { it.toReadList() }
+        )
+    }
+}

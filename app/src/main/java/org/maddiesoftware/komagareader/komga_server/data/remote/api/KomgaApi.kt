@@ -119,7 +119,18 @@ interface KomgaServerApi {
         @Path("bookId") bookId: String,
         @Body newReadProgress: NewReadProgress
     ): Response<Unit>
-}
 
+
+
+    //Reading List Controls
+    @GET("readlists")
+    suspend fun getAllReadLists(
+        @Query("library_id") libraryId: String? = null,
+        @Query("unpaged") unpaged: Boolean? = null,
+        @Query("search") search: String? = null,
+        @Query("page") page: Int? = null,
+        @Query("size") size: Int? = null,
+    ): ResponseItems<ReadListDto>
+}
 
 
