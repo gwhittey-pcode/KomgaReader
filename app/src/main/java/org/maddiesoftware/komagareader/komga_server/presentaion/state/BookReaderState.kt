@@ -10,7 +10,9 @@ data class BookReaderState(
     val isLoading: Boolean = false,
     val error: String? = null,
     val pagerPages: List<BookPage>? = emptyList(),
-    val useDblPageSplit:Boolean = false
+    val useDblPageSplit:Boolean = false,
+    val doingUpdateReadProgress: Boolean = false,
+
 
 )
 

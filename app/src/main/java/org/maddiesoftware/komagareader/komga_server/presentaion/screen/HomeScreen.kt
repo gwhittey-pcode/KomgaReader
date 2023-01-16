@@ -75,10 +75,16 @@ fun HomeScreen(
                         scope.launch {
                             scaffoldState.drawerState.close()
                         }
-                        when(id){
-                            "home" -> {navigator.navigate(HomeScreenDestination())}
-                            "settings" -> {navigator.navigate(SettingsScreenDestination())}
-                            else -> {navigator.navigate(AllSeriesScreenDestination(libraryId = id))}
+                        when (id) {
+                            "home" -> {
+                                navigator.navigate(HomeScreenDestination())
+                            }
+                            "settings" -> {
+                                navigator.navigate(SettingsScreenDestination())
+                            }
+                            else -> {
+                                navigator.navigate(AllSeriesScreenDestination(libraryId = id))
+                            }
                         }
                     }
                 )
@@ -93,7 +99,7 @@ fun HomeScreen(
             ) {
 
                 //----Keep Reading start
-                item{
+                item {
                     Spacer(modifier = Modifier.height(height = 20.dp))
                     Row {
                         Text(
@@ -116,15 +122,15 @@ fun HomeScreen(
                                 modifier = Modifier
                                     .padding(16.dp)
                                     .fillMaxWidth(),
-                                onItemClick = {navigator.navigate(BookInfoScreenDestination(bookId = it))}
+                                onItemClick = { navigator.navigate(BookInfoScreenDestination(bookId = it)) }
                             )
                         }
                     }
                 }//End Keep Reading items LazyRo
 
-                item{//-On Deck Start
+                item {//-On Deck Start
                     Spacer(modifier = Modifier.height(height = 20.dp))
-                    Row() {
+                    Row {
                         Text(
                             text = stringResource(id = R.string.on_deck),
                             color = Color.Black,
@@ -136,7 +142,7 @@ fun HomeScreen(
                     Spacer(modifier = Modifier.width(8.dp))
                 }
                 item {
-                    LazyRow() {//Start  On Dek items LazyRow
+                    LazyRow {//Start  On Dek items LazyRow
                         items(onDeckBooksState.itemCount) { i ->
                             val onDeckBook = onDeckBooksState[i]
                             BookThumbCard(
@@ -145,13 +151,13 @@ fun HomeScreen(
                                 modifier = Modifier
                                     .padding(16.dp)
                                     .fillMaxWidth(),
-                                onItemClick = {navigator.navigate(BookInfoScreenDestination(bookId = it))}
+                                onItemClick = { navigator.navigate(BookInfoScreenDestination(bookId = it)) }
                             )
                         }
                     }
                 }//End On Dek items LazyRow
                 //----Keep recently_added_books start
-                item{
+                item {
                     Spacer(modifier = Modifier.height(height = 20.dp))
                     Row {
                         Text(
@@ -174,14 +180,14 @@ fun HomeScreen(
                                 modifier = Modifier
                                     .padding(16.dp)
                                     .fillMaxWidth(),
-                              onItemClick = {navigator.navigate(BookInfoScreenDestination(bookId = it))}
+                                onItemClick = { navigator.navigate(BookInfoScreenDestination(bookId = it)) }
                             )
                         }
                     }
                 }//End recently_added_booksitems LazyRo
 
                 //Start New Series
-                item{
+                item {
                     Spacer(modifier = Modifier.height(height = 20.dp))
                     Row {
                         Text(
@@ -207,14 +213,20 @@ fun HomeScreen(
                                 modifier = Modifier
                                     .padding(16.dp)
                                     .fillMaxWidth(),
-                                onItemClick = { navigator.navigate(SeriesByIdScreenDestination(seriesId = it))}
+                                onItemClick = {
+                                    navigator.navigate(
+                                        SeriesByIdScreenDestination(
+                                            seriesId = it
+                                        )
+                                    )
+                                }
                             )
                         }
                     }
                 }//End New Series
 
                 //Start Updated Series
-                item{
+                item {
                     Spacer(modifier = Modifier.height(height = 20.dp))
                     Row {
                         Text(
@@ -240,7 +252,13 @@ fun HomeScreen(
                                 modifier = Modifier
                                     .padding(16.dp)
                                     .fillMaxWidth(),
-                                onItemClick = { navigator.navigate(SeriesByIdScreenDestination(seriesId = it))}
+                                onItemClick = {
+                                    navigator.navigate(
+                                        SeriesByIdScreenDestination(
+                                            seriesId = it
+                                        )
+                                    )
+                                }
                             )
                         }
                     }

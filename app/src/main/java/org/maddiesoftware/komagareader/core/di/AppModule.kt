@@ -82,4 +82,13 @@ object AppModule {
             validateUrl = ValidateUrl(),
         )
     }
+
+    @Singleton
+    @Provides
+    fun providesBookReaderUseCases(apiRepository: ApiRepository): BookReaderUseCases{
+        return BookReaderUseCases(
+            updateReadProgress = UpdateReadProgress(apiRepository = apiRepository)
+        )
+
+    }
 }

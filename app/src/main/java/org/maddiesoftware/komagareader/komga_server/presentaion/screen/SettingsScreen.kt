@@ -34,7 +34,7 @@ import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.Setti
 fun SettingsScreen(
     navigator: DestinationsNavigator,
     viewModel: SettingsViewModel = hiltViewModel()
-){
+) {
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
     val state = viewModel.state
@@ -58,18 +58,24 @@ fun SettingsScreen(
                     scope.launch {
                         scaffoldState.drawerState.close()
                     }
-                    when(id){
-                        "home" -> {navigator.navigate(HomeScreenDestination())}
-                        "settings" -> {navigator.navigate(SettingsScreenDestination())}
-                        else -> {navigator.navigate(AllSeriesScreenDestination(libraryId = id))}
+                    when (id) {
+                        "home" -> {
+                            navigator.navigate(HomeScreenDestination())
+                        }
+                        "settings" -> {
+                            navigator.navigate(SettingsScreenDestination())
+                        }
+                        else -> {
+                            navigator.navigate(AllSeriesScreenDestination(libraryId = id))
+                        }
                     }
                 }
             )
 
         }
-    ){
+    ) {
 
-        Column() {
+        Column {
             HeaderText()
             //BookReader Settings Colum
             Column(
@@ -86,7 +92,10 @@ fun SettingsScreen(
                     modifier = Modifier
                         .padding(vertical = 8.dp)
                 )
-                Log.d("Settings","viewModel.state.useDblPageSplit = ${viewModel.state.useDblPageSplit}")
+                Log.d(
+                    "Settings",
+                    "viewModel.state.useDblPageSplit = ${viewModel.state.useDblPageSplit}"
+                )
                 GeneralSettingItem(
                     icon = Icons.Default.Splitscreen,
                     mainText = "Split Double Pages",
@@ -94,9 +103,9 @@ fun SettingsScreen(
                     onClick = {},
                     settingsControl = {
                         Switch(
-                            checked =viewModel.state.useDblPageSplit ,
+                            checked = viewModel.state.useDblPageSplit,
                             colors = SwitchDefaults.colors(MaterialTheme.colors.primary),
-                            onCheckedChange = {viewModel.writeUseDblPageSplit(it)}
+                            onCheckedChange = { viewModel.writeUseDblPageSplit(it) }
                         )
                     },
                 )
@@ -104,6 +113,7 @@ fun SettingsScreen(
         }
     }
 }
+
 @Composable
 fun HeaderText() {
     Text(

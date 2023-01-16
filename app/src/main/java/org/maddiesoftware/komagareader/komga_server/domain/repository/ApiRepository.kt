@@ -4,6 +4,7 @@ import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
 import org.maddiesoftware.komagareader.core.util.Resource
 import org.maddiesoftware.komagareader.komga_server.domain.model.*
+import retrofit2.Response
 
 interface ApiRepository {
     suspend fun getLatest(): Resource<PageSeries?>
@@ -29,5 +30,7 @@ interface ApiRepository {
     suspend fun getBookById(bookId: String): Resource<Book>
 
     suspend fun getPages(bookId: String): Resource<List<Page>>
+
+    suspend fun updateReadProgress(bookId: String,page: Int,completed:Boolean): Resource<Response<Unit>>
 
 }

@@ -64,10 +64,11 @@ fun BookReaderScreen(
 //    mainViewModule: MainViewModule = hiltViewModel(),
     navigator: DestinationsNavigator,
 ) {
-    val TOP_BAR_HEIGHT = 56.dp
+    val topBarHeight = 56.dp
     val configuration = LocalConfiguration.current
     val bookInfo = viewModel.state.bookInfo
     val pagesInfo = viewModel.state.pagesInfo
+    var doingUpdateReadProgress = viewModel.state.doingUpdateReadProgress
     val usePageSplit = viewModel.state.useDblPageSplit
     val screenHeight = configuration.screenHeightDp.dp
     val screenWidth = configuration.screenWidthDp.dp
@@ -95,8 +96,8 @@ fun BookReaderScreen(
     var isOverlayVisible by remember { mutableStateOf(true) }
     val pagerPages = remember { mutableListOf<BookPage>() }
     var newIndexAdd: Int = 0
-    var theCount  by remember { mutableStateOf(0) }
-    if(usePageSplit){
+    var theCount by remember { mutableStateOf(0) }
+    if (usePageSplit) {
         pagerPages.clear()
         pagesInfo?.forEachIndexed { index, page ->
             if (page.width!! > page.height!!) {
@@ -117,7 +118,7 @@ fun BookReaderScreen(
                 newIndexAdd += 1
                 pagerPages.add(newBookPage)
                 pagerPages.add(newBookPage2)
-            }else{
+            } else {
                 val newBookPage = BookPage(
                     index = index + newIndexAdd,
                     doSplit = false,
@@ -129,31 +130,32 @@ fun BookReaderScreen(
         }
     }
 
-    theCount = if (usePageSplit){
+    theCount = if (usePageSplit) {
         pagerPages.size
-    }else{
+    } else {
         bookInfo?.media?.pagesCount?.toInt() ?: 0
     }
-    Log.d("theCount-vm","theCount = $theCount")
-    pagerPages.forEach(){
-        Log.d("Pager","index = ${it.index} pageName = ${it.pageName}  doSplit = ${it.doSplit} number = ${it.number}" )
+    Log.d("theCount-vm", "theCount = $theCount")
+    pagerPages.forEach() {
+        Log.d(
+            "Pager",
+            "index = ${it.index} pageName = ${it.pageName}  doSplit = ${it.doSplit} number = ${it.number}"
+        )
     }
-    if(!usePageSplit){
+    if (!usePageSplit) {
         if (bookInfo?.media?.pagesCount != null) {
             pageNum = bookInfo.media.pagesCount
         }
-    }else{
+    } else {
         pageNum = pagerPages.size
     }
 
     if (bookInfo?.readProgress?.page != null) {
-        if(!usePageSplit){
+        if (!usePageSplit) {
             startPage = bookInfo.readProgress.page
-            if(startPage !=0) startPage-=1
-            Log.d("startPAge","!usePageSplit startPAge = $startPage")
-        }else{
-            startPage = pagerPages.indexOfFirst  { it.number == bookInfo.readProgress.page }
-            Log.d("startPAge","usePageSplit startPAge = $startPage")
+            if (startPage != 0) startPage -= 1
+           } else {
+            startPage = pagerPages.indexOfFirst { it.number == bookInfo.readProgress.page }
         }
 
         LaunchedEffect(pagerState) {
@@ -197,7 +199,7 @@ fun BookReaderScreen(
         scaffoldState = scaffoldState,
         topBar = {
             NavBar(
-                modifier = Modifier.height(height = if (!showTopBar.value) 0.dp else TOP_BAR_HEIGHT),
+                modifier = Modifier.height(height = if (!showTopBar.value) 0.dp else topBarHeight),
                 onNavigationIconClick = { navigator.navigateUp() },
                 onMenuItemClick = {
                     scope.launch {
@@ -214,10 +216,16 @@ fun BookReaderScreen(
                     scope.launch {
                         scaffoldState.drawerState.close()
                     }
-                    when(id){
-                        "home" -> {navigator.navigate(HomeScreenDestination())}
-                        "settings" -> {navigator.navigate(SettingsScreenDestination())}
-                        else -> {navigator.navigate(AllSeriesScreenDestination(libraryId = id))}
+                    when (id) {
+                        "home" -> {
+                            navigator.navigate(HomeScreenDestination())
+                        }
+                        "settings" -> {
+                            navigator.navigate(SettingsScreenDestination())
+                        }
+                        else -> {
+                            navigator.navigate(AllSeriesScreenDestination(libraryId = id))
+                        }
                     }
                 }
             )
@@ -229,7 +237,7 @@ fun BookReaderScreen(
             HorizontalPager(
                 count = theCount,
                 state = pagerState,
-                ) { page ->
+            ) { page ->
                 ConstraintLayout(modifier = Modifier.fillMaxSize()) {
                     val (bookPageImg, nextPageButton, prevPageButton, dialogOpenPageNavButton, dialogOpenSeriesBookNavButton, dialogOpenTopBarButton) = createRefs()
                     val zoomState = rememberZoomableState(
@@ -240,6 +248,17 @@ fun BookReaderScreen(
                     LaunchedEffect(pagerState) {
                         // Collect from the pager state a snapshotFlow reading the currentPage
                         snapshotFlow { pagerState.currentPage }.collect { page ->
+                            val tmpPageCount = bookInfo?.media?.pagesCount
+
+                            if ((tmpPageCount != null) && (page > startPage) && !doingUpdateReadProgress) {
+                                startPage = page
+
+                                viewModel.updateReadProgress(
+                                    page = page + 1,
+                                    pageCount = tmpPageCount.toInt(),
+                                    bookId = bookId
+                                )
+                            }
                             val targetScale = zoomState.minScale
                             zoomState.animateScaleTo(
                                 targetScale = targetScale,
@@ -275,7 +294,7 @@ fun BookReaderScreen(
                             }
                         ) {
                             if (usePageSplit) {
-                                Log.d("check","bookimage")
+                                Log.d("check", "bookimage")
                                 val bookPage = pagerPages[page]
                                 BookPageImage(id = bookId, bookPage = bookPage)
                             } else {
@@ -404,8 +423,7 @@ fun BookReaderScreen(
             }
 
 
-
-            }
+        }
 
     }
 
