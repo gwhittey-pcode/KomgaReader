@@ -38,7 +38,6 @@ import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.MainV
 import java.text.SimpleDateFormat
 import java.util.*
 
-@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterialApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Destination
