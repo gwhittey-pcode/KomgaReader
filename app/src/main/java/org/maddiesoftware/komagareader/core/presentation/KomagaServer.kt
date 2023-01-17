@@ -12,6 +12,7 @@ import com.ramcosta.composedestinations.animations.rememberAnimatedNavHostEngine
 import kotlinx.coroutines.launch
 import org.maddiesoftware.komagareader.NavGraphs
 import org.maddiesoftware.komagareader.core.presentation.componets.MainScaffold
+import org.maddiesoftware.komagareader.destinations.BookReaderScreenDestination
 import org.maddiesoftware.komagareader.destinations.Destination
 import org.maddiesoftware.komagareader.destinations.ServerSelectScreenDestination
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.NavBar
@@ -78,7 +79,7 @@ fun KomgaServer() {
     )
 }
 
-private val Destination.shouldShowScaffoldElements get() = this !is ServerSelectScreenDestination
+private val Destination.shouldShowScaffoldElements get() = this !in listOf(ServerSelectScreenDestination,BookReaderScreenDestination)
 
 
 //onItemClick = { id ->
