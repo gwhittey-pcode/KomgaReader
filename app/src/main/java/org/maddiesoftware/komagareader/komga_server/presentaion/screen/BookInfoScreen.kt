@@ -11,7 +11,6 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MenuBook
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
@@ -52,8 +51,6 @@ fun BookInfoScreen(
 ) {
     val serverInfo = ServerInfoSingleton
     val bookInfo = viewModel.state.bookInfo
-    val scaffoldState = rememberScaffoldState()
-    val scope = rememberCoroutineScope()
     val date = bookInfo?.metadata?.releaseDate
 
 //    val formattedDate  =  date.format(formatter)

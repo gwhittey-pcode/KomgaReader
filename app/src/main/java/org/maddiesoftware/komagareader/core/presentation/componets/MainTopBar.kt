@@ -7,7 +7,6 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavBackStackEntry
-import kotlinx.coroutines.CoroutineScope
 import org.maddiesoftware.komagareader.destinations.Destination
 
 @Composable
@@ -17,8 +16,6 @@ fun MainTopBar(
     modifier: Modifier = Modifier,
     destination: Destination,
     navBackStackEntry: NavBackStackEntry?,
-
-
     ) {
     TopAppBar(
         modifier = modifier,

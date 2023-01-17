@@ -12,9 +12,9 @@ import com.ramcosta.composedestinations.animations.rememberAnimatedNavHostEngine
 import kotlinx.coroutines.launch
 import org.maddiesoftware.komagareader.NavGraphs
 import org.maddiesoftware.komagareader.core.presentation.componets.MainScaffold
-import org.maddiesoftware.komagareader.core.presentation.componets.MainTopBar
 import org.maddiesoftware.komagareader.destinations.Destination
 import org.maddiesoftware.komagareader.destinations.ServerSelectScreenDestination
+import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.NavBar
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.NavDrawer
 
 @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterialNavigationApi::class)
@@ -32,7 +32,7 @@ fun KomgaServer() {
         scopeState = scopeState,
         topBar = { dest, backStackEntry ->
             if (dest.shouldShowScaffoldElements) {
-                MainTopBar(
+                NavBar(
                     onMenuItemClick = {
                         scopeState.launch {
                             scaffoldState.drawerState.open()

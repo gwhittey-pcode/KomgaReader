@@ -6,12 +6,16 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavBackStackEntry
+import org.maddiesoftware.komagareader.destinations.Destination
 
 @Composable
 fun NavBar(
     onNavigationIconClick: () -> Unit,
     onMenuItemClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    destination: Destination,
+    navBackStackEntry: NavBackStackEntry?,
 ) {
     TopAppBar(
         modifier = modifier,
@@ -31,10 +35,11 @@ fun NavBar(
         },
         actions = {
             IconButton(onClick = onMenuItemClick) {
-            Icon(
-                imageVector = Icons.Default.Menu,
-                contentDescription = "Toggle drawer"
-            )
-        }}
+                Icon(
+                    imageVector = Icons.Default.Menu,
+                    contentDescription = "Toggle drawer"
+                )
+            }
+        }
     )
 }
