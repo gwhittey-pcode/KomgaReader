@@ -20,12 +20,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import kotlinx.coroutines.launch
 import org.maddiesoftware.komagareader.R
 import org.maddiesoftware.komagareader.core.data.local.ServerInfoSingleton
 import org.maddiesoftware.komagareader.destinations.*
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.*
-import org.maddiesoftware.komagareader.komga_server.presentaion.navigation.BottomBar
 import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.AllSeriesViewModel
 import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.MainViewModule
 
@@ -33,10 +31,10 @@ import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.MainV
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun AllSeriesTab(
-     navigator: DestinationsNavigator,
-     viewModel: AllSeriesViewModel = hiltViewModel(),
-     mainViewModule: MainViewModule = hiltViewModel(),
-     libraryId: String? = null,
+    navigator: DestinationsNavigator,
+    viewModel: AllSeriesViewModel = hiltViewModel(),
+    mainViewModule: MainViewModule = hiltViewModel(),
+    libraryId: String? = null,
 ) {
     val serverInfo = ServerInfoSingleton
     val seriesState = viewModel.seriesState
@@ -45,108 +43,62 @@ fun AllSeriesTab(
     val libraryList = mainViewModule.state.libraryList
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
-    Scaffold(
-        scaffoldState = scaffoldState,
-        bottomBar = {
-            BottomBar(
-                onItemClick = {
-                    when(it){
-                        "Series" -> {navigator.navigate(AllSeriesScreenDestination(libraryId = libraryId))}
-                        "Read List" -> {navigator.navigate(AllReadListScreenDestination(libraryId = libraryId))}
-                        "Collections" -> {}
-                    }
-                }
-            )
-        },
-        topBar = {
-            NavBar(
-                onNavigationIconClick = { navigator.navigateUp() },
-                onMenuItemClick = {
-                    scope.launch {
-                        scaffoldState.drawerState.open()
-                    }
-                }
-            )
-        },
-        drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
-        drawerContent = {
-            NavDrawer(
-                libraryList = libraryList,
-                onItemClick = { id ->
-                    scope.launch {
-                        scaffoldState.drawerState.close()
-                    }
-                    when (id) {
-                        "home" -> {
-                            navigator.navigate(HomeScreenDestination())
-                        }
-                        "settings" -> {
-                            navigator.navigate(SettingsScreenDestination())
-                        }
-                        else -> {
-                            navigator.navigate(AllSeriesScreenDestination(libraryId = id))
-                        }
-                    }
-                }
-            )
-        }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+            .padding(16.dp)
     ) {
-        Column(
+        LazyVerticalGrid(
+            columns = GridCells.Adaptive(155.dp),
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.White)
-                .padding(16.dp)
+                .padding(5.dp)
         ) {
-            LazyVerticalGrid(
-                columns = GridCells.Adaptive(155.dp),
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(5.dp)
-            ) {
-                items(seriesState.itemCount) { i ->
-                    val series = seriesState[i]
-                    SeriesThumbCard(
-                        url = "${serverInfo.url}api/v1/series/${series?.id}/thumbnail",
-                        booksCount = series?.booksCount,
-                        booksUnreadCount = series?.booksUnreadCount,
-                        id = series?.id.toString(),
-                        title = series?.metadata?.title,
-                        modifier = Modifier
-                            .padding(16.dp)
-                            .fillMaxWidth(),
-                        onItemClick = { navigator.navigate(SeriesByIdScreenDestination(seriesId = series?.id)) }
-                    )
+            items(seriesState.itemCount) { i ->
+                val series = seriesState[i]
+                SeriesThumbCard(
+                    url = "${serverInfo.url}api/v1/series/${series?.id}/thumbnail",
+                    booksCount = series?.booksCount,
+                    booksUnreadCount = series?.booksUnreadCount,
+                    id = series?.id.toString(),
+                    title = series?.metadata?.title,
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .fillMaxWidth(),
+                    onItemClick = { navigator.navigate(SeriesByIdScreenDestination(seriesId = series?.id)) }
+                )
 
-                }
-                item {
-                    PaginationStateHandler(
-                        paginationState = seriesState,
-                        loadingComponent = {
-                            Box(
-                                modifier = Modifier.fillMaxWidth(),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                CircularProgressIndicator()
-                            }
-                        },
-                        errorComponent = {
-                            WarningMessage(
-                                text = stringResource(id = R.string.err_loading_string),
-                                trailingContent = {
-                                    Text(
-                                        text = stringResource(id = R.string.lbl_retry),
-                                        modifier = Modifier
-                                            .padding(start = 3.dp)
-                                            .clickable(role = Role.Button) { seriesState.retry() },
-                                        textDecoration = TextDecoration.Underline,
-                                        fontWeight = FontWeight.Bold,
-                                        color = MaterialTheme.colors.onSecondary,
-                                    )
-                                }
-                            )
+            }
+            item {
+                PaginationStateHandler(
+                    paginationState = seriesState,
+                    loadingComponent = {
+                        Box(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator()
                         }
-                    )
-                }
+                    },
+                    errorComponent = {
+                        WarningMessage(
+                            text = stringResource(id = R.string.err_loading_string),
+                            trailingContent = {
+                                Text(
+                                    text = stringResource(id = R.string.lbl_retry),
+                                    modifier = Modifier
+                                        .padding(start = 3.dp)
+                                        .clickable(role = Role.Button) { seriesState.retry() },
+                                    textDecoration = TextDecoration.Underline,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colors.onSecondary,
+                                )
+                            }
+                        )
+                    }
+                )
             }
         }
     }

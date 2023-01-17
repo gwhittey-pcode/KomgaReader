@@ -6,7 +6,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.material.*
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -21,12 +24,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import kotlinx.coroutines.launch
 import org.maddiesoftware.komagareader.R
 import org.maddiesoftware.komagareader.core.data.local.ServerInfoSingleton
-import org.maddiesoftware.komagareader.destinations.*
-import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.*
-import org.maddiesoftware.komagareader.komga_server.presentaion.navigation.BottomBar
+import org.maddiesoftware.komagareader.destinations.SeriesByIdScreenDestination
+import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.PaginationStateHandler
+import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.SeriesThumbCard
+import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.WarningMessage
 import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.AllSeriesViewModel
 import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.MainViewModule
 
@@ -47,52 +50,6 @@ fun AllSeriesScreen(
     val libraryList = mainViewModule.state.libraryList
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
-    Scaffold(
-        scaffoldState = scaffoldState,
-        bottomBar = {
-            BottomBar(
-                onItemClick = {
-                    when(it){
-                        "Series" -> {navigator.navigate(AllSeriesScreenDestination(libraryId = libraryId))}
-                        "Read List" -> {navigator.navigate(AllReadListScreenDestination(libraryId = libraryId))}
-                        "Collections" -> {}
-                    }
-                }
-            )
-        },
-        topBar = {
-            NavBar(
-                onNavigationIconClick = { navigator.navigateUp() },
-                onMenuItemClick = {
-                    scope.launch {
-                        scaffoldState.drawerState.open()
-                    }
-                }
-            )
-        },
-        drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
-        drawerContent = {
-            NavDrawer(
-                libraryList = libraryList,
-                onItemClick = { id ->
-                    scope.launch {
-                        scaffoldState.drawerState.close()
-                    }
-                    when (id) {
-                        "home" -> {
-                            navigator.navigate(HomeScreenDestination())
-                        }
-                        "settings" -> {
-                            navigator.navigate(SettingsScreenDestination())
-                        }
-                        else -> {
-                            navigator.navigate(AllSeriesScreenDestination(libraryId = id))
-                        }
-                    }
-                }
-            )
-        }
-    ) {
 
         Column(
             modifier = Modifier
@@ -152,6 +109,5 @@ fun AllSeriesScreen(
                 }
             }
         }
-    }
 }
 

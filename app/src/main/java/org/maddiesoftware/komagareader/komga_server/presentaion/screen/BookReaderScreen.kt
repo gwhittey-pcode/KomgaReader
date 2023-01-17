@@ -33,15 +33,10 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
 import org.maddiesoftware.komagareader.core.data.local.ServerInfoSingleton
-import org.maddiesoftware.komagareader.destinations.AllSeriesScreenDestination
 import org.maddiesoftware.komagareader.destinations.BookReaderScreenDestination
-import org.maddiesoftware.komagareader.destinations.HomeScreenDestination
-import org.maddiesoftware.komagareader.destinations.SettingsScreenDestination
 import org.maddiesoftware.komagareader.komga_server.domain.BookPage
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.bookreader.*
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.MyAsyncImage
-import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.NavBar
-import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.NavDrawer
 import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.BookReaderViewModel
 import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.MainViewModule
 
@@ -215,42 +210,6 @@ fun BookReaderScreen(
         }
 
     }
-    Scaffold(
-        scaffoldState = scaffoldState,
-        topBar = {
-            NavBar(
-                modifier = Modifier.height(height = if (!showTopBar.value) 0.dp else topBarHeight),
-                onNavigationIconClick = { navigator.navigateUp() },
-                onMenuItemClick = {
-                    scope.launch {
-                        scaffoldState.drawerState.open()
-                    }
-                }
-            )
-        },
-        drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
-        drawerContent = {
-            NavDrawer(
-                libraryList = libraryList,
-                onItemClick = { id ->
-                    scope.launch {
-                        scaffoldState.drawerState.close()
-                    }
-                    when (id) {
-                        "home" -> {
-                            navigator.navigate(HomeScreenDestination())
-                        }
-                        "settings" -> {
-                            navigator.navigate(SettingsScreenDestination())
-                        }
-                        else -> {
-                            navigator.navigate(AllSeriesScreenDestination(libraryId = id))
-                        }
-                    }
-                }
-            )
-        }
-    ) {
 
         Log.d("stateTest", "bookID = ${bookInfo?.id}")
         Column(modifier = Modifier.fillMaxSize()) {
@@ -444,10 +403,24 @@ fun BookReaderScreen(
 
 
         }
-
-    }
-
-
 }
-
+//
+//NavDrawer(
+//libraryList = libraryList,
+//onItemClick = { id ->
+//    scope.launch {
+//        scaffoldState.drawerState.close()
+//    }
+//    when (id) {
+//        "home" -> {
+//            navigator.navigate(HomeScreenDestination())
+//        }
+//        "settings" -> {
+//            navigator.navigate(SettingsScreenDestination())
+//        }
+//        else -> {
+//            navigator.navigate(AllSeriesScreenDestination(libraryId = id))
+//        }
+//    }
+//}
 

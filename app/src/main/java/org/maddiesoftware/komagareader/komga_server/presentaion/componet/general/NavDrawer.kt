@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
@@ -16,22 +17,34 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.maddiesoftware.komagareader.komga_server.domain.model.Library
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import com.ramcosta.composedestinations.navigation.navigate
+import com.ramcosta.composedestinations.navigation.popUpTo
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+import org.maddiesoftware.komagareader.NavGraphs
+import org.maddiesoftware.komagareader.destinations.AllSeriesScreenDestination
+import org.maddiesoftware.komagareader.destinations.HomeScreenDestination
+import org.maddiesoftware.komagareader.destinations.SettingsScreenDestination
+import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.MainViewModule
 
 @Composable
 fun NavDrawer(
-    libraryList: List<Library>?,
     modifier: Modifier = Modifier,
     itemTextStyle: TextStyle = TextStyle(fontSize = 18.sp),
-    onItemClick: (id: String) -> Unit,
+    navController: NavController,
+    scaffoldState: ScaffoldState,
+    scopeState: CoroutineScope,
 
 ) {
     DrawerHeader()
     DrawerBodySelectionScreen(
-        libraryList = libraryList,
         modifier = modifier,
         itemTextStyle = itemTextStyle,
-        onItemClick = onItemClick
+        navController=navController,
+        scaffoldState=scaffoldState,
+        scopeState=scopeState,
     )
 
 }
@@ -55,18 +68,24 @@ fun DrawerHeader(
 
 @Composable
 fun DrawerBodySelectionScreen(
-    libraryList: List<Library>?,
     modifier: Modifier = Modifier,
     itemTextStyle: TextStyle = TextStyle(fontSize = 18.sp),
-    onItemClick: (id: String) -> Unit,
+    navController: NavController,
+    scaffoldState: ScaffoldState,
+    scopeState: CoroutineScope,
 
     ) {
+    val mainViewModule: MainViewModule = hiltViewModel()
+    val libraryList = mainViewModule.state.libraryList
     Column {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
-                    onItemClick("readList")
+                    // Pop up to the root of the graph to
+                    // avoid building up a large stack of destinations
+                    // on the back stack as users select items
+
                 }
                 .padding(16.dp)
         ) {
@@ -89,7 +108,27 @@ fun DrawerBodySelectionScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
-                    onItemClick("home")
+                    scopeState.launch {
+                        scaffoldState.drawerState.close()
+                    }
+                    navController
+                        // Avoid multiple copies of the same destination when
+                        // reselecting the same item
+                        // Restore state when reselecting a previously selected item
+                        .navigate(HomeScreenDestination) {
+                            // Pop up to the root of the graph to
+                            // avoid building up a large stack of destinations
+                            // on the back stack as users select items
+                            popUpTo(NavGraphs.root) {
+                                saveState = true
+                            }
+
+                            // Avoid multiple copies of the same destination when
+                            // reselecting the same item
+                            launchSingleTop = true
+                            // Restore state when reselecting a previously selected item
+                            restoreState = true
+                        }
                 }
                 .padding(16.dp)
         ) {
@@ -112,7 +151,27 @@ fun DrawerBodySelectionScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
-                    onItemClick("settings")
+                    scopeState.launch {
+                        scaffoldState.drawerState.close()
+                    }
+                    navController
+                        // Avoid multiple copies of the same destination when
+                        // reselecting the same item
+                        // Restore state when reselecting a previously selected item
+                        .navigate(SettingsScreenDestination) {
+                            // Pop up to the root of the graph to
+                            // avoid building up a large stack of destinations
+                            // on the back stack as users select items
+                            popUpTo(NavGraphs.root) {
+                                saveState = true
+                            }
+
+                            // Avoid multiple copies of the same destination when
+                            // reselecting the same item
+                            launchSingleTop = true
+                            // Restore state when reselecting a previously selected item
+                            restoreState = true
+                        }
                 }
                 .padding(16.dp)
         ) {
@@ -135,7 +194,29 @@ fun DrawerBodySelectionScreen(
             NavDrawerExpandCard(
                 title = "Libraries",
                 libraryList = libraryList,
-                onItemClick = onItemClick
+                onItemClick = {
+                    scopeState.launch {
+                        scaffoldState.drawerState.close()
+                    }
+                    navController
+                        // Avoid multiple copies of the same destination when
+                        // reselecting the same item
+                        // Restore state when reselecting a previously selected item
+                        .navigate(AllSeriesScreenDestination(libraryId = it)) {
+                            // Pop up to the root of the graph to
+                            // avoid building up a large stack of destinations
+                            // on the back stack as users select items
+                            popUpTo(NavGraphs.root) {
+                                saveState = true
+                            }
+
+                            // Avoid multiple copies of the same destination when
+                            // reselecting the same item
+                            launchSingleTop = true
+                            // Restore state when reselecting a previously selected item
+                            restoreState = true
+                        }
+                }
             )
         }
 

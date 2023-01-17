@@ -1,4 +1,4 @@
-package org.maddiesoftware.komagareader.komga_server.presentaion.componet.general
+package org.maddiesoftware.komagareader.core.presentation.componets
 
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -10,13 +10,13 @@ import androidx.navigation.NavBackStackEntry
 import org.maddiesoftware.komagareader.destinations.Destination
 
 @Composable
-fun NavBar(
+fun MainTopBar(
     onNavigationIconClick: () -> Unit,
     onMenuItemClick: () -> Unit,
     modifier: Modifier = Modifier,
     destination: Destination,
     navBackStackEntry: NavBackStackEntry?,
-) {
+    ) {
     TopAppBar(
         modifier = modifier,
         title = {
