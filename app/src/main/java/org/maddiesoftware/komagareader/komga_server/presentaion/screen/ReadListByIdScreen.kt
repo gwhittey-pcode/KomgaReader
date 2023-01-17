@@ -21,16 +21,10 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import kotlinx.coroutines.launch
 import org.maddiesoftware.komagareader.R
 import org.maddiesoftware.komagareader.core.data.local.ServerInfoSingleton
-import org.maddiesoftware.komagareader.destinations.AllSeriesScreenDestination
 import org.maddiesoftware.komagareader.destinations.BookInfoScreenDestination
-import org.maddiesoftware.komagareader.destinations.HomeScreenDestination
-import org.maddiesoftware.komagareader.destinations.SettingsScreenDestination
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.BookThumbCard
-import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.NavBar
-import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.NavDrawer
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.PaginationStateHandler
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.WarningMessage
 import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.MainViewModule
@@ -53,41 +47,7 @@ fun ReadListByIdScreen(
     val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()
     val serverInfo = ServerInfoSingleton
-    Scaffold(
-        scaffoldState = scaffoldState,
-        topBar = {
-            NavBar(
-                onNavigationIconClick = { navigator.navigateUp() },
-                onMenuItemClick = {
-                    scope.launch {
-                        scaffoldState.drawerState.open()
-                    }
-                }
-            )
-        },
-        drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
-        drawerContent = {
-            NavDrawer(
-                libraryList = libraryList,
-                onItemClick = { id ->
-                    scope.launch {
-                        scaffoldState.drawerState.close()
-                    }
-                    when (id) {
-                        "home" -> {
-                            navigator.navigate(HomeScreenDestination())
-                        }
-                        "settings" -> {
-                            navigator.navigate(SettingsScreenDestination())
-                        }
-                        else -> {
-                            navigator.navigate(AllSeriesScreenDestination(libraryId = id))
-                        }
-                    }
-                }
-            )
-        }
-    ) {
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -148,5 +108,4 @@ fun ReadListByIdScreen(
             }
         }
 
-    }
 }

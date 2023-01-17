@@ -16,13 +16,10 @@ import androidx.navigation.NavBackStackEntry
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import kotlinx.coroutines.launch
 import org.maddiesoftware.komagareader.R
 import org.maddiesoftware.komagareader.core.data.local.ServerInfoSingleton
 import org.maddiesoftware.komagareader.destinations.*
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.*
-import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.NavBar
-import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.NavDrawer
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.SeriesThumbCard
 import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.HomeViewModule
 import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.MainViewModule
@@ -54,45 +51,6 @@ fun HomeScreen(
     val updatedSeries = viewModel.updatedSeries
         .collectAsLazyPagingItems()
     if (state.error == null) {
-        Scaffold(
-            scaffoldState = scaffoldState,
-            topBar = {
-                NavBar(
-                    onNavigationIconClick = { navigator.navigateUp() },
-                    onMenuItemClick = {
-                        scope.launch {
-                            scaffoldState.drawerState.open()
-                        }
-                    }
-                )
-            },
-            drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
-            drawerContent = {
-                NavDrawer(
-                    libraryList = libraryList,
-                    onItemClick = { id ->
-                        scope.launch {
-                            scaffoldState.drawerState.close()
-                        }
-                        when (id) {
-                            "home" -> {
-                                navigator.navigate(HomeScreenDestination())
-                            }
-                            "settings" -> {
-                                navigator.navigate(SettingsScreenDestination())
-                            }
-                            "readList" ->{
-                                navigator.navigate(AllReadListScreenDestination(libraryId = "09YPSVS759MM2"))
-                            }
-                            else -> {
-                                navigator.navigate(AllSeriesScreenDestination(libraryId = id))
-                            }
-                        }
-                    }
-                )
-
-            }
-        ) {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
@@ -268,7 +226,4 @@ fun HomeScreen(
             }//--End Main LazyColum
 
         }
-
-    }
-
 }

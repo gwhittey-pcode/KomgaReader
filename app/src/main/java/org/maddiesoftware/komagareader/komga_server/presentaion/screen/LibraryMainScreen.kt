@@ -1,7 +1,6 @@
 package org.maddiesoftware.komagareader.komga_server.presentaion.screen
 
 import android.annotation.SuppressLint
-import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -10,11 +9,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import kotlinx.coroutines.launch
 import org.maddiesoftware.komagareader.destinations.*
-import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.NavBar
-import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.NavDrawer
-import org.maddiesoftware.komagareader.komga_server.presentaion.navigation.BottomBar
 import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.MainViewModule
 
 
@@ -31,52 +26,7 @@ fun LibraryMainScreen(
     val scaffoldState = rememberScaffoldState()
     val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()
-    Scaffold(
-        scaffoldState = scaffoldState,
-        bottomBar = {
-            BottomBar(
-                onItemClick = {
-                    when(it){
-                        "Series" -> {navigator.navigate(AllSeriesScreenDestination(libraryId = libraryId))}
-                        "Read List" -> {navigator.navigate(AllReadListScreenDestination(libraryId = libraryId))}
-                        "Collections" -> {}
-                    }
-                }
-            )
-        },
-        topBar = {
-            NavBar(
-                onNavigationIconClick = { navigator.navigateUp() },
-                onMenuItemClick = {
-                    scope.launch {
-                        scaffoldState.drawerState.open()
-                    }
-                }
-            )
-        },
-        drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
-        drawerContent = {
-            NavDrawer(
-                libraryList = libraryList,
-                onItemClick = { id ->
-                    scope.launch {
-                        scaffoldState.drawerState.close()
-                    }
-                    when (id) {
-                        "home" -> {
-                            navigator.navigate(HomeScreenDestination())
-                        }
-                        "settings" -> {
-                            navigator.navigate(SettingsScreenDestination())
-                        }
-                        else -> {
-                            navigator.navigate(LibraryMainScreenDestination(libraryId = id))
-                        }
-                    }
-                }
-            )
-        }
-    ) {
+
 //        Row {
 //            LibraryMainTabs(selectedTabIndex = pagerState.currentPage,
 //                onSelectedTab = {
@@ -103,5 +53,5 @@ fun LibraryMainScreen(
 //                }
 //            }
 //        }
-    }
+
 }

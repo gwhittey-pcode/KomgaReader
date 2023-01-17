@@ -27,19 +27,12 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import kotlinx.coroutines.launch
 import org.maddiesoftware.komagareader.core.data.local.ServerInfoSingleton
-import org.maddiesoftware.komagareader.core.data.local.ServerInfoSingleton.libraryList
 import org.maddiesoftware.komagareader.core.presentation.theme.GoldUnreadBookCount
-import org.maddiesoftware.komagareader.destinations.AllSeriesScreenDestination
 import org.maddiesoftware.komagareader.destinations.BookReaderScreenDestination
-import org.maddiesoftware.komagareader.destinations.HomeScreenDestination
-import org.maddiesoftware.komagareader.destinations.SettingsScreenDestination
 import org.maddiesoftware.komagareader.komga_server.domain.model.TriangleShape
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.ExpandableText
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.MyAsyncImage
-import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.NavBar
-import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.NavDrawer
 import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.BookInfoViewModel
 import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.MainViewModule
 import java.text.SimpleDateFormat
@@ -66,79 +59,11 @@ fun BookInfoScreen(
 
 //    val formattedDate  =  date.format(formatter)
     if (bookInfo != null) {
-        Scaffold(
-            scaffoldState = scaffoldState,
-            floatingActionButton = {
-                FloatingActionButton(
-                    onClick = {
-                        navigator.navigate(
-                            BookReaderScreenDestination(
-                                bookId = bookInfo.id.toString(),
-                                seriesId = bookInfo.seriesId.toString(),
-                                groupType = groupType,
-                                readListId = readListId
 
-                            )
-                        )
-                    },
-                    backgroundColor = MaterialTheme.colors.primary,
-                    shape = CircleShape
-                ) {
-                    Row(modifier = Modifier.width(125.dp)) {
-                        Spacer(modifier = Modifier.width(16.dp))
-                        Icon(
-                            imageVector = Icons.Default.MenuBook,
-                            contentDescription = "fab_add_order",
-                            tint = MaterialTheme.colors.onSurface
-                        )
-                        Spacer(modifier = Modifier.width(16.dp))
-                        Text(
-                            text = "Read",
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Normal
-                        )
-
-                    }
-
-                }
-            },
-            topBar = {
-                NavBar(
-                    onNavigationIconClick = { navigator.navigateUp() },
-                    onMenuItemClick = {
-                        scope.launch {
-                            scaffoldState.drawerState.open()
-                        }
-                    }
-                )
-            },
-            drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
-            drawerContent = {
-                NavDrawer(
-                    libraryList = libraryList,
-                    onItemClick = { id ->
-                        scope.launch {
-                            scaffoldState.drawerState.close()
-                        }
-                        when (id) {
-                            "home" -> {
-                                navigator.navigate(HomeScreenDestination())
-                            }
-                            "settings" -> {
-                                navigator.navigate(SettingsScreenDestination())
-                            }
-                            else -> {
-                                navigator.navigate(AllSeriesScreenDestination(libraryId = id))
-                            }
-                        }
-                    }
-                )
-            }
-        ) {
             ConstraintLayout(modifier = Modifier.fillMaxSize()) {
                 val (
                     bookThumb, bookSeriesTitle, bookReadTag, bookTitle, bookNumber, bookPageCount, bookReleaseDate,
-                    topSpacer, bookSummary
+                    topSpacer, bookSummary, floatingActionButton
                 ) = createRefs()
                 val endGuideLine = createGuidelineFromStart(256.dp)
                 Spacer(
@@ -251,10 +176,44 @@ fun BookInfoScreen(
                         )
                     }
                 }
+                FloatingActionButton(
+                    modifier = Modifier.constrainAs(floatingActionButton){
+                        bottom.linkTo(parent.bottom,30.dp)
+                        end.linkTo(parent.end,30.dp)
+
+                    },
+                    onClick = {
+                        navigator.navigate(
+                            BookReaderScreenDestination(
+                                bookId = bookInfo.id.toString(),
+                                seriesId = bookInfo.seriesId.toString(),
+                                groupType = groupType,
+                                readListId = readListId
+                            )
+                        )
+                    },
+                    backgroundColor = MaterialTheme.colors.primary,
+                    shape = CircleShape
+                ) {
+                    Row(modifier = Modifier.width(125.dp)) {
+                        Spacer(modifier = Modifier.width(16.dp))
+                        Icon(
+                            imageVector = Icons.Default.MenuBook,
+                            contentDescription = "fab_add_order",
+                            tint = MaterialTheme.colors.onSurface
+                        )
+                        Spacer(modifier = Modifier.width(16.dp))
+                        Text(
+                            text = "Read",
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Normal
+                        )
+
+                    }
+
+                }
             }
         }
-    }
-
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
