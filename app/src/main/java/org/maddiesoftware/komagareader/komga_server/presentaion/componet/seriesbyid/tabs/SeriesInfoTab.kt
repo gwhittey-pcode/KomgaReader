@@ -25,18 +25,18 @@ import org.maddiesoftware.komagareader.core.data.local.ServerInfoSingleton
 import org.maddiesoftware.komagareader.core.presentation.theme.GoldUnreadBookCount
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.ExpandableText
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.MyAsyncImage
-import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.MainViewModule
+import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.LibraryViewModule
 import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.SeriesByIdViewModel
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SeriesInfoTab(
     viewModel: SeriesByIdViewModel = hiltViewModel(),
-    mainViewModule: MainViewModule = hiltViewModel(),
+    libraryViewModule: LibraryViewModule = hiltViewModel(),
 ) {
     val serverInfo = ServerInfoSingleton
     val seriesInfo = viewModel.state.seriesInfo
-    val libraryList = mainViewModule.state.libraryList
+    val libraryList = libraryViewModule.state.libraryList
     var libraryName: String = ""
     var seriesYear: String = ""
     if (libraryList != null) {

@@ -16,7 +16,6 @@ import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
 import com.ramcosta.composedestinations.spec.Route
 import kotlinx.coroutines.CoroutineScope
 import org.maddiesoftware.komagareader.appCurrentDestinationAsState
-import org.maddiesoftware.komagareader.destinations.BookReaderScreenDestination
 import org.maddiesoftware.komagareader.destinations.Destination
 import org.maddiesoftware.komagareader.startAppDestination
 
@@ -55,7 +54,6 @@ fun MainScaffold(
         )
     }
 }
-private val Destination.hideTopBar get() = this !is BookReaderScreenDestination
 
 
 //drawerGesturesEnabled = scaffoldState.drawerState.isOpen,

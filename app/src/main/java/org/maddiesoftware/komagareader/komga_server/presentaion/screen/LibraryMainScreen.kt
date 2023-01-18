@@ -10,7 +10,7 @@ import com.google.accompanist.pager.rememberPagerState
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.maddiesoftware.komagareader.destinations.*
-import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.MainViewModule
+import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.LibraryViewModule
 
 
 @OptIn(ExperimentalPagerApi::class)
@@ -19,10 +19,10 @@ import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.MainV
 @Destination
 fun LibraryMainScreen(
     navigator: DestinationsNavigator,
-    mainViewModule: MainViewModule = hiltViewModel(),
+    libraryViewModule: LibraryViewModule = hiltViewModel(),
     libraryId: String? = null,
 ){
-    val libraryList = mainViewModule.state.libraryList
+    val libraryList = libraryViewModule.state.libraryList
     val scaffoldState = rememberScaffoldState()
     val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()

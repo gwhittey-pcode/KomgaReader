@@ -12,15 +12,15 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import org.maddiesoftware.komagareader.core.util.Resource
 import org.maddiesoftware.komagareader.komga_server.domain.repository.ApiRepository
-import org.maddiesoftware.komagareader.komga_server.presentaion.state.MainState
+import org.maddiesoftware.komagareader.komga_server.presentaion.state.LibaryState
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModule @Inject constructor(
+class LibraryViewModule @Inject constructor(
     private val repository: ApiRepository,
     private val savedStateHandle: SavedStateHandle,
 ): ViewModel() {
-    var state by mutableStateOf(MainState())
+    var state by mutableStateOf(LibaryState())
 
     init {
         getLibraryList()

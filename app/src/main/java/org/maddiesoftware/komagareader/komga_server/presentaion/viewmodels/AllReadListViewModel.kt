@@ -19,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AllReadListViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    readListUseCases: ReadListUseCases
+    readListUseCases: ReadListUseCases,
 
 ): ViewModel() {
 

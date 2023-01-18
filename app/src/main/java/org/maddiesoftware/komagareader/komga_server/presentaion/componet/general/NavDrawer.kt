@@ -27,7 +27,7 @@ import org.maddiesoftware.komagareader.NavGraphs
 import org.maddiesoftware.komagareader.destinations.AllSeriesScreenDestination
 import org.maddiesoftware.komagareader.destinations.HomeScreenDestination
 import org.maddiesoftware.komagareader.destinations.SettingsScreenDestination
-import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.MainViewModule
+import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.LibraryViewModule
 
 @Composable
 fun NavDrawer(
@@ -75,8 +75,8 @@ fun DrawerBodySelectionScreen(
     scopeState: CoroutineScope,
 
     ) {
-    val mainViewModule: MainViewModule = hiltViewModel()
-    val libraryList = mainViewModule.state.libraryList
+    val libraryViewModule: LibraryViewModule = hiltViewModel()
+    val libraryList = libraryViewModule.state.libraryList
     Column {
         Row(
             modifier = Modifier

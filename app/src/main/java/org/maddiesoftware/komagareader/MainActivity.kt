@@ -8,7 +8,6 @@ import org.maddiesoftware.komagareader.core.presentation.KomgaServer
 import org.maddiesoftware.komagareader.core.presentation.theme.KomgaReaderTheme
 
 
-
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

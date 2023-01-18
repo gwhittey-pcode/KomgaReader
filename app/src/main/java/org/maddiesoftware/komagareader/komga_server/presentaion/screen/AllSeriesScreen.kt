@@ -26,12 +26,13 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.maddiesoftware.komagareader.R
 import org.maddiesoftware.komagareader.core.data.local.ServerInfoSingleton
+import org.maddiesoftware.komagareader.core.presentation.viewmodels.MainViewModel
 import org.maddiesoftware.komagareader.destinations.SeriesByIdScreenDestination
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.PaginationStateHandler
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.SeriesThumbCard
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.WarningMessage
 import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.AllSeriesViewModel
-import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.MainViewModule
+import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.LibraryViewModule
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter", "SuspiciousIndentation")
 @Destination
@@ -39,15 +40,17 @@ import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.MainV
 fun AllSeriesScreen(
     navigator: DestinationsNavigator,
     viewModel: AllSeriesViewModel = hiltViewModel(),
-    mainViewModule: MainViewModule = hiltViewModel(),
+    libraryViewModule: LibraryViewModule = hiltViewModel(),
     libraryId: String? = null,
+    mainViewModel: MainViewModel
     ) {
+    mainViewModel.showTopBar.value = true
     val serverInfo = ServerInfoSingleton
     val seriesState = viewModel.seriesState
         .collectAsLazyPagingItems()
 
 
-    val libraryList = mainViewModule.state.libraryList
+    val libraryList = libraryViewModule.state.libraryList
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
 

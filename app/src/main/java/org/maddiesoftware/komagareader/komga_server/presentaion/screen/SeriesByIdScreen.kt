@@ -13,13 +13,14 @@ import com.google.accompanist.pager.rememberPagerState
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
+import org.maddiesoftware.komagareader.core.presentation.viewmodels.MainViewModel
 import org.maddiesoftware.komagareader.destinations.BookInfoScreenDestination
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.*
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.seriesbyid.SeriesByIdTabPage
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.seriesbyid.SeriesByIdTabs
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.seriesbyid.tabs.BooksFromSeriesTab
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.seriesbyid.tabs.SeriesInfoTab
-import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.MainViewModule
+import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.LibraryViewModule
 
 
 @OptIn(ExperimentalPagerApi::class)
@@ -29,44 +30,46 @@ import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.MainV
 fun SeriesByIdScreen(
     seriesId: String? = null,
     navigator: DestinationsNavigator,
-    mainViewModule: MainViewModule = hiltViewModel(),
+    libraryViewModule: LibraryViewModule = hiltViewModel(),
+    mainViewModel: MainViewModel,
 ) {
-    val libraryList = mainViewModule.state.libraryList
+    mainViewModel.showTopBar.value = true
+    val libraryList = libraryViewModule.state.libraryList
     val scaffoldState = rememberScaffoldState()
     val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()
 
-        Column(
-            modifier = Modifier
-                .background(MaterialTheme.colors.surface)
-                .fillMaxSize()
-        ) {
-            Row {
-                SeriesByIdTabs(selectedTabIndex = pagerState.currentPage,
-                    onSelectedTab = {
-                        scope.launch {
-                            pagerState.animateScrollToPage(it.ordinal)
-                        }
-                    })
-            }
-            Row {
-                HorizontalPager(
-                    count = SeriesByIdTabPage.values().size,
-                    state = pagerState
-                ) { index ->
-                    Column(Modifier.fillMaxSize()) {
-                        when (index) {
-                            0 -> BooksFromSeriesTab(
-                                onItemClick = {
-                                    navigator.navigate(BookInfoScreenDestination(bookId = it))
-                                }
-                            )
-                            1 -> SeriesInfoTab()
-                        }
+    Column(
+        modifier = Modifier
+            .background(MaterialTheme.colors.surface)
+            .fillMaxSize()
+    ) {
+        Row {
+            SeriesByIdTabs(selectedTabIndex = pagerState.currentPage,
+                onSelectedTab = {
+                    scope.launch {
+                        pagerState.animateScrollToPage(it.ordinal)
+                    }
+                })
+        }
+        Row {
+            HorizontalPager(
+                count = SeriesByIdTabPage.values().size,
+                state = pagerState
+            ) { index ->
+                Column(Modifier.fillMaxSize()) {
+                    when (index) {
+                        0 -> BooksFromSeriesTab(
+                            onItemClick = {
+                                navigator.navigate(BookInfoScreenDestination(bookId = it))
+                            }
+                        )
+                        1 -> SeriesInfoTab()
                     }
                 }
             }
         }
-  
+    }
+
 }
 

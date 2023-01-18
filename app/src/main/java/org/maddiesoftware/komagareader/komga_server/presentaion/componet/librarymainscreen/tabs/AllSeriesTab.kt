@@ -25,7 +25,7 @@ import org.maddiesoftware.komagareader.core.data.local.ServerInfoSingleton
 import org.maddiesoftware.komagareader.destinations.*
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.*
 import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.AllSeriesViewModel
-import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.MainViewModule
+import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.LibraryViewModule
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterialApi::class)
@@ -33,14 +33,14 @@ import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.MainV
 fun AllSeriesTab(
     navigator: DestinationsNavigator,
     viewModel: AllSeriesViewModel = hiltViewModel(),
-    mainViewModule: MainViewModule = hiltViewModel(),
+    libraryViewModule: LibraryViewModule = hiltViewModel(),
     libraryId: String? = null,
 ) {
     val serverInfo = ServerInfoSingleton
     val seriesState = viewModel.seriesState
         .collectAsLazyPagingItems()
 
-    val libraryList = mainViewModule.state.libraryList
+    val libraryList = libraryViewModule.state.libraryList
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
 

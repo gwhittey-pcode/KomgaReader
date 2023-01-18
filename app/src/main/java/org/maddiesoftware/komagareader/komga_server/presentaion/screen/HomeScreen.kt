@@ -18,11 +18,12 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.maddiesoftware.komagareader.R
 import org.maddiesoftware.komagareader.core.data.local.ServerInfoSingleton
+import org.maddiesoftware.komagareader.core.presentation.viewmodels.MainViewModel
 import org.maddiesoftware.komagareader.destinations.*
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.*
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.SeriesThumbCard
 import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.HomeViewModule
-import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.MainViewModule
+import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.LibraryViewModule
 
 @Destination
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -31,12 +32,13 @@ fun HomeScreen(
     navigator: DestinationsNavigator,
     navBackStackEntry: NavBackStackEntry,
     viewModel: HomeViewModule = hiltViewModel(),
-    mainViewModule: MainViewModule = hiltViewModel()
-//    lastUpdated: Resource<PageSeries>,
+    libraryViewModule: LibraryViewModule = hiltViewModel(),
+    mainViewModel: MainViewModel,
 
 ) {
+    mainViewModel.showTopBar.value = true
     val state = viewModel.state
-    val libraryList = mainViewModule.state.libraryList
+    val libraryList = libraryViewModule.state.libraryList
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
     val serverInfo = ServerInfoSingleton

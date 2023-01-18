@@ -17,6 +17,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.maddiesoftware.komagareader.core.presentation.theme.Poppins
+import org.maddiesoftware.komagareader.core.presentation.viewmodels.MainViewModel
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.settings.GeneralSettingItem
 import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.SettingsViewModel
 
@@ -26,48 +27,50 @@ import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.Setti
 @Composable
 fun SettingsScreen(
     navigator: DestinationsNavigator,
-    viewModel: SettingsViewModel = hiltViewModel()
+    viewModel: SettingsViewModel = hiltViewModel(),
+    mainViewModel: MainViewModel
 ) {
+    mainViewModel.showTopBar.value = true
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
     val state = viewModel.state
 
-        Column {
-            HeaderText()
-            //BookReader Settings Colum
-            Column(
+    Column {
+        HeaderText()
+        //BookReader Settings Colum
+        Column(
+            modifier = Modifier
+                .padding(horizontal = 10.dp)
+                .padding(top = 10.dp)
+        ) {
+            Text(
+                text = "Book Reader Settings",
+                fontFamily = Poppins,
+                color = MaterialTheme.colors.onSurface,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
                 modifier = Modifier
-                    .padding(horizontal = 10.dp)
-                    .padding(top = 10.dp)
-            ) {
-                Text(
-                    text = "Book Reader Settings",
-                    fontFamily = Poppins,
-                    color = MaterialTheme.colors.onSurface,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier
-                        .padding(vertical = 8.dp)
-                )
-                Log.d(
-                    "Settings",
-                    "viewModel.state.useDblPageSplit = ${viewModel.state.useDblPageSplit}"
-                )
-                GeneralSettingItem(
-                    icon = Icons.Default.Splitscreen,
-                    mainText = "Split Double Pages",
-                    subText = "If Page Width > Page Height then split page in two",
-                    onClick = {},
-                    settingsControl = {
-                        Switch(
-                            checked = viewModel.state.useDblPageSplit,
-                            colors = SwitchDefaults.colors(MaterialTheme.colors.primary),
-                            onCheckedChange = { viewModel.writeUseDblPageSplit(it) }
-                        )
-                    },
-                )
-            }//End BookReader Settings Colum
-        }
+                    .padding(vertical = 8.dp)
+            )
+            Log.d(
+                "Settings",
+                "viewModel.state.useDblPageSplit = ${viewModel.state.useDblPageSplit}"
+            )
+            GeneralSettingItem(
+                icon = Icons.Default.Splitscreen,
+                mainText = "Split Double Pages",
+                subText = "If Page Width > Page Height then split page in two",
+                onClick = {},
+                settingsControl = {
+                    Switch(
+                        checked = viewModel.state.useDblPageSplit,
+                        colors = SwitchDefaults.colors(MaterialTheme.colors.primary),
+                        onCheckedChange = { viewModel.writeUseDblPageSplit(it) }
+                    )
+                },
+            )
+        }//End BookReader Settings Colum
+    }
 }
 
 @Composable

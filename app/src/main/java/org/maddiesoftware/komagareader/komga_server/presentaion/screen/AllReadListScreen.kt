@@ -26,12 +26,13 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.maddiesoftware.komagareader.R
 import org.maddiesoftware.komagareader.core.data.local.ServerInfoSingleton
+import org.maddiesoftware.komagareader.core.presentation.viewmodels.MainViewModel
 import org.maddiesoftware.komagareader.destinations.ReadListByIdScreenDestination
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.PaginationStateHandler
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.ReadListThumbCard
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.WarningMessage
 import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.AllReadListViewModel
-import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.MainViewModule
+import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.LibraryViewModule
 
 
 @Destination
@@ -40,14 +41,15 @@ import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.MainV
 fun AllReadListScreen(
     navigator: DestinationsNavigator,
     viewModel: AllReadListViewModel = hiltViewModel(),
-    mainViewModule: MainViewModule = hiltViewModel(),
+    libraryViewModule: LibraryViewModule = hiltViewModel(),
     libraryId: String? = null,
+    mainViewModel: MainViewModel,
 ) {
-
+    mainViewModel.showTopBar.value = true
     val serverInfo = ServerInfoSingleton
     val readListState = viewModel.readListState
         .collectAsLazyPagingItems()
-    val libraryList = mainViewModule.state.libraryList
+    val libraryList = libraryViewModule.state.libraryList
 
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()

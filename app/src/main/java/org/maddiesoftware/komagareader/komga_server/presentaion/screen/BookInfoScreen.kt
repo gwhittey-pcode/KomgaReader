@@ -28,12 +28,13 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.maddiesoftware.komagareader.core.data.local.ServerInfoSingleton
 import org.maddiesoftware.komagareader.core.presentation.theme.GoldUnreadBookCount
+import org.maddiesoftware.komagareader.core.presentation.viewmodels.MainViewModel
 import org.maddiesoftware.komagareader.destinations.BookReaderScreenDestination
 import org.maddiesoftware.komagareader.komga_server.domain.model.TriangleShape
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.ExpandableText
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.MyAsyncImage
 import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.BookInfoViewModel
-import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.MainViewModule
+import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.LibraryViewModule
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -46,9 +47,11 @@ fun BookInfoScreen(
     groupType: String? = null,
     readListId: String? = null,
     viewModel: BookInfoViewModel = hiltViewModel(),
-    mainViewModule: MainViewModule = hiltViewModel(),
+    libraryViewModule: LibraryViewModule = hiltViewModel(),
     navigator: DestinationsNavigator,
+    mainViewModel: MainViewModel
 ) {
+    mainViewModel.showTopBar.value = true
     val serverInfo = ServerInfoSingleton
     val bookInfo = viewModel.state.bookInfo
     val date = bookInfo?.metadata?.releaseDate

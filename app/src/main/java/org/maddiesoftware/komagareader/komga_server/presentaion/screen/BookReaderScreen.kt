@@ -33,12 +33,13 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
 import org.maddiesoftware.komagareader.core.data.local.ServerInfoSingleton
+import org.maddiesoftware.komagareader.core.presentation.viewmodels.MainViewModel
 import org.maddiesoftware.komagareader.destinations.BookReaderScreenDestination
 import org.maddiesoftware.komagareader.komga_server.domain.BookPage
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.bookreader.*
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.MyAsyncImage
 import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.BookReaderViewModel
-import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.MainViewModule
+import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.LibraryViewModule
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @OptIn(
@@ -53,9 +54,8 @@ fun BookReaderScreen(
     readListId:String? = null,
     groupType: String? = null,
     viewModel: BookReaderViewModel = hiltViewModel(),
-    mainViewModule: MainViewModule = hiltViewModel(),
-//    viewModel: BookInfoViewModel = hiltViewModel(),
-//    mainViewModule: MainViewModule = hiltViewModel(),
+    libraryViewModule: LibraryViewModule = hiltViewModel(),
+    mainViewModel: MainViewModel,
     navigator: DestinationsNavigator,
 ) {
     val topBarHeight = 56.dp
@@ -74,8 +74,7 @@ fun BookReaderScreen(
     var pageNum: Int = 0
     var startPage: Int = 0
 
-
-    val libraryList = mainViewModule.state.libraryList
+    val libraryList = libraryViewModule.state.libraryList
     val scaffoldState = rememberScaffoldState()
     val pagerState = rememberPagerState(startPage)
     val scope = rememberCoroutineScope()
@@ -91,6 +90,7 @@ fun BookReaderScreen(
     val pagerPages = remember { mutableListOf<BookPage>() }
     var newIndexAdd: Int = 0
     var theCount by remember { mutableStateOf(0) }
+    mainViewModel.showTopBar.value = false
     if (usePageSplit) {
         pagerPages.clear()
         pagesInfo?.forEachIndexed { index, page ->
@@ -391,8 +391,12 @@ fun BookReaderScreen(
 
                             },
                         content = {},
-                        onClick = { showTopBar.value = !showTopBar.value },
-                        onLongClick = { Log.d("buttonClick", "onLong") },
+                        onClick = {
+                            Log.d("showTopBar","showTopBar before = ${mainViewModel.showTopBar.value}")
+                            mainViewModel.showTopBar.value = !mainViewModel.showTopBar.value
+                            Log.d("showTopBar","showTopB afafter = ${mainViewModel.showTopBar.value}")
+                                  },
+                        onLongClick = { },
 
 
                         ) //end dialogOpenSeriesBookNavButton
