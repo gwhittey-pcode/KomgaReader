@@ -84,4 +84,5 @@ class SeriesByIdViewModel @Inject constructor(
             }
         }
     }
+
 }

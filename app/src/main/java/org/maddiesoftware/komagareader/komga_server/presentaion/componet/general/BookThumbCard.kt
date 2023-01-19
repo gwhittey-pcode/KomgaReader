@@ -27,7 +27,7 @@ fun BookThumbCard(
     modifier: Modifier = Modifier,
     url: String,
     onItemClick: (id: String) -> Unit,
-
+    boxColor: Color = MaterialTheme.colors.surface,
 ) {
     Column(
         modifier = Modifier
@@ -97,6 +97,7 @@ fun BookThumbCard(
                     modifier = Modifier
                         .fillMaxSize()
                         .align(Alignment.Start)
+                        .background(boxColor)
                 ) {
                     Text(
                         text = book?.seriesTitle.toString(),

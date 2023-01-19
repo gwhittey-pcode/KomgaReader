@@ -3,13 +3,14 @@ package org.maddiesoftware.komagareader.komga_server.presentaion.componet.bookre
 import android.view.Gravity
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -27,8 +28,10 @@ import androidx.compose.ui.window.DialogWindowProvider
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ramcosta.composedestinations.spec.DestinationStyle
+import kotlinx.coroutines.launch
 import org.maddiesoftware.komagareader.R
 import org.maddiesoftware.komagareader.core.data.local.ServerInfoSingleton
+import org.maddiesoftware.komagareader.core.presentation.theme.GoldUnreadBookCount
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.BookThumbCard
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.PaginationStateHandler
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.WarningMessage
@@ -40,11 +43,20 @@ fun ReadListBooksDialog(
     setShowDialog: (Boolean) -> Unit,
     screenWidth:Dp,
     onItemClick: (id: String) -> Unit,
+    currentBookId: String
     ) {
     val viewModel: ReadListByIdViewModel = hiltViewModel()
     val serverInfo = ServerInfoSingleton
     val bookState = viewModel.bookState
         .collectAsLazyPagingItems()
+    val composableScope = rememberCoroutineScope()
+    val scrollState = LazyListState()
+    var currentBookIndex by remember() {
+        mutableStateOf(0)
+    }
+    var boxColor: Color = MaterialTheme.colors.surface
+
+    currentBookIndex = viewModel.calculateBookIndexInReadList(currentBookId)
     Dialog(
         onDismissRequest = { setShowDialog(false) },
         properties = DestinationStyle.Dialog.properties.let {
@@ -62,13 +74,24 @@ fun ReadListBooksDialog(
             shape = RoundedCornerShape(16.dp),
             color = Color.White
         ) {
-            LazyRow(modifier = Modifier.width(screenWidth).height(300.dp))
+            LazyRow(
+                state = scrollState,
+                modifier = Modifier
+                    .width(screenWidth)
+                    .height(300.dp)
+            )
             {
                 items(bookState.itemCount) { i ->
                     val book = bookState[i]
+                    boxColor = if (currentBookIndex == i) {
+                        GoldUnreadBookCount
+                    }else{
+                        MaterialTheme.colors.surface
+                    }
                     BookThumbCard(
                         url = "${serverInfo.url}api/v1/books/${book?.id}/thumbnail",
                         book = book,
+                        boxColor = boxColor,
                         modifier = Modifier
                             .padding(16.dp)
                             .fillMaxWidth(),
@@ -100,6 +123,11 @@ fun ReadListBooksDialog(
                             )
                         }
                     )
+                }
+
+
+                composableScope.launch {
+                    scrollState.scrollToItem(currentBookIndex)
                 }
             }
         }

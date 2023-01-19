@@ -18,6 +18,7 @@ import kotlinx.coroutines.launch
 import org.maddiesoftware.komagareader.core.util.PAGE_SIZE
 import org.maddiesoftware.komagareader.core.util.Resource
 import org.maddiesoftware.komagareader.komga_server.domain.model.Book
+import org.maddiesoftware.komagareader.komga_server.domain.model.ReadList
 import org.maddiesoftware.komagareader.komga_server.domain.repository.ApiRepository
 import org.maddiesoftware.komagareader.komga_server.domain.use_case.readlists.ReadListUseCases
 import org.maddiesoftware.komagareader.komga_server.presentaion.state.ReadListByIdState
@@ -44,6 +45,7 @@ class ReadListByIdViewModel @Inject constructor(
             }
         }
         getBooksFromReadList()
+        getReadListById()
     }
 
     private fun getBooksFromReadList(){
@@ -82,5 +84,16 @@ class ReadListByIdViewModel @Inject constructor(
                 else -> Unit
             }
         }
+    }
+
+     fun calculateBookIndexInReadList(bookId:String):Int {
+         Log.d("REadListDialog","**************** calculateBookIndexInReadList state.readListInfo=${state.readListInfo} ***************")
+         return if (state.readListInfo != null) {
+             Log.d("REadListDialog","ReadListInfo!null")
+             val readListInfo:ReadList = state.readListInfo!!
+             val index = readListInfo.bookIds?.indexOf(bookId)
+             Log.d("REadListDialog","readListInfo.bookIds?.indexOf(bookId)=${readListInfo.bookIds?.indexOf(bookId)} index=$index ")
+             index?.toInt() ?: 0
+         }else 0
     }
 }

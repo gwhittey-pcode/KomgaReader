@@ -24,6 +24,7 @@ import com.ramcosta.composedestinations.navigation.popUpTo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.maddiesoftware.komagareader.NavGraphs
+import org.maddiesoftware.komagareader.destinations.AllReadListScreenDestination
 import org.maddiesoftware.komagareader.destinations.AllSeriesScreenDestination
 import org.maddiesoftware.komagareader.destinations.HomeScreenDestination
 import org.maddiesoftware.komagareader.destinations.SettingsScreenDestination
@@ -82,10 +83,27 @@ fun DrawerBodySelectionScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
-                    // Pop up to the root of the graph to
-                    // avoid building up a large stack of destinations
-                    // on the back stack as users select items
+                    scopeState.launch {
+                        scaffoldState.drawerState.close()
+                    }
+                    navController
+                        // Avoid multiple copies of the same destination when
+                        // reselecting the same item
+                        // Restore state when reselecting a previously selected item
+                        .navigate(AllReadListScreenDestination(libraryId = "09YPSVS759MM2")) {
+                            // Pop up to the root of the graph to
+                            // avoid building up a large stack of destinations
+                            // on the back stack as users select items
+                            popUpTo(NavGraphs.root) {
+                                saveState = true
+                            }
 
+                            // Avoid multiple copies of the same destination when
+                            // reselecting the same item
+                            launchSingleTop = true
+                            // Restore state when reselecting a previously selected item
+                            restoreState = true
+                        }
                 }
                 .padding(16.dp)
         ) {
