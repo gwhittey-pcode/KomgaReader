@@ -1,8 +1,6 @@
 package org.maddiesoftware.komagareader.komga_server.presentaion.screen
 
 import android.annotation.SuppressLint
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -54,7 +52,11 @@ fun BookInfoScreen(
     mainViewModel.showTopBar.value = true
     val serverInfo = ServerInfoSingleton
     val bookInfo = viewModel.state.bookInfo
-    val date = bookInfo?.metadata?.releaseDate
+    var date = ""
+    if(bookInfo?.metadata?.releaseDate != null){
+        date = genMonth(bookInfo.metadata.releaseDate.toString())
+
+    }
 
 //    val formattedDate  =  date.format(formatter)
     if (bookInfo != null) {
@@ -137,7 +139,7 @@ fun BookInfoScreen(
                 )
                 Text(
                     text = "${bookInfo.readProgress?.page?:0} of ${bookInfo.media?.pagesCount.toString()} Pages Read -" +
-                            "    ${genMonth(date.toString())}   ",
+                            "   $date   ",
                     fontWeight = FontWeight.Normal,
                     fontSize = 15.sp,
                     modifier = Modifier
@@ -215,7 +217,6 @@ fun BookInfoScreen(
         }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("SimpleDateFormat")
 fun genMonth(pubDate: String): String {
     val formatter = SimpleDateFormat("yyyy-MM-dd")

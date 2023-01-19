@@ -3,6 +3,7 @@ package org.maddiesoftware.komagareader.komga_server.presentaion.componet.bookre
 import android.graphics.Bitmap
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
@@ -10,6 +11,7 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -72,6 +74,15 @@ fun BookPageImage(
                     .fillMaxSize()
                     .width(screenWidth)
                     .height(screenHeight)
+                    .pointerInput(key1 = "someStringKey?") {
+                        detectTapGestures(
+                            onTap = { it ->
+                                val x = it.x
+                                val y = it.y
+                                Log.d("Pictouch","x = $x and y = $y")
+                            }
+                        )
+                    }
             )
         }
 

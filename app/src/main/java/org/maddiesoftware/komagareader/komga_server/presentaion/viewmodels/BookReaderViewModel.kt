@@ -3,8 +3,8 @@ package org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
-import android.util.Log
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
@@ -19,6 +19,7 @@ import kotlinx.coroutines.launch
 import org.maddiesoftware.komagareader.core.data.local.ReaderPreferenceSingleton.useDblPageSplit
 import org.maddiesoftware.komagareader.core.util.Resource
 import org.maddiesoftware.komagareader.komga_server.data.DataStoreManager
+import org.maddiesoftware.komagareader.komga_server.domain.BookPage
 import org.maddiesoftware.komagareader.komga_server.domain.repository.ApiRepository
 import org.maddiesoftware.komagareader.komga_server.persitance.PreferenceKeys
 import org.maddiesoftware.komagareader.komga_server.presentaion.state.BookReaderState
@@ -35,6 +36,8 @@ class BookReaderViewModel @Inject constructor(
     private var bookId: String? = null
     private var groupType: String? = null
     var state by mutableStateOf(BookReaderState())
+    var pagerPages = mutableStateListOf<BookPage>()
+
 
     init {
         savedStateHandle.get<String>(key = "bookId")?.let { it ->
@@ -54,6 +57,7 @@ class BookReaderViewModel @Inject constructor(
         getPages()
 
     }
+
     private fun getBookById() {
         viewModelScope.launch {
             state = state.copy(isLoading = true)
@@ -65,6 +69,7 @@ class BookReaderViewModel @Inject constructor(
                         isLoading = false,
                         error = null
                     )
+                    if (!state.useDblPageSplit) calculateStarPage()
                 }
                 is Resource.Error -> {
                     state = state.copy(
@@ -89,6 +94,7 @@ class BookReaderViewModel @Inject constructor(
                         isLoading = false,
                         error = null
                     )
+                    if (state.useDblPageSplit) buildPagerPagesDblPageSplit()
                 }
                 is Resource.Error -> {
                     state = state.copy(
@@ -99,6 +105,62 @@ class BookReaderViewModel @Inject constructor(
 
                 }
                 else -> Unit
+            }
+        }
+    }
+
+    private fun buildPagerPagesDblPageSplit() {
+        val pagesInfo = state.pagesInfo
+        pagerPages.clear()
+        var newIndexAdd: Int = 0
+        pagesInfo?.forEachIndexed { index, page ->
+            if (page.width!! > page.height!!) {
+                val newBookPage = BookPage(
+                    index = index + newIndexAdd,
+                    doSplit = true,
+                    pageName = "${page.number}A",
+                    splitPart = "1",
+                    number = page.number
+                )
+                val newBookPage2 = BookPage(
+                    index = index + 1 + newIndexAdd,
+                    doSplit = true,
+                    pageName = "${page.number}B",
+                    splitPart = "2",
+                    number = page.number
+                )
+                newIndexAdd += 1
+                pagerPages.add(newBookPage)
+                pagerPages.add(newBookPage2)
+            } else {
+                val newBookPage = BookPage(
+                    index = index + newIndexAdd,
+                    doSplit = false,
+                    pageName = "${page.number}",
+                    number = page.number
+                )
+                pagerPages.add(newBookPage)
+            }
+            calculateStarPage()
+        }
+
+    }
+
+    private fun calculateStarPage() {
+        if (state.bookInfo?.readProgress?.page != null) {
+            if (!state.useDblPageSplit) {
+                var newStarPage: Int = state.bookInfo!!.readProgress?.page?.toInt() ?: 0
+                if (newStarPage != 0) newStarPage = newStarPage.minus(1)
+                state = state.copy(
+                    startPage = newStarPage
+                )
+            } else {
+                val newStarPage: Int?
+                newStarPage =
+                    pagerPages.indexOfFirst { it.number == state.bookInfo!!.readProgress?.page }
+                state = state.copy(
+                    startPage = newStarPage
+                )
             }
         }
     }
@@ -126,25 +188,31 @@ class BookReaderViewModel @Inject constructor(
         }
     }
 
-    suspend fun updateReadProgress(page: Int, pageCount: Int, bookId: String) {
+    suspend fun updateReadProgress(
+        pagerIndex: Int,
+        newProgressPage: Int,
+        pageCount: Int,
+        bookId: String
+    ) {
         var completed: Boolean = false
-        if (page >= pageCount) completed = true
+        if (newProgressPage >= pageCount) completed = true
         viewModelScope.launch {
             val updateReadProgress = async {
                 apiRepository.updateReadProgress(
                     bookId = bookId,
-                    page = page,
+                    page = newProgressPage,
                     completed = completed
                 )
             }
-            state = state.copy(doingUpdateReadProgress=true)
+            state = state.copy(
+                doingUpdateReadProgress = true,
+                startPage = pagerIndex
+            )
             when (val result = updateReadProgress.await()) {
                 is Resource.Success -> {
-                    Log.d("updateReadProgress","Sucess")
-                    state = state.copy(doingUpdateReadProgress=false)
+                    state = state.copy(doingUpdateReadProgress = false)
                 }
                 is Resource.Error -> {
-                    Log.d("updateReadProgress","result = ${result.message}")
                 }
                 else -> Unit
             }
@@ -153,3 +221,6 @@ class BookReaderViewModel @Inject constructor(
     }
 
 }
+
+
+
