@@ -81,6 +81,7 @@ fun BookReaderScreen(
     val pagerPages = viewModel.pagerPages
     var theCount by remember { mutableStateOf(0) }
 
+
     mainViewModel.showTopBar.value = false
     theCount = if (useDblPageSplit) {
         pagerPages.size
@@ -118,7 +119,9 @@ fun BookReaderScreen(
 
     if (showSeriesBookNavDialog.value) {
         if (groupType == "Read List") {
-            ReadListBooksDialog(setShowDialog = { showSeriesBookNavDialog.value = it },
+            ReadListBooksDialog(
+                currentBookId = bookId,
+                setShowDialog = { showSeriesBookNavDialog.value = it },
                 screenWidth = screenWidth,
                 onItemClick = {
                     showSeriesBookNavDialog.value = false
@@ -127,12 +130,14 @@ fun BookReaderScreen(
                             bookId = it,
                             readListId = readListId,
                             groupType = groupType,
-                            seriesId = seriesId
+                            seriesId = seriesId,
                         )
                     )
                 })
         } else {
-            SeriesBooksDialog(setShowDialog = { showSeriesBookNavDialog.value = it },
+            SeriesBooksDialog(
+                currentBookNumber = bookInfo?.number?.toInt() ?: 0,
+                setShowDialog = { showSeriesBookNavDialog.value = it },
                 screenWidth = screenWidth,
                 onItemClick = {
                     showSeriesBookNavDialog.value = false
@@ -141,7 +146,7 @@ fun BookReaderScreen(
                             bookId = it,
                             readListId = readListId,
                             groupType = groupType,
-                            seriesId = seriesId
+                            seriesId = seriesId,
                         )
                     )
                 })
@@ -196,8 +201,6 @@ fun BookReaderScreen(
                                     }
                                 }
                             }
-
-
                             val targetScale = zoomState.minScale
                             zoomState.animateScaleTo(
                                 targetScale = targetScale,

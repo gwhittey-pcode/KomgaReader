@@ -39,7 +39,7 @@ interface KomgaServerApi {
         @Query("media_status") mediaStatus: List<String>? = null,
         @Query("read_status") readStatus: List<String>? = null,
         @Query("tag") tag: List<String>? = null,
-        @Query("unpaged") unpaged: Boolean? = null,
+        @Query("unpaged") unpaged: Boolean? = true,
         @Query("page") page: Int? = null,
         @Query("size") size: Int? = null,
         @Query("sort") sort: List<String>? = null,
