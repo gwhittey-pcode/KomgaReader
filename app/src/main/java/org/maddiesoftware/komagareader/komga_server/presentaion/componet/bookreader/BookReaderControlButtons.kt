@@ -26,6 +26,9 @@ fun BookReaderControlButtons(
             .alpha(1f),
         onClick = onClickItem
     ) {}//NextButton
+
+
+
 //    Button(//Left Side Button for Next Page
 //        enabled = true,
 //        border = BorderStroke(width = 1.dp, brush = SolidColor(Color.Blue)),

@@ -22,7 +22,7 @@ import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general
 
 @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterialNavigationApi::class)
 @Composable
-fun KomgaServer() {
+fun KomgaReaderMainScreen() {
     val engine = rememberAnimatedNavHostEngine()
     val navController = engine.rememberNavController()
     val startRoute = NavGraphs.root.startRoute

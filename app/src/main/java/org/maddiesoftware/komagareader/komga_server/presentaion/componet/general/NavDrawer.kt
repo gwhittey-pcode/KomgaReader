@@ -114,7 +114,7 @@ fun DrawerBodySelectionScreen(
             )
             Spacer(modifier = Modifier.width(16.dp))
             Text(
-                text = "readList",
+                text = "Collections",
                 style = itemTextStyle,
                 modifier = Modifier.weight(1f),
                 fontSize = MaterialTheme.typography.h4.fontSize,

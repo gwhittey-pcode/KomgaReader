@@ -160,6 +160,30 @@ interface KomgaServerApi {
         @Query("size") size: Int? = null,
         ):ResponseItems<CollectionDto>
 
+    @GET("collections/{collectionId}")
+    suspend fun getCollectionById(@Path("collectionId") collectionId:String): CollectionDto
+
+    @GET("collections/{collectionId}/series")
+    suspend fun getSeriesFromCollection(
+        @Path("collectionId") collectionId:String,
+        @Query("search") search: String? = null,
+        @Query("library_id") libraryId: String? = null,
+        @Query("status") status: List<String>? = null,
+        @Query("read_status") readStatus: List<String>? = null,
+        @Query("publisher") publisher: List<String>? = null,
+        @Query("language") language: List<String>? = null,
+        @Query("genre") genre: List<String>? = null,
+        @Query("tag") tag: List<String>? = null,
+        @Query("age_rating") ageRating: List<String>? = null,
+        @Query("release_year") releaseYear: List<String>? = null,
+        @Query("unpaged") unpaged: Boolean? = null,
+        @Query("page") page: Int? = null,
+        @Query("size") size: Int? = null,
+        @Query("sort") sort: List<String>? = null,
+        @Query("author") author: List<String>? = null
+    ): ResponseItems<SeriesDto>
+
+
 }
 
 
