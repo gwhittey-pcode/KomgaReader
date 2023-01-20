@@ -234,4 +234,14 @@ class ApiRepositoryImpl @Inject constructor(
             pagingSourceFactory = { BookFromReadListRemotePagingSource(api = api, readListId = readListId) }
         ).flow
     }
+
+    override fun getAllCollections(
+        pageSize: Int,
+        libraryId: String?
+    ): Flow<PagingData<CollectionX>> {
+       return Pager(
+           config = PagingConfig(pageSize = pageSize),
+           pagingSourceFactory = {AllCollectionRemotePagingSource(api = api, libraryId = libraryId)}
+       ).flow
+    }
 }

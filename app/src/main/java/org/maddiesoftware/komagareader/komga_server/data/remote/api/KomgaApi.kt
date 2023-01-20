@@ -148,6 +148,18 @@ interface KomgaServerApi {
         @Query("author") author: List<String>? = null
     ): ResponseItems<BookDto>
 
+
+    //Collections Controller
+    @GET("collections")
+    suspend fun getAllCollections(
+
+        @Query("library_id") libraryId: String? = null,
+        @Query("unpaged") unpaged: Boolean? = null,
+        @Query("search") search: String? = null,
+        @Query("page") page: Int? = null,
+        @Query("size") size: Int? = null,
+        ):ResponseItems<CollectionDto>
+
 }
 
 
