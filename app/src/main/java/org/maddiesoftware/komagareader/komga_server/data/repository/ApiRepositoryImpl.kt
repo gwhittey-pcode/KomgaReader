@@ -19,23 +19,23 @@ import javax.inject.Singleton
 @Singleton
 class ApiRepositoryImpl @Inject constructor(
     private val api: KomgaServerApi
-): ApiRepository  {
+) : ApiRepository {
     override suspend fun getAllLibraries(): Resource<List<Library>> {
-        Log.d("komga1","getLatest Repository")
+        Log.d("komga1", "getLatest Repository")
         return try {
             val getAllLibraries = api.getLibraries()
             Resource.Success(
-                getAllLibraries.map { it.toLibrary()}
+                getAllLibraries.map { it.toLibrary() }
             )
-        } catch(e: IOException) {
+        } catch (e: IOException) {
             e.printStackTrace()
-            Log.d("komga1","I Errro2")
+            Log.d("komga1", "I Errro2")
             Resource.Error(
                 message = "Couldn't load PageSeries info"
             )
-        } catch(e: HttpException) {
+        } catch (e: HttpException) {
             e.printStackTrace()
-            Log.d("komga1"," HttpException")
+            Log.d("komga1", " HttpException")
             Resource.Error(
                 message = "Couldn't load PageSeries info"
             )
@@ -51,9 +51,7 @@ class ApiRepositoryImpl @Inject constructor(
     }
 
 
-
-
-    override  fun getKeepReading(pageSize: Int, libraryId: String?): Flow<PagingData<Book>> {
+    override fun getKeepReading(pageSize: Int, libraryId: String?): Flow<PagingData<Book>> {
         return Pager(
             config = PagingConfig(pageSize = pageSize),
             pagingSourceFactory = { KeepReadingSource(api = api, libraryId = libraryId) }
@@ -61,10 +59,15 @@ class ApiRepositoryImpl @Inject constructor(
 
     }
 
-    override  fun getRecentlyAddedBooks(pageSize: Int, libraryId: String?): Flow<PagingData<Book>> {
+    override fun getRecentlyAddedBooks(pageSize: Int, libraryId: String?): Flow<PagingData<Book>> {
         return Pager(
             config = PagingConfig(pageSize = pageSize),
-            pagingSourceFactory = { RecentlyAddedBooksPagingSource(api = api, libraryId = libraryId) }
+            pagingSourceFactory = {
+                RecentlyAddedBooksPagingSource(
+                    api = api,
+                    libraryId = libraryId
+                )
+            }
         ).flow
 
     }
@@ -72,24 +75,30 @@ class ApiRepositoryImpl @Inject constructor(
     override fun getAllSeries(pageSize: Int, libraryId: String?): Flow<PagingData<Series>> {
         return Pager(
             config = PagingConfig(pageSize = pageSize),
-            pagingSourceFactory = { AllSeriesRemotePagingSource(api = api, libraryId = libraryId,sort="booksCount,desc") }
+            pagingSourceFactory = {
+                AllSeriesRemotePagingSource(
+                    api = api,
+                    libraryId = libraryId,
+                    sort = "booksCount,desc"
+                )
+            }
         ).flow
     }
 
     override suspend fun getLatest(): Resource<PageSeries?> {
-        Log.d("komga1","getLatest Repository")
+        Log.d("komga1", "getLatest Repository")
         return try {
             val getLatestResult = api.getLatest()
             Resource.Success(getLatestResult?.toPageSeries())
-        } catch(e: IOException) {
+        } catch (e: IOException) {
             e.printStackTrace()
-            Log.d("komga1","I Errro2")
+            Log.d("komga1", "I Errro2")
             Resource.Error(
                 message = "Couldn't load PageSeries info"
             )
-        } catch(e: HttpException) {
+        } catch (e: HttpException) {
             e.printStackTrace()
-            Log.d("komga1"," HttpException")
+            Log.d("komga1", " HttpException")
             Resource.Error(
                 message = "Couldn't load PageSeries info"
             )
@@ -114,42 +123,48 @@ class ApiRepositoryImpl @Inject constructor(
 
     override suspend fun getSeriesById(seriesId: String): Resource<Series?> {
         return try {
-            val getSeriesById = api.getSeriesById(seriesId=seriesId)
+            val getSeriesById = api.getSeriesById(seriesId = seriesId)
             Resource.Success(getSeriesById.toSeries())
-        } catch(e: IOException) {
+        } catch (e: IOException) {
             e.printStackTrace()
-            Log.d("komga1","I Errro2")
+            Log.d("komga1", "I Errro2")
             Resource.Error(
                 message = "Couldn't load Series info"
             )
-        } catch(e: HttpException) {
+        } catch (e: HttpException) {
             e.printStackTrace()
-            Log.d("komga1"," HttpException")
+            Log.d("komga1", " HttpException")
             Resource.Error(
                 message = "Couldn't load Series info"
             )
         }
     }
+
     override fun getBooksFromSeries(pageSize: Int, seriesId: String): Flow<PagingData<Book>> {
         return Pager(
             config = PagingConfig(pageSize = pageSize),
-            pagingSourceFactory = { BookFromSeriesRemotePagingSource(api = api, seriesId = seriesId) }
+            pagingSourceFactory = {
+                BookFromSeriesRemotePagingSource(
+                    api = api,
+                    seriesId = seriesId
+                )
+            }
         ).flow
     }
 
     override suspend fun getBookById(bookId: String): Resource<Book> {
         return try {
-            val getBookById = api.getBookById(bookId=bookId)
+            val getBookById = api.getBookById(bookId = bookId)
             Resource.Success(getBookById.toBook())
-        } catch(e: IOException) {
+        } catch (e: IOException) {
             e.printStackTrace()
-            Log.d("komga1","I Errro2")
+            Log.d("komga1", "I Errro2")
             Resource.Error(
                 message = "Couldn't load Book info"
             )
-        } catch(e: HttpException) {
+        } catch (e: HttpException) {
             e.printStackTrace()
-            Log.d("komga1"," HttpException")
+            Log.d("komga1", " HttpException")
             Resource.Error(
                 message = "Couldn't load Book info"
             )
@@ -158,17 +173,17 @@ class ApiRepositoryImpl @Inject constructor(
 
     override suspend fun getPages(bookId: String): Resource<List<Page>> {
         return try {
-            val getPages = api.getPages(bookId=bookId)
+            val getPages = api.getPages(bookId = bookId)
             Resource.Success(getPages.map { it.toPage() })
-        } catch(e: IOException) {
+        } catch (e: IOException) {
             e.printStackTrace()
-            Log.d("komga1","I Errro2")
+            Log.d("komga1", "I Errro2")
             Resource.Error(
                 message = "Couldn't load Page info"
             )
-        } catch(e: HttpException) {
+        } catch (e: HttpException) {
             e.printStackTrace()
-            Log.d("komga1"," HttpException")
+            Log.d("komga1", " HttpException")
             Resource.Error(
                 message = "Couldn't load Page info"
             )
@@ -179,23 +194,23 @@ class ApiRepositoryImpl @Inject constructor(
         bookId: String,
         page: Int,
         completed: Boolean
-    ) : Resource<Response<Unit>> {
+    ): Resource<Response<Unit>> {
         val newReadProgress = NewReadProgress(
-            page=page,
-            completed=completed
+            page = page,
+            completed = completed
         )
         return try {
-            val updateReadProgress = api.updateReadProgress(bookId=bookId,newReadProgress )
+            val updateReadProgress = api.updateReadProgress(bookId = bookId, newReadProgress)
             Resource.Success(updateReadProgress)
-        } catch(e: IOException) {
+        } catch (e: IOException) {
             e.printStackTrace()
-            Log.d("komga1","I Errro2")
+            Log.d("komga1", "I Errro2")
             Resource.Error(
                 message = "IOException updateReadProgress"
             )
-        } catch(e: HttpException) {
+        } catch (e: HttpException) {
             e.printStackTrace()
-            Log.d("komga1"," HttpException")
+            Log.d("komga1", " HttpException")
             Resource.Error(
                 message = "HttpException updateReadProgress"
             )
@@ -205,23 +220,28 @@ class ApiRepositoryImpl @Inject constructor(
     override fun getAllReadList(pageSize: Int, libraryId: String?): Flow<PagingData<ReadList>> {
         return Pager(
             config = PagingConfig(pageSize = pageSize),
-            pagingSourceFactory = { AllReadListsRemotePagingSource(api = api, libraryId = libraryId) }
+            pagingSourceFactory = {
+                AllReadListsRemotePagingSource(
+                    api = api,
+                    libraryId = libraryId
+                )
+            }
         ).flow
     }
 
     override suspend fun getReadListById(readListId: String): Resource<ReadList> {
         return try {
-            val getReadListById = api.getReadListById(readListId=readListId)
+            val getReadListById = api.getReadListById(readListId = readListId)
             Resource.Success(getReadListById.toReadList())
-        } catch(e: IOException) {
+        } catch (e: IOException) {
             e.printStackTrace()
-            Log.d("komga1","I Errro2")
+            Log.d("komga1", "I Errro2")
             Resource.Error(
                 message = "Couldn't load Read List info"
             )
-        } catch(e: HttpException) {
+        } catch (e: HttpException) {
             e.printStackTrace()
-            Log.d("komga1"," HttpException")
+            Log.d("komga1", " HttpException")
             Resource.Error(
                 message = "Couldn't Read List Series info"
             )
@@ -231,7 +251,64 @@ class ApiRepositoryImpl @Inject constructor(
     override fun getBooksFromReadList(pageSize: Int, readListId: String): Flow<PagingData<Book>> {
         return Pager(
             config = PagingConfig(pageSize = pageSize),
-            pagingSourceFactory = { BookFromReadListRemotePagingSource(api = api, readListId = readListId) }
+            pagingSourceFactory = {
+                BookFromReadListRemotePagingSource(
+                    api = api,
+                    readListId = readListId
+                )
+            }
+        ).flow
+    }
+
+    override fun getAllCollections(
+        pageSize: Int,
+        libraryId: String?
+    ): Flow<PagingData<CollectionX>> {
+        return Pager(
+            config = PagingConfig(pageSize = pageSize),
+            pagingSourceFactory = {
+                AllCollectionRemotePagingSource(
+                    api = api,
+                    libraryId = libraryId
+                )
+            }
+        ).flow
+    }
+
+    override suspend fun getCollectionById(collectionId: String): Resource<CollectionX> {
+        return try {
+            val getCollectionById = api.getCollectionById(collectionId = collectionId)
+            Resource.Success(getCollectionById.toCollection())
+        } catch (e: IOException) {
+            e.printStackTrace()
+            Log.d("komga1", "I Errro2")
+            Resource.Error(
+                message = "Couldn't load Read List info"
+            )
+        } catch (e: HttpException) {
+            e.printStackTrace()
+            Log.d("komga1", " HttpException")
+            Resource.Error(
+                message = "Couldn't Read List Series info"
+            )
+        }
+    }
+
+    override fun getSeriesFromCollection(
+        pageSize: Int,
+        collectionId: String,
+        libraryId: String?
+    ): Flow<PagingData<Series>> {
+
+        return Pager(
+            config = PagingConfig(pageSize = pageSize),
+            pagingSourceFactory = {
+                SeriesFromCollectionRemotePagingSource(
+                    api = api,
+                    libraryId = libraryId,
+                    collectionId = collectionId
+                )
+            }
         ).flow
     }
 }

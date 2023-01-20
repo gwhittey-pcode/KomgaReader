@@ -1,7 +1,7 @@
 package org.maddiesoftware.komagareader.komga_server.domain.model
 
 data class PageCollection(
-    val content: List<org.maddiesoftware.komagareader.komga_server.domain.model.Collection>?,
+    val content: List<CollectionX>?,
     val empty: Boolean?,
     val first: Boolean?,
     val last: Boolean?,

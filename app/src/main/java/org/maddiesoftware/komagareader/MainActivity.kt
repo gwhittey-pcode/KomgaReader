@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import dagger.hilt.android.AndroidEntryPoint
-import org.maddiesoftware.komagareader.core.presentation.KomgaServer
+import org.maddiesoftware.komagareader.core.presentation.KomgaReaderMainScreen
 import org.maddiesoftware.komagareader.core.presentation.theme.KomgaReaderTheme
 
 
@@ -18,7 +18,7 @@ class MainActivity : ComponentActivity() {
 //
             KomgaReaderTheme {
                 // A surface container using the 'background' color from the theme
-                KomgaServer()
+                KomgaReaderMainScreen()
 
             }
         }
