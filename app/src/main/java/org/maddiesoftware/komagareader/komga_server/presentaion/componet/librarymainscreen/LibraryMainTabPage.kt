@@ -2,8 +2,11 @@ package org.maddiesoftware.komagareader.komga_server.presentaion.componet.librar
 
 import org.maddiesoftware.komagareader.R
 
-enum class LibraryMainTabPage (val icon: Int) {
-    Series(R.drawable.ic_books),
-    ReadList(R.drawable.ic_info),
-    Collections(R.drawable.ic_info)
+enum class LibraryMainTabPage (val tabName:String, val icon: Int) {
+    Series(tabName="Browse",icon=R.drawable.ic_books),
+    ReadList(tabName="Read List",icon=R.drawable.ic_info),
+    Collections(tabName="Collections",icon=R.drawable.ic_info)
+
 }
+
+

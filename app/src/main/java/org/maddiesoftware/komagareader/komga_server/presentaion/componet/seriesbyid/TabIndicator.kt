@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 
 
 @Composable
-fun SeriesByIdTabIndicator(tabPosition: List<TabPosition>, index: Int) {
+fun TabIndicator(tabPosition: List<TabPosition>, index: Int) {
     val transition = updateTransition(targetState = index, label = "")
     val leftIndicator by transition.animateDp(label = "", transitionSpec = {
         spring(stiffness = Spring.StiffnessVeryLow)

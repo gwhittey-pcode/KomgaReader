@@ -1,14 +1,14 @@
 package org.maddiesoftware.komagareader.komga_server.presentaion.componet.librarymainscreen.tabs
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.material.*
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,29 +22,24 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import org.maddiesoftware.komagareader.R
 import org.maddiesoftware.komagareader.core.data.local.ServerInfoSingleton
 import org.maddiesoftware.komagareader.core.presentation.viewmodels.MainViewModel
-import org.maddiesoftware.komagareader.destinations.*
-import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.*
-import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.AllSeriesViewModel
+import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.CollectionThumbCard
+import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.PaginationStateHandler
+import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.WarningMessage
+import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.AllCollectionsViewModel
 import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.LibraryViewModule
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun AllSeriesTab(
-    viewModel: AllSeriesViewModel = hiltViewModel(),
-    libraryViewModule: LibraryViewModule = hiltViewModel(),
-    mainViewModel: MainViewModel = hiltViewModel(),
-    libraryId: String? = null,
+fun AllCollectionsTab(
     onItemClick: (id: String) -> Unit,
+    viewModel: AllCollectionsViewModel = hiltViewModel(),
+    libraryViewModule: LibraryViewModule = hiltViewModel(),
+    libraryId: String? = null,
+    mainViewModel: MainViewModel = hiltViewModel()
 ) {
     mainViewModel.showTopBar.value = true
     val serverInfo = ServerInfoSingleton
-    val seriesState = viewModel.seriesState
+    val collectionState = viewModel.collectionState
         .collectAsLazyPagingItems()
-
-    val libraryList = libraryViewModule.state.libraryList
-    val scaffoldState = rememberScaffoldState()
-    val scope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier
@@ -58,14 +53,13 @@ fun AllSeriesTab(
                 .fillMaxSize()
                 .padding(5.dp)
         ) {
-            items(seriesState.itemCount) { i ->
-                val series = seriesState[i]
-                SeriesThumbCard(
-                    url = "${serverInfo.url}api/v1/series/${series?.id}/thumbnail",
-                    booksCount = series?.booksCount,
-                    booksUnreadCount = series?.booksUnreadCount,
-                    id = series?.id.toString(),
-                    title = series?.metadata?.title,
+            items(collectionState.itemCount) { i ->
+                val collection = collectionState[i]
+                CollectionThumbCard(
+                    url = "${serverInfo.url}api/v1/collections/${collection?.id}/thumbnail",
+                    seriesCount = collection?.seriesIds?.size,
+                    id = collection?.id.toString(),
+                    name = collection?.name,
                     modifier = Modifier
                         .padding(16.dp)
                         .fillMaxWidth(),
@@ -75,7 +69,7 @@ fun AllSeriesTab(
             }
             item {
                 PaginationStateHandler(
-                    paginationState = seriesState,
+                    paginationState = collectionState,
                     loadingComponent = {
                         Box(
                             modifier = Modifier.fillMaxWidth(),
@@ -92,7 +86,7 @@ fun AllSeriesTab(
                                     text = stringResource(id = R.string.lbl_retry),
                                     modifier = Modifier
                                         .padding(start = 3.dp)
-                                        .clickable(role = Role.Button) { seriesState.retry() },
+                                        .clickable(role = Role.Button) { collectionState.retry() },
                                     textDecoration = TextDecoration.Underline,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colors.onSecondary,

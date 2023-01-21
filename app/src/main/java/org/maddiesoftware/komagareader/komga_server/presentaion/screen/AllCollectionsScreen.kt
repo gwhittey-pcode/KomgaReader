@@ -40,7 +40,7 @@ fun AllCollectionsScreen(
     viewModel: AllCollectionsViewModel = hiltViewModel(),
     libraryViewModule: LibraryViewModule = hiltViewModel(),
     libraryId: String? = null,
-    mainViewModel: MainViewModel
+    mainViewModel: MainViewModel = hiltViewModel()
 ) {
     mainViewModel.showTopBar.value = true
     val serverInfo = ServerInfoSingleton

@@ -1,12 +1,14 @@
 package org.maddiesoftware.komagareader.komga_server.presentaion.componet.librarymainscreen.tabs
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.material.*
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -22,50 +24,58 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import org.maddiesoftware.komagareader.R
 import org.maddiesoftware.komagareader.core.data.local.ServerInfoSingleton
 import org.maddiesoftware.komagareader.core.presentation.viewmodels.MainViewModel
-import org.maddiesoftware.komagareader.destinations.*
-import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.*
-import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.AllSeriesViewModel
+import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.PaginationStateHandler
+import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.ReadListThumbCard
+import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.WarningMessage
+import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.AllReadListViewModel
 import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.LibraryViewModule
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun AllSeriesTab(
-    viewModel: AllSeriesViewModel = hiltViewModel(),
-    libraryViewModule: LibraryViewModule = hiltViewModel(),
-    mainViewModel: MainViewModel = hiltViewModel(),
-    libraryId: String? = null,
+fun AllReadListTab (
     onItemClick: (id: String) -> Unit,
+    viewModel: AllReadListViewModel = hiltViewModel(),
+    libraryViewModule: LibraryViewModule = hiltViewModel(),
+    libraryId: String? = null,
+    mainViewModel: MainViewModel = hiltViewModel(),
 ) {
     mainViewModel.showTopBar.value = true
     val serverInfo = ServerInfoSingleton
-    val seriesState = viewModel.seriesState
+    val readListState = viewModel.readListState
         .collectAsLazyPagingItems()
-
     val libraryList = libraryViewModule.state.libraryList
+
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-            .padding(16.dp)
+    modifier = Modifier
+        .fillMaxSize()
+        .background(Color.White)
+        .padding(16.dp)
     ) {
+        Row {
+//                    Text(
+//                        text = stringResource(id = R.string.recently_add_series),
+//                        color = Color.Black,
+//                        style = MaterialTheme.typography.h4,
+////                        color = MaterialTheme.colors.onBackground,
+//                        modifier = Modifier.padding(vertical = 10.dp)
+//                    )
+        }
+        Spacer(modifier = Modifier.width(8.dp))
         LazyVerticalGrid(
             columns = GridCells.Adaptive(155.dp),
             modifier = Modifier
                 .fillMaxSize()
                 .padding(5.dp)
         ) {
-            items(seriesState.itemCount) { i ->
-                val series = seriesState[i]
-                SeriesThumbCard(
-                    url = "${serverInfo.url}api/v1/series/${series?.id}/thumbnail",
-                    booksCount = series?.booksCount,
-                    booksUnreadCount = series?.booksUnreadCount,
-                    id = series?.id.toString(),
-                    title = series?.metadata?.title,
+            items(readListState.itemCount) { i ->
+                val readList = readListState[i]
+                ReadListThumbCard(
+                    url = "${serverInfo.url}api/v1/readlists/${readList?.id}/thumbnail",
+                    booksCount = readList?.bookIds?.size,
+                    id = readList?.id.toString(),
+                    title = readList?.name,
                     modifier = Modifier
                         .padding(16.dp)
                         .fillMaxWidth(),
@@ -75,7 +85,7 @@ fun AllSeriesTab(
             }
             item {
                 PaginationStateHandler(
-                    paginationState = seriesState,
+                    paginationState = readListState,
                     loadingComponent = {
                         Box(
                             modifier = Modifier.fillMaxWidth(),
@@ -92,7 +102,7 @@ fun AllSeriesTab(
                                     text = stringResource(id = R.string.lbl_retry),
                                     modifier = Modifier
                                         .padding(start = 3.dp)
-                                        .clickable(role = Role.Button) { seriesState.retry() },
+                                        .clickable(role = Role.Button) { readListState.retry() },
                                     textDecoration = TextDecoration.Underline,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colors.onSecondary,
@@ -104,4 +114,5 @@ fun AllSeriesTab(
             }
         }
     }
+
 }
