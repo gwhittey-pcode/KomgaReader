@@ -9,5 +9,6 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(): ViewModel() {
     var showTopBar: MutableState<Boolean> = mutableStateOf(true)
+    var topBarTitle: MutableState<String> = mutableStateOf("KomgaReader")
 
 }

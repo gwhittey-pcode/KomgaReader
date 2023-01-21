@@ -12,7 +12,7 @@ fun SeriesByIdTabs(selectedTabIndex: Int, onSelectedTab: (SeriesByIdTabPage) -> 
     TabRow(
         selectedTabIndex = selectedTabIndex,
         modifier = Modifier.background(MaterialTheme.colors.surface),
-        indicator = { SeriesByIdTabIndicator(tabPosition = it, index = selectedTabIndex) }
+        indicator = { TabIndicator(tabPosition = it, index = selectedTabIndex) }
     ) {
         SeriesByIdTabPage.values().forEachIndexed { index, tabPage ->
             Tab(

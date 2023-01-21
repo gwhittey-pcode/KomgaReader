@@ -8,6 +8,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavBackStackEntry
 import org.maddiesoftware.komagareader.core.presentation.viewmodels.MainViewModel
@@ -25,9 +26,10 @@ fun NavBar(
     val topBarHeight = 56.dp
     Log.d("showTopBar","mainState.showTopBar=${mainViewModel.showTopBar.value}")
     TopAppBar(
-        modifier = Modifier.height(height = if (!mainViewModel.showTopBar.value) 0.dp else topBarHeight),
+        modifier = Modifier
+            .height(height = if (!mainViewModel.showTopBar.value) 0.dp else topBarHeight),
         title = {
-            Text(text = "KomgaReader")
+            Text(text = mainViewModel.topBarTitle.value, maxLines = 1, overflow = TextOverflow.Ellipsis)
         },
         backgroundColor = MaterialTheme.colors.primary,
         contentColor = MaterialTheme.colors.onPrimary,

@@ -50,6 +50,7 @@ fun BookInfoScreen(
     mainViewModel: MainViewModel
 ) {
     mainViewModel.showTopBar.value = true
+
     val serverInfo = ServerInfoSingleton
     val bookInfo = viewModel.state.bookInfo
     var date = ""
@@ -57,7 +58,7 @@ fun BookInfoScreen(
         date = genMonth(bookInfo.metadata.releaseDate.toString())
 
     }
-
+    mainViewModel.topBarTitle.value = "#${bookInfo?.number.toString()} ${bookInfo?.seriesTitle.toString()}"
 //    val formattedDate  =  date.format(formatter)
     if (bookInfo != null) {
 

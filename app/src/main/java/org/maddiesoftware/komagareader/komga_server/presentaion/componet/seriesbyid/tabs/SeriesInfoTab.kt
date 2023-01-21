@@ -151,7 +151,7 @@ fun SeriesInfoTab(
                 )
         }
         Text(
-            text = "${seriesInfo?.metadata?.totalBookCount} books",
+            text = "${seriesInfo?.booksReadCount} of ${seriesInfo?.booksCount} books read",
             fontWeight = FontWeight.Normal,
             fontSize = 16.sp,
             modifier = Modifier
@@ -162,8 +162,6 @@ fun SeriesInfoTab(
                     width = Dimension.fillToConstraints
                 }
         )
-
-
 
         Text(
             text = "PUBLISHER:",

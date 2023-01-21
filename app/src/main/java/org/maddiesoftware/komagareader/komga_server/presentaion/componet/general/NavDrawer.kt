@@ -1,5 +1,6 @@
 package org.maddiesoftware.komagareader.komga_server.presentaion.componet.general
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
@@ -25,8 +26,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.maddiesoftware.komagareader.NavGraphs
 import org.maddiesoftware.komagareader.destinations.AllCollectionsScreenDestination
-import org.maddiesoftware.komagareader.destinations.AllSeriesScreenDestination
 import org.maddiesoftware.komagareader.destinations.HomeScreenDestination
+import org.maddiesoftware.komagareader.destinations.LibraryMainScreenDestination
 import org.maddiesoftware.komagareader.destinations.SettingsScreenDestination
 import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.LibraryViewModule
 
@@ -216,11 +217,12 @@ fun DrawerBodySelectionScreen(
                     scopeState.launch {
                         scaffoldState.drawerState.close()
                     }
+                    Log.d("LibMain","NavDrawer libary = $it")
                     navController
                         // Avoid multiple copies of the same destination when
                         // reselecting the same item
                         // Restore state when reselecting a previously selected item
-                        .navigate(AllSeriesScreenDestination(libraryId = it)) {
+                        .navigate(LibraryMainScreenDestination(libraryId = it)) {
                             // Pop up to the root of the graph to
                             // avoid building up a large stack of destinations
                             // on the back stack as users select items
@@ -232,7 +234,7 @@ fun DrawerBodySelectionScreen(
                             // reselecting the same item
                             launchSingleTop = true
                             // Restore state when reselecting a previously selected item
-                            restoreState = true
+                            restoreState = false
                         }
                 }
             )
