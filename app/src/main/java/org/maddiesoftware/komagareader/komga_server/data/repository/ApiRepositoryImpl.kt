@@ -311,4 +311,98 @@ class ApiRepositoryImpl @Inject constructor(
             }
         ).flow
     }
+
+    override suspend fun getNextBookInReadList(bookId: String, readListId: String): Resource<Book> {
+        return try {
+            val getNextBookInReadList = api.getNextBookInReadList(bookId = bookId, readListId = readListId)
+            Resource.Success(getNextBookInReadList.toBook())
+        } catch (e: IOException) {
+            e.printStackTrace()
+            Log.d("komga1", "I Errro2")
+            Resource.Error(
+                message = "Couldn't load Read List info"
+            )
+        } catch (e: HttpException) {
+            e.printStackTrace()
+            Log.d("komga1", " HttpException")
+            Resource.Error(
+                message = "Couldn't Read List Series info"
+            )
+        }
+    }
+
+    override suspend fun getPreviousBookInReadList(
+        bookId: String,
+        readListId: String
+    ): Resource<Book> {
+        return try {
+            val getPreviousBookInReadList = api.getPreviousBookInReadList(bookId = bookId, readListId = readListId)
+            Resource.Success(getPreviousBookInReadList.toBook())
+        } catch (e: IOException) {
+            e.printStackTrace()
+            Log.d("komga1", "I Errro2")
+            Resource.Error(
+                message = "Couldn't load getPreviousBookInReadList  info"
+            )
+        } catch (e: HttpException) {
+            e.printStackTrace()
+            Log.d("BookInfo", " ${e.message}")
+            if(e.message == "HTTP 404") {
+                Resource.Error(message = "404 Error")
+            }else{
+                Resource.Error(
+                    message = "Couldn't load getPreviousBookInReadList  info"
+                )
+            }
+
+        }
+    }
+
+    override suspend fun getNextBookInSeries(bookId: String): Resource<Book> {
+        return try {
+            val getNextBookInSeries = api.getNextBookInSeries(bookId = bookId)
+            Resource.Success(getNextBookInSeries.toBook())
+        } catch (e: IOException) {
+            e.printStackTrace()
+            Log.d("komga1", "I Errro2")
+            Resource.Error(
+                message = "Couldn't load getPreviousBookInReadList  info"
+            )
+        } catch (e: HttpException) {
+            e.printStackTrace()
+            Log.d("BookInfo", " ${e.message}")
+            if(e.message == "HTTP 404") {
+                Resource.Error(message = "404 Error")
+            }else{
+                Resource.Error(
+                    message = "Couldn't load getPreviousBookInReadList  info"
+                )
+            }
+
+        }
+    }
+
+    override suspend fun getPreviousBookInSeries(bookId: String): Resource<Book> {
+        return try {
+            val getPreviousBookInSeries = api.getPreviousBookInSeries(bookId = bookId)
+            Resource.Success(getPreviousBookInSeries.toBook())
+        } catch (e: IOException) {
+            e.printStackTrace()
+            Log.d("komga1", "I Errro2")
+            Resource.Error(
+                message = "Couldn't load getPreviousBookInReadList  info"
+            )
+        } catch (e: HttpException) {
+            e.printStackTrace()
+            Log.d("BookInfo", " ${e.message}")
+            if(e.message == "HTTP 404") {
+                Resource.Error(message = "404 Error")
+            }else{
+                Resource.Error(
+                    message = "Couldn't load getPreviousBookInReadList  info"
+                )
+            }
+
+        }
+    }
 }

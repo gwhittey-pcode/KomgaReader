@@ -48,6 +48,7 @@ class SeriesByIdViewModel @Inject constructor(
     }
 
     private fun getBooksFromSeries(){
+        Log.d("BookCount", "getBooksFromSeries")
         viewModelScope.launch {
             allSeriesUseCases.getBooksFromSeries.invoke(pageSize = PAGE_SIZE, seriesId = seriesId)
                 .distinctUntilChanged()
@@ -61,7 +62,7 @@ class SeriesByIdViewModel @Inject constructor(
 
     private fun getSeriesById(){
         viewModelScope.launch {
-            Log.d("komga-launch", "Launch")
+
             state = state.copy(isLoading = true)
             val seriesByIdResult = async { apiRepository.getSeriesById(seriesId = seriesId.toString()) }
             when(val result = seriesByIdResult.await()) {

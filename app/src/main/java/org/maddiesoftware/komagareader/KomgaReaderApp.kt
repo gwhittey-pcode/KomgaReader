@@ -7,6 +7,7 @@ import dagger.hilt.android.HiltAndroidApp
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.maddiesoftware.komagareader.komga_server.data.remote.client.BasicAuthInterceptor
+import java.util.concurrent.TimeUnit
 
 @HiltAndroidApp
 class KomgaReaderApp:Application(), ImageLoaderFactory {
@@ -21,6 +22,8 @@ class KomgaReaderApp:Application(), ImageLoaderFactory {
                 // This header will be added to every image request.
                 .addInterceptor(BasicAuthInterceptor())
                 .addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BASIC })
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
                 .build()
         }
         .build()

@@ -1,5 +1,6 @@
 package org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -20,9 +21,11 @@ class BookInfoViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
 ): ViewModel()  {
 
-    private var bookId: String? = null
-    private var groupType: String? = null
-    private var readListId: String? = null
+    var bookId: String? = null
+    var groupType: String? = null
+    var readListId: String? = null
+    var hasPrevBook:Boolean = false
+    var hasNextBook: Boolean = false
     var state by mutableStateOf(BookInfoState())
 
     init {
@@ -45,6 +48,14 @@ class BookInfoViewModel @Inject constructor(
             }
         }
         getBookById()
+        Log.d("BookInfo", "groupType = $groupType")
+         if(groupType == "Read List"){
+             getPreviousBookInReadList()
+             getNextBookInReadList()
+         }else{
+             getPreviousBookInSeries()
+             getNextBookInSeries()
+         }
 
     }
 
@@ -66,6 +77,95 @@ class BookInfoViewModel @Inject constructor(
                         error = result.message,
                         bookInfo = null
                     )
+                }
+                else -> Unit
+            }
+        }
+    }
+
+    private fun getPreviousBookInReadList(){
+        viewModelScope.launch {
+            state = state.copy(isLoading = true)
+            val previousBookInReadListResult = async { apiRepository.getPreviousBookInReadList(bookId = bookId.toString(), readListId = readListId.toString()) }
+            when(val result = previousBookInReadListResult.await()) {
+                is Resource.Success -> {
+                    state = state.copy(
+                        prevBookInfo = result.data,
+
+                    )
+                    hasPrevBook = true
+                }
+                is Resource.Error -> {
+                    if(result.message == "404 Error"){
+                        hasPrevBook = false
+                    }
+                }
+                else -> Unit
+            }
+        }
+    }
+
+    private fun getNextBookInReadList(){
+        viewModelScope.launch {
+            state = state.copy(isLoading = true)
+            val nextBookInReadListResult = async { apiRepository.getNextBookInReadList(bookId = bookId.toString(), readListId = readListId.toString()) }
+            when(val result = nextBookInReadListResult.await()) {
+                is Resource.Success -> {
+                    state = state.copy(
+                        nextBookInfo = result.data,
+                    )
+                    hasNextBook = true
+                    Log.d("BookInfo", "state.hasNextBook  = $hasNextBook ")
+                }
+                is Resource.Error -> {
+                    if(result.message == "404 Error"){
+                        hasNextBook = false
+                    }
+
+                }
+                else -> Unit
+            }
+        }
+    }
+    private fun getPreviousBookInSeries(){
+        viewModelScope.launch {
+            state = state.copy(isLoading = true)
+            val previousBookInSeriesResult = async { apiRepository.getPreviousBookInSeries(bookId = bookId.toString()) }
+            when(val result = previousBookInSeriesResult.await()) {
+                is Resource.Success -> {
+                    state = state.copy(
+                        prevBookInfo = result.data,
+                    )
+                    hasPrevBook = true
+                    Log.d("BookInfo", "state.hasNextBook  = $hasNextBook ")
+                }
+                is Resource.Error -> {
+                    if(result.message == "404 Error"){
+                        hasPrevBook = false
+                    }
+
+                }
+                else -> Unit
+            }
+        }
+    }
+    private fun getNextBookInSeries(){
+        viewModelScope.launch {
+            state = state.copy(isLoading = true)
+            val nextBookInSeriesResult = async { apiRepository.getNextBookInSeries(bookId = bookId.toString()) }
+            when(val result = nextBookInSeriesResult.await()) {
+                is Resource.Success -> {
+                    state = state.copy(
+                        nextBookInfo = result.data,
+                    )
+                    hasNextBook = true
+                    Log.d("BookInfo", "state.hasNextBook  = $hasNextBook ")
+                }
+                is Resource.Error -> {
+                    if(result.message == "404 Error"){
+                        hasNextBook = false
+                    }
+
                 }
                 else -> Unit
             }
