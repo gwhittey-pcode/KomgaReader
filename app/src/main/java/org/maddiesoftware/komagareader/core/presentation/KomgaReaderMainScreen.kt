@@ -15,8 +15,10 @@ import kotlinx.coroutines.launch
 import org.maddiesoftware.komagareader.NavGraphs
 import org.maddiesoftware.komagareader.core.presentation.componets.MainScaffold
 import org.maddiesoftware.komagareader.core.presentation.viewmodels.MainViewModel
+import org.maddiesoftware.komagareader.destinations.BookInfoScreenDestination
 import org.maddiesoftware.komagareader.destinations.Destination
 import org.maddiesoftware.komagareader.destinations.ServerSelectScreenDestination
+import org.maddiesoftware.komagareader.komga_server.presentaion.componet.bookinfo.BookInfoTopBar
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.NavBar
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.NavDrawer
 
@@ -39,18 +41,35 @@ fun KomgaReaderMainScreen() {
         scopeState = scopeState,
         topBar = { dest, backStackEntry ->
             if (dest.shouldShowScaffoldElements) {
-                NavBar(
-                    onMenuItemClick = {
-                        scopeState.launch {
-                            scaffoldState.drawerState.open()
-                        }
-                    },
-                    onNavigationIconClick = {navController.navigateUp() },
+                if (dest.useBookInfoNavBar){
+                    BookInfoTopBar(
+                        onMenuItemClick = {
+                            scopeState.launch {
+                                scaffoldState.drawerState.open()
+                            }
+                        },
+                        onNavigationIconClick = {navController.navigateUp() },
 //                    modifier = Modifier.height(height = if (!mainState.showTopBar) 0.dp else topBarHeight),
-                    destination = dest,
-                    navBackStackEntry = backStackEntry,
-                    mainViewModel = mainViewModel
-                )
+                        destination = dest,
+                        navBackStackEntry = backStackEntry,
+                        mainViewModel = mainViewModel,
+                        navController = navController,
+                    )
+                }else{
+                    NavBar(
+                        onMenuItemClick = {
+                            scopeState.launch {
+                                scaffoldState.drawerState.open()
+                            }
+                        },
+                        onNavigationIconClick = {navController.navigateUp() },
+//                    modifier = Modifier.height(height = if (!mainState.showTopBar) 0.dp else topBarHeight),
+                        destination = dest,
+                        navBackStackEntry = backStackEntry,
+                        mainViewModel = mainViewModel
+                    )
+                }
+
             }
         },
         navDrawer = {
@@ -91,7 +110,7 @@ fun KomgaReaderMainScreen() {
 }
 
 private val Destination.shouldShowScaffoldElements get() = this !in listOf(ServerSelectScreenDestination)
-
+private val Destination.useBookInfoNavBar get() = this is (BookInfoScreenDestination)
 
 
 //onItemClick = { id ->

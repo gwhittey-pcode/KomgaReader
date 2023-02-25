@@ -3,8 +3,9 @@ package org.maddiesoftware.komagareader.komga_server.presentaion.componet.bookre
 import android.view.Gravity
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
@@ -50,7 +51,7 @@ fun ReadListBooksDialog(
     val bookState = viewModel.bookState
         .collectAsLazyPagingItems()
     val composableScope = rememberCoroutineScope()
-    val scrollState = LazyListState()
+    val scrollState = LazyGridState()
     var currentBookIndex by remember() {
         mutableStateOf(0)
     }
@@ -74,11 +75,12 @@ fun ReadListBooksDialog(
             shape = RoundedCornerShape(16.dp),
             color = Color.White
         ) {
-            LazyRow(
+            LazyVerticalGrid(
                 state = scrollState,
                 modifier = Modifier
                     .width(screenWidth)
-                    .height(300.dp)
+                    .fillMaxHeight(.75f),
+                columns = GridCells.Adaptive(155.dp)
             )
             {
                 items(bookState.itemCount) { i ->

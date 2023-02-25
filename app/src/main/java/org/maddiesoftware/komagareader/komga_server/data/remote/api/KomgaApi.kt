@@ -39,7 +39,7 @@ interface KomgaServerApi {
         @Query("media_status") mediaStatus: List<String>? = null,
         @Query("read_status") readStatus: List<String>? = null,
         @Query("tag") tag: List<String>? = null,
-        @Query("unpaged") unpaged: Boolean? = true,
+        @Query("unpaged") unpaged: Boolean? = false,
         @Query("page") page: Int? = null,
         @Query("size") size: Int? = null,
         @Query("sort") sort: List<String>? = null,
@@ -120,6 +120,17 @@ interface KomgaServerApi {
         @Body newReadProgress: NewReadProgress
     ): Response<Unit>
 
+    //get next book from series
+    @GET("books/{bookId}/next")
+    suspend fun getNextBookInSeries(
+        @Path("bookId") bookId: String,
+    ):BookDto
+
+    //get prev book from series
+    @GET("books/{bookId}/previous")
+    suspend fun getPreviousBookInSeries(
+        @Path("bookId") bookId: String,
+    ):BookDto
 
 
     //Reading List Controls
@@ -148,6 +159,17 @@ interface KomgaServerApi {
         @Query("author") author: List<String>? = null
     ): ResponseItems<BookDto>
 
+    @GET("readlists/{readListId}/books/{bookId}/next")
+    suspend fun getNextBookInReadList(
+        @Path("readListId") readListId: String,
+        @Path("bookId") bookId: String,
+    ): BookDto
+
+    @GET("readlists/{readListId}/books/{bookId}/previous")
+    suspend fun getPreviousBookInReadList(
+        @Path("readListId") readListId: String,
+        @Path("bookId") bookId: String,
+    ): BookDto
 
     //Collections Controller
     @GET("collections")

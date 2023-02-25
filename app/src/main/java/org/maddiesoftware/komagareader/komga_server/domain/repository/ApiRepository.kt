@@ -44,4 +44,13 @@ interface ApiRepository {
     suspend fun getCollectionById(collectionId:String): Resource<CollectionX>
 
     fun getSeriesFromCollection(pageSize: Int,collectionId:String,libraryId: String?): Flow<PagingData<Series>>
+
+    suspend fun getNextBookInSeries(bookId: String):Resource<Book>
+
+    suspend fun getPreviousBookInSeries(bookId: String):Resource<Book>
+
+    suspend fun getNextBookInReadList(bookId: String, readListId: String):Resource<Book>
+
+    suspend fun getPreviousBookInReadList(bookId: String, readListId: String):Resource<Book>
+
 }

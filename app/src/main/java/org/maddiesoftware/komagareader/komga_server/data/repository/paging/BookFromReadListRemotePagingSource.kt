@@ -1,5 +1,6 @@
 package org.maddiesoftware.komagareader.komga_server.data.repository.paging
 
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import org.maddiesoftware.komagareader.komga_server.data.remote.api.KomgaServerApi
@@ -12,6 +13,7 @@ class BookFromReadListRemotePagingSource(private val api: KomgaServerApi, privat
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Book> {
+        Log.d("BookCount", "BookFromReadListRemotePagingSource")
         val currentPage = params.key ?: 0
         val response  = api.getBooksFromReadList(readListId = readListId.toString(), page = currentPage,)
 
