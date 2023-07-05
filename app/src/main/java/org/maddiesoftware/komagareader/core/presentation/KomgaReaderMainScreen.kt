@@ -17,6 +17,7 @@ import org.maddiesoftware.komagareader.core.presentation.componets.MainScaffold
 import org.maddiesoftware.komagareader.core.presentation.viewmodels.MainViewModel
 import org.maddiesoftware.komagareader.destinations.BookInfoScreenDestination
 import org.maddiesoftware.komagareader.destinations.Destination
+import org.maddiesoftware.komagareader.destinations.ServerAddScreenDestination
 import org.maddiesoftware.komagareader.destinations.ServerSelectScreenDestination
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.bookinfo.BookInfoTopBar
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.NavBar
@@ -109,7 +110,7 @@ fun KomgaReaderMainScreen() {
     )
 }
 
-private val Destination.shouldShowScaffoldElements get() = this !in listOf(ServerSelectScreenDestination)
+private val Destination.shouldShowScaffoldElements get() = this !in listOf(ServerSelectScreenDestination,ServerAddScreenDestination)
 private val Destination.useBookInfoNavBar get() = this is (BookInfoScreenDestination)
 
 

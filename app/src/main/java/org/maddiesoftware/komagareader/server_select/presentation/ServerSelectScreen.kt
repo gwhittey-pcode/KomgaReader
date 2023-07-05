@@ -32,6 +32,7 @@ import org.maddiesoftware.komagareader.server_select.presentation.components.Ser
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun ServerSelectScreen(
+
     navigator: DestinationsNavigator,
     viewModel: ServerListViewModel = hiltViewModel(),
     serverAddViewModel: ServerAddViewModel = hiltViewModel(),

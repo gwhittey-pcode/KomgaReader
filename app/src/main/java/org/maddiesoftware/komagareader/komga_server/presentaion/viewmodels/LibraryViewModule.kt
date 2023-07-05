@@ -33,7 +33,7 @@ class LibraryViewModule @Inject constructor(
             when(val result = libraryListResults.await()) {
                 is Resource.Success -> {
                     Log.d("komga1", "Resource.success ")
-//                    Log.d("komga1", "result = ${result.data} ")
+                    Log.d("komga1", "result = ${result.data} ")
                     state = state.copy(
                         libraryList = result.data,
                         isLoading = false,

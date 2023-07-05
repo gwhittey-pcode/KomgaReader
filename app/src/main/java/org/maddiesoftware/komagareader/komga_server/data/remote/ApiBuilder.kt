@@ -3,7 +3,6 @@ package org.maddiesoftware.komagareader.komga_server.data.remote
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.maddiesoftware.komagareader.core.data.local.ServerInfoSingleton.url
-
 import org.maddiesoftware.komagareader.komga_server.data.remote.client.BasicAuthInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -13,6 +12,7 @@ class ApiBuilder @Inject constructor() {
 
     fun <Api> builder(api: Class<Api>): Api {
         val baseUrl = "${url}api/v1/"
+
         return Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(getClient())
