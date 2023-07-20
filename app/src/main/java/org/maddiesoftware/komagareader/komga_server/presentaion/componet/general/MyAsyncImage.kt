@@ -10,6 +10,7 @@ import coil.compose.AsyncImagePainter
 import coil.compose.SubcomposeAsyncImage
 import coil.compose.SubcomposeAsyncImageContent
 import coil.imageLoader
+import coil.request.CachePolicy
 import coil.request.ImageRequest
 
 
@@ -20,7 +21,12 @@ fun MyAsyncImage(
 ) {
     val request: ImageRequest = ImageRequest.Builder(LocalContext.current.applicationContext)
         .data(url)
+        .memoryCacheKey(url)
+        .diskCacheKey(url)
+        .diskCachePolicy(CachePolicy.ENABLED)
+        .memoryCachePolicy(CachePolicy.ENABLED)
         .build()
+
     LocalContext.current.applicationContext.imageLoader.enqueue(request)
     SubcomposeAsyncImage(
         modifier = modifier,

@@ -185,7 +185,7 @@ fun BookInfoScreen(
                 }
             }
             Text(
-                text = bookInfo.seriesTitle.toString(),
+                text = "${bookInfo.seriesTitle.toString()} # ${bookInfo.number.toString()}",
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp,
                 modifier = Modifier
@@ -208,13 +208,14 @@ fun BookInfoScreen(
                         width = Dimension.fillToConstraints
                     }
             )
+
             Text(
                 text = "${bookInfo.readProgress?.page ?: 0} of ${bookInfo.media?.pagesCount.toString()} Pages Read -" +
                         "   $date   ",
                 fontWeight = FontWeight.Normal,
                 fontSize = 15.sp,
                 modifier = Modifier
-                    .constrainAs(bookNumber) {
+                    .constrainAs(bookPageCount) {
                         start.linkTo(endGuideLine, 5.dp)
                         top.linkTo(bookTitle.bottom, 10.dp)
                         end.linkTo(parent.end, 15.dp)
