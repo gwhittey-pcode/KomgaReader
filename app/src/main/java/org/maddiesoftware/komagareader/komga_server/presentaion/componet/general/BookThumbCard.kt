@@ -1,4 +1,4 @@
-package org.maddiesoftware.komagareader.komga_server.presentaion.componet
+package org.maddiesoftware.komagareader.komga_server.presentaion.componet.general
 
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
@@ -6,7 +6,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Download
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.*
@@ -17,7 +24,6 @@ import androidx.compose.ui.unit.sp
 import org.maddiesoftware.komagareader.core.presentation.theme.GoldUnreadBookCount
 import org.maddiesoftware.komagareader.komga_server.domain.model.Book
 import org.maddiesoftware.komagareader.komga_server.domain.model.TriangleShape
-import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.MyAsyncImage
 
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -39,6 +45,7 @@ fun BookThumbCard(
         val pageRead = book?.readProgress?.page?.toFloat()
         val totalPages = book?.media?.pagesCount?.toFloat()
         val presentRead = pageRead?.div(totalPages!!)
+        val isDownloaded = true
         Card(
             elevation = 5.dp,
             modifier = Modifier
@@ -67,6 +74,33 @@ fun BookThumbCard(
                             .height(200.dp)
                             .width(150.dp),
                     )
+                   if (!isDownloaded) {
+                    IconButton(
+                        onClick = {Log.d("Komga","This is icon clicked")},
+                        modifier = Modifier
+                            .align(Alignment.BottomEnd)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Download,
+                            contentDescription = "Download",
+                            tint = Color.Red,
+                            modifier = Modifier.size(48.dp)
+                        )
+                    }
+                   }else{
+                       IconButton(
+                           onClick = {},
+                           modifier = Modifier
+                               .align(Alignment.BottomEnd)
+                       ) {
+                           Icon(
+                               imageVector = Icons.Default.Check,
+                               contentDescription = "Download",
+                               tint = Color.Green,
+                               modifier = Modifier.size(48.dp)
+                           )
+                       }
+                   }
                     if (book?.readProgress?.completed == false || book?.readProgress === null) {
                         Chip(
                             modifier = Modifier
@@ -129,6 +163,7 @@ fun BookThumbCard(
                             .offset(0.dp, (-15).dp)
                             .padding(start = 5.dp, bottom = 2.dp)
                     )
+
                     Log.d("percent", "PercentRead = $presentRead")
                     if (book?.readProgress?.completed == false || book?.readProgress === null) {
                         if (presentRead != null && presentRead != 1f) {
@@ -147,5 +182,32 @@ fun BookThumbCard(
     }
 }
 
+@Composable
+fun FavoriteButton(
+    modifier: Modifier = Modifier,
+    color: Color = Color.Red
+) {
+
+    var isDownloaded by remember { mutableStateOf(true) }
+
+    IconToggleButton(
+        checked = isDownloaded,
+        onCheckedChange = {
+            isDownloaded = !isDownloaded
+        }
+    ) {
+        Icon(
+            tint = color,
+
+            imageVector = if (isDownloaded) {
+                Icons.Filled.Check
+            } else {
+                Icons.Default.Download
+            },
+            contentDescription = null
+        )
+    }
+
+}
 
 

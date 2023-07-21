@@ -11,11 +11,13 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronLeft
 import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.MenuBook
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
@@ -75,7 +77,7 @@ fun BookInfoScreen(
         ConstraintLayout(modifier = Modifier.fillMaxSize()) {
             val (
                 bookThumb, bookSeriesTitle, bookReadTag, bookTitle, bookNumber, bookPageCount, bookReleaseDate,
-                topSpacer, bookSummary, floatingActionButton, nextPrevBookNavBox
+                topSpacer, bookSummary, floatingReadActionButton, nextPrevBookNavBox, floatingDownloadActionButton
             ) = createRefs()
             val endGuideLine = createGuidelineFromStart(256.dp)
             val centerGuideline = createGuidelineFromStart(.5f)
@@ -250,7 +252,7 @@ fun BookInfoScreen(
                 }
             }
             FloatingActionButton(
-                modifier = Modifier.constrainAs(floatingActionButton) {
+                modifier = Modifier.constrainAs(floatingReadActionButton) {
                     bottom.linkTo(parent.bottom, 30.dp)
                     end.linkTo(parent.end, 30.dp)
 
@@ -278,6 +280,42 @@ fun BookInfoScreen(
                     Spacer(modifier = Modifier.width(16.dp))
                     Text(
                         text = "Read",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Normal
+                    )
+
+                }
+
+            }
+            FloatingActionButton(//Floating Action Button for Downloading comic
+                modifier = Modifier.constrainAs(floatingDownloadActionButton) {
+                    bottom.linkTo(parent.bottom, 30.dp)
+                    start.linkTo(parent.start, 30.dp)
+
+                },
+                onClick = {
+                    navigator.navigate(
+                        BookReaderScreenDestination(
+                            bookId = bookInfo.id.toString(),
+                            seriesId = bookInfo.seriesId.toString(),
+                            groupType = groupType,
+                            readListId = readListId
+                        )
+                    )
+                },
+                backgroundColor = MaterialTheme.colors.primary,
+                shape = RectangleShape
+            ) {
+                Row(modifier = Modifier.width(225.dp)) {
+                    Spacer(modifier = Modifier.width(18.dp))
+                    Icon(
+                        imageVector = Icons.Default.Download,
+                        contentDescription = "fab_add_order",
+                        tint = MaterialTheme.colors.onSurface
+                    )
+                    Spacer(modifier = Modifier.width(18.dp))
+                    Text(
+                        text = "Download Issue",
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Normal
                     )

@@ -21,6 +21,7 @@ import org.maddiesoftware.komagareader.core.data.local.ServerInfoSingleton
 import org.maddiesoftware.komagareader.core.presentation.viewmodels.MainViewModel
 import org.maddiesoftware.komagareader.destinations.*
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.*
+import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.BookThumbCard
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.SeriesThumbCard
 import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.HomeViewModule
 import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.LibraryViewModule

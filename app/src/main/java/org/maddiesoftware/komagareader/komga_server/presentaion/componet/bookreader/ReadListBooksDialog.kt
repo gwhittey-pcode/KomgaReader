@@ -33,7 +33,7 @@ import kotlinx.coroutines.launch
 import org.maddiesoftware.komagareader.R
 import org.maddiesoftware.komagareader.core.data.local.ServerInfoSingleton
 import org.maddiesoftware.komagareader.core.presentation.theme.GoldUnreadBookCount
-import org.maddiesoftware.komagareader.komga_server.presentaion.componet.BookThumbCard
+import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.BookThumbCard
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.PaginationStateHandler
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.WarningMessage
 import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.ReadListByIdViewModel

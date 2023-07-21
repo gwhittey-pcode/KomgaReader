@@ -25,7 +25,7 @@ import org.maddiesoftware.komagareader.R
 import org.maddiesoftware.komagareader.core.data.local.ServerInfoSingleton
 import org.maddiesoftware.komagareader.core.presentation.viewmodels.MainViewModel
 import org.maddiesoftware.komagareader.destinations.BookInfoScreenDestination
-import org.maddiesoftware.komagareader.komga_server.presentaion.componet.BookThumbCard
+import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.BookThumbCard
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.PaginationStateHandler
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.WarningMessage
 import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.LibraryViewModule
