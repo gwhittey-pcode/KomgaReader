@@ -28,6 +28,7 @@ class KomgaReaderApp:Application(), ImageLoaderFactory {
                 .readTimeout(30, TimeUnit.SECONDS)
                 .build()
         }
+        .respectCacheHeaders(false)
         .memoryCache {
             MemoryCache.Builder(applicationContext)
                 .maxSizePercent(0.25)

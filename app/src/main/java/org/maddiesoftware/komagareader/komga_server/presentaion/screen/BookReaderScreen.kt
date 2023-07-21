@@ -159,6 +159,7 @@ fun BookReaderScreen(
                                 }
                                 if (bookNumber != null) {
                                     if ((tmpPageCount != null) && (bookNumber.toInt() > startPage) && !doingUpdateReadProgress) {
+                                        Log.d("ReadProgress", "page#${bookNumber}")
                                         viewModel.updateReadProgress(
                                             pagerIndex = page,
                                             newProgressPage = bookNumber,

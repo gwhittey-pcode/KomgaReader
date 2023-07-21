@@ -25,6 +25,7 @@ fun MyAsyncImage(
         .diskCacheKey(url)
         .diskCachePolicy(CachePolicy.ENABLED)
         .memoryCachePolicy(CachePolicy.ENABLED)
+
         .build()
 
     LocalContext.current.applicationContext.imageLoader.enqueue(request)
@@ -42,8 +43,8 @@ fun MyAsyncImage(
             CircularProgressIndicator()
         } else {
             SubcomposeAsyncImageContent()
-        }
 
+        }
 
     }
 }
