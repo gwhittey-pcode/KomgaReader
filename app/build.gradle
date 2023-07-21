@@ -112,8 +112,8 @@ dependencies {
     implementation 'io.github.raamcosta.compose-destinations:animations-core:1.7.32-beta'
     ksp 'io.github.raamcosta.compose-destinations:ksp:1.7.27-beta'
     // Coil
-    implementation("io.coil-kt:coil-compose:2.2.2")
-
+   // implementation("io.coil-kt:coil-compose:2.2.2")
+    implementation("io.coil-kt:coil-compose:2.4.0")
     // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
