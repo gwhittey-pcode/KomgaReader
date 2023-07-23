@@ -7,8 +7,25 @@ import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
 import org.maddiesoftware.komagareader.core.util.Resource
 import org.maddiesoftware.komagareader.komga_server.data.remote.api.KomgaServerApi
-import org.maddiesoftware.komagareader.komga_server.data.repository.paging.*
-import org.maddiesoftware.komagareader.komga_server.domain.model.*
+import org.maddiesoftware.komagareader.komga_server.data.repository.paging.AllCollectionRemotePagingSource
+import org.maddiesoftware.komagareader.komga_server.data.repository.paging.AllReadListsRemotePagingSource
+import org.maddiesoftware.komagareader.komga_server.data.repository.paging.AllSeriesRemotePagingSource
+import org.maddiesoftware.komagareader.komga_server.data.repository.paging.BookFromReadListRemotePagingSource
+import org.maddiesoftware.komagareader.komga_server.data.repository.paging.BookFromSeriesRemotePagingSource
+import org.maddiesoftware.komagareader.komga_server.data.repository.paging.KeepReadingSource
+import org.maddiesoftware.komagareader.komga_server.data.repository.paging.NewSeriesPagingSource
+import org.maddiesoftware.komagareader.komga_server.data.repository.paging.OnDeckPagingSource
+import org.maddiesoftware.komagareader.komga_server.data.repository.paging.RecentlyAddedBooksPagingSource
+import org.maddiesoftware.komagareader.komga_server.data.repository.paging.SeriesFromCollectionRemotePagingSource
+import org.maddiesoftware.komagareader.komga_server.data.repository.paging.UpdatedSeriesPagingSource
+import org.maddiesoftware.komagareader.komga_server.domain.model.Book
+import org.maddiesoftware.komagareader.komga_server.domain.model.CollectionX
+import org.maddiesoftware.komagareader.komga_server.domain.model.Library
+import org.maddiesoftware.komagareader.komga_server.domain.model.NewReadProgress
+import org.maddiesoftware.komagareader.komga_server.domain.model.Page
+import org.maddiesoftware.komagareader.komga_server.domain.model.PageSeries
+import org.maddiesoftware.komagareader.komga_server.domain.model.ReadList
+import org.maddiesoftware.komagareader.komga_server.domain.model.Series
 import org.maddiesoftware.komagareader.komga_server.domain.repository.ApiRepository
 import retrofit2.HttpException
 import retrofit2.Response
@@ -35,7 +52,7 @@ class ApiRepositoryImpl @Inject constructor(
             )
         } catch (e: HttpException) {
             e.printStackTrace()
-            Log.d("komga1", " HttpException")
+            Log.d("komga HTTP Error", " HttpException")
             Resource.Error(
                 message = "Couldn't load PageSeries info"
             )
