@@ -2,7 +2,13 @@ package org.maddiesoftware.komagareader.komga_server.presentaion.componet.genera
 
 import android.util.Log
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ScaffoldState
@@ -25,7 +31,7 @@ import com.ramcosta.composedestinations.navigation.popUpTo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.maddiesoftware.komagareader.NavGraphs
-import org.maddiesoftware.komagareader.destinations.AllCollectionsScreenDestination
+import org.maddiesoftware.komagareader.destinations.DownloadMainScreenDestination
 import org.maddiesoftware.komagareader.destinations.HomeScreenDestination
 import org.maddiesoftware.komagareader.destinations.LibraryMainScreenDestination
 import org.maddiesoftware.komagareader.destinations.SettingsScreenDestination
@@ -91,7 +97,7 @@ fun DrawerBodySelectionScreen(
                         // Avoid multiple copies of the same destination when
                         // reselecting the same item
                         // Restore state when reselecting a previously selected item
-                        .navigate(AllCollectionsScreenDestination(libraryId = "09YPSVS759MM2")) {
+                        .navigate(DownloadMainScreenDestination) {
                             // Pop up to the root of the graph to
                             // avoid building up a large stack of destinations
                             // on the back stack as users select items
@@ -110,12 +116,12 @@ fun DrawerBodySelectionScreen(
         ) {
             Icon(
                 imageVector = Icons.Default.List,
-                contentDescription = "Collections",
+                contentDescription = "Download Screen",
                 tint = MaterialTheme.colors.onSecondary,
             )
             Spacer(modifier = Modifier.width(16.dp))
             Text(
-                text = "Collections",
+                text = "Download Screen",
                 style = itemTextStyle,
                 modifier = Modifier.weight(1f),
                 fontSize = MaterialTheme.typography.h4.fontSize,
