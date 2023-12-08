@@ -100,7 +100,7 @@ dependencies {
     implementation "androidx.room:room-paging:$room_version"
 
     //Serialization
-    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.1.0"
+    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2'
 
     // Compose dependencies
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2"
@@ -113,12 +113,12 @@ dependencies {
     ksp 'io.github.raamcosta.compose-destinations:ksp:1.9.55'
     // Coil
    // implementation("io.coil-kt:coil-compose:2.2.2")
-    implementation("io.coil-kt:coil-compose:2.4.0")
+    implementation('io.coil-kt:coil-compose:2.5.0')
     // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    implementation "com.squareup.okhttp3:okhttp:5.0.0-alpha.3"
-    implementation "com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.3"
+    implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.11'
+    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11'
 
     //moshi
     implementation "com.squareup.moshi:moshi-kotlin:$moshi"

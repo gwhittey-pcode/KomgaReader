@@ -1,7 +1,7 @@
 buildscript {
     ext {
         compose_ui_version = '1.5.4'
-        moshi = '1.14.0'
+        moshi = '1.15.0'
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:8.2.0'
@@ -19,7 +19,9 @@ plugins {
 
 }
 gradle.projectsEvaluated {
-    tasks.withType(JavaCompile) {
-        options.compilerArgs << "-Xlint:deprecation"
+    tasks.withType(JavaCompile).tap {
+        configureEach {
+            options.compilerArgs << "-Xlint:deprecation"
+        }
     }
 }
