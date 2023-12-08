@@ -19,12 +19,12 @@ kotlin {
 }
 android {
     namespace 'org.maddiesoftware.komagareader'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "org.maddiesoftware.komagareader"
         minSdk 26
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
