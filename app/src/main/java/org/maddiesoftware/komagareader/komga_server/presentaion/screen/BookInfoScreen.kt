@@ -294,14 +294,16 @@ fun BookInfoScreen(
 
                 },
                 onClick = {
-                    navigator.navigate(
+                    Toast.makeText(context, "Not Yet Implemented", Toast.LENGTH_LONG).show()
+                   /* navigator.navigate(
                         BookReaderScreenDestination(
                             bookId = bookInfo.id.toString(),
                             seriesId = bookInfo.seriesId.toString(),
                             groupType = groupType,
                             readListId = readListId
                         )
-                    )
+                    )*/
+
                 },
                 backgroundColor = MaterialTheme.colors.primary,
                 shape = RectangleShape
