@@ -1,5 +1,6 @@
 package org.maddiesoftware.komagareader.komga_server.presentaion.componet.bookreader
 
+import android.util.Log
 import android.view.Gravity
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -29,6 +30,7 @@ import androidx.compose.ui.window.DialogWindowProvider
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ramcosta.composedestinations.spec.DestinationStyle
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.maddiesoftware.komagareader.R
 import org.maddiesoftware.komagareader.core.data.local.ServerInfoSingleton
@@ -58,6 +60,15 @@ fun ReadListBooksDialog(
     var boxColor: Color = MaterialTheme.colors.surface
 
     currentBookIndex = viewModel.calculateBookIndexInReadList(currentBookId)
+    Log.d("komga1", " $currentBookId")
+    LaunchedEffect(true) {
+        Log.d("komga1", "Launch Scrollto")
+        repeat(25) {
+            delay(500)
+            Log.d("komga1", " $currentBookId")
+            scrollState.scrollToItem(currentBookIndex)
+        }
+    }
     Dialog(
         onDismissRequest = { setShowDialog(false) },
         properties = DestinationStyle.Dialog.properties.let {
@@ -128,9 +139,9 @@ fun ReadListBooksDialog(
                 }
 
 
-                composableScope.launch {
-                    scrollState.scrollToItem(currentBookIndex)
-                }
+            //    composableScope.launch {
+              //      scrollState.scrollToItem(currentBookIndex)
+               // }
             }
         }
     }

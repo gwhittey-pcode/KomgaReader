@@ -135,8 +135,7 @@ dependencies {
     implementation "androidx.paging:paging-runtime-ktx:3.2.1"
 
     //accompanist pager
-    implementation('com.google.accompanist:accompanist-pager:0.32.0')
-    implementation('com.google.accompanist:accompanist-pager-indicators:0.32.0')
+
 
     //Zoomable
     implementation('com.mxalbert.zoomable:zoomable:1.6.1')

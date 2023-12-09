@@ -15,9 +15,8 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.rememberPagerState
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
@@ -29,7 +28,7 @@ import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.Libra
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @OptIn(
-    ExperimentalPagerApi::class, ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class
+   ExperimentalFoundationApi::class
 )
 @Destination
 @Composable
@@ -55,7 +54,7 @@ fun BookReaderScreen(
     val startPage = viewModel.state.startPage
 
     val libraryList = libraryViewModule.state.libraryList
-    val pagerState = rememberPagerState(startPage)
+
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
     val showPageNavDialog = remember { mutableStateOf(false) }
@@ -77,7 +76,12 @@ fun BookReaderScreen(
     } else {
         pageNum = pagerPages.size
     }
-
+    val pagerState = rememberPagerState(
+        initialPage = startPage,
+        initialPageOffsetFraction = 0f
+    ) {
+        theCount
+    }
     if (startPage > 0) {
         LaunchedEffect(pagerState) {
             Log.d("starCheck", "LaunchedEffect in startPage = $startPage")
@@ -100,6 +104,7 @@ fun BookReaderScreen(
     }
 
     if (showSeriesBookNavDialog.value) {
+
         if (groupType == "Read List") {
             ReadListBooksDialog(
                 currentBookId = bookId,
@@ -140,7 +145,7 @@ fun BookReaderScreen(
     Column(modifier = Modifier.fillMaxSize()) {
         if (theCount != 0) {
             HorizontalPager(
-                count = theCount,
+
                 state = pagerState,
             ) { page ->
                 ConstraintLayout(modifier = Modifier.fillMaxSize()) {

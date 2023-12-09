@@ -30,6 +30,7 @@ import androidx.compose.ui.window.DialogWindowProvider
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ramcosta.composedestinations.spec.DestinationStyle
+import kotlinx.coroutines.delay
 import org.maddiesoftware.komagareader.R
 import org.maddiesoftware.komagareader.core.data.local.ServerInfoSingleton
 import org.maddiesoftware.komagareader.core.presentation.theme.GoldUnreadBookCount
@@ -51,21 +52,26 @@ fun SeriesBooksDialog(
     val serverInfo = ServerInfoSingleton
     val bookState = viewModel.bookState
         .collectAsLazyPagingItems()
+    val seriesInfo = viewModel.state
     val scrollState = LazyGridState()
     val composableScope = rememberCoroutineScope()
     var currentBookIndex by remember {
-        mutableStateOf(0)
+        mutableIntStateOf(0)
     }
     var boxColor: androidx.compose.ui.graphics.Color = MaterialTheme.colors.surface
 
     Log.d("BookCount", "before currentBookNumber = $currentBookNumber")
     if (currentBookNumber != 0) currentBookIndex = currentBookNumber.minus(1)
-    LaunchedEffect(currentBookIndex){
-        scrollState.scrollToItem(currentBookIndex)
-    }
+    Log.d("komga1", " $currentBookNumber")
+//    LaunchedEffect(true) {
+//        Log.d("komga1", "Launch Scrollto")
+//            Log.d("komga1", " $currentBookNumber")
+//            scrollState.scrollToItem(currentBookIndex)
+//    }
+
     Log.d(
         "BookCount",
-        "after currentBookNumber = $currentBookNumber  bookState.itemCount=${bookState.itemCount}"
+        "after currentBookNumber = $currentBookNumber  bookState.itemCount=${bookState.itemCount} seriesCount = ${seriesInfo.seriesInfo?.booksCount}"
     )
 
     Dialog(
@@ -98,7 +104,10 @@ fun SeriesBooksDialog(
                     )
 
                     {
-                        items(bookState.itemCount) { i ->
+                        items(
+                            bookState.itemCount,
+
+                        ) { i ->
                             val book = bookState[i]
                             boxColor = if (currentBookIndex == i) {
                                 GoldUnreadBookCount

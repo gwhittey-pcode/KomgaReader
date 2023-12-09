@@ -16,7 +16,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.google.accompanist.pager.ExperimentalPagerApi
+
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.maddiesoftware.komagareader.R
@@ -28,7 +28,7 @@ import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.WarningMessage
 import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.CollectionByIdViewModel
 
-@OptIn(ExperimentalPagerApi::class)
+
 @Destination
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable

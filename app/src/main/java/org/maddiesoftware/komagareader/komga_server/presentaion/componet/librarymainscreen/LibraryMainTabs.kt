@@ -14,7 +14,7 @@ fun LibraryMainTabs(selectedTabIndex: Int, onSelectedTab: (LibraryMainTabPage) -
         modifier = Modifier.background(MaterialTheme.colors.surface),
         indicator = { TabIndicator(tabPosition = it, index = selectedTabIndex) }
     ) {
-        LibraryMainTabPage.values().forEachIndexed { index, tabPage ->
+        LibraryMainTabPage.entries.forEachIndexed { index, tabPage ->
             Tab(
                 selected = index == selectedTabIndex,
                 onClick = {

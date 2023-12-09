@@ -3,6 +3,7 @@ package org.maddiesoftware.komagareader.komga_server.presentaion.screen
 import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,10 +14,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.rememberPagerState
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
@@ -33,8 +32,7 @@ import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.Libra
 
 
 @OptIn(
-    ExperimentalPagerApi::class, ExperimentalAnimationApi::class,
-    ExperimentalMaterialNavigationApi::class
+    ExperimentalFoundationApi::class
 )
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -52,8 +50,14 @@ fun LibraryMainScreen(
     }
     mainViewModel.topBarTitle.value = "$libraryName Main Page"
     val libraryList = libraryViewModule.state.libraryList
+    val pageCount = LibraryMainTabPage.entries.size
     val scaffoldState = rememberScaffoldState()
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState(
+        initialPage = 0,
+        initialPageOffsetFraction = 0f
+    ) {
+        pageCount
+    }
     val scope = rememberCoroutineScope()
 
     Log.d("LibMain", "libraryId = $libraryId")
@@ -72,9 +76,10 @@ fun LibraryMainScreen(
         }
         Row {
             HorizontalPager(
-                count = LibraryMainTabPage.values().size,
-                state = pagerState
-            ) { index ->
+
+                state = pagerState,
+            )
+            { index ->
                 Column(Modifier.fillMaxSize()) {
                     when (index) {
                         0 -> AllSeriesTab(onItemClick = {
