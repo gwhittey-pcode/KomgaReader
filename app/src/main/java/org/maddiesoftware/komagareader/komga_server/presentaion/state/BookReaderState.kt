@@ -12,6 +12,8 @@ data class BookReaderState(
     val doingUpdateReadProgress: Boolean = false,
     var startPage: Int = 0,
     val totalPages: Int = 0,
+    val nextBookId: String? = null,
+    val prevBookId: String? = null
 )
 
 

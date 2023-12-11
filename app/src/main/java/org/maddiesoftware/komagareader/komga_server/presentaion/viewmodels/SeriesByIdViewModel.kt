@@ -50,7 +50,7 @@ class SeriesByIdViewModel @Inject constructor(
     private fun getBooksFromSeries(){
         Log.d("BookCount", "getBooksFromSeries")
         viewModelScope.launch {
-            allSeriesUseCases.getBooksFromSeries.invoke(pageSize = PAGE_SIZE, seriesId = seriesId)
+            allSeriesUseCases.getBooksFromSeries.invoke(pageSize = 5000, seriesId = seriesId)
                 .distinctUntilChanged()
                 .cachedIn(viewModelScope)
                 .collect {

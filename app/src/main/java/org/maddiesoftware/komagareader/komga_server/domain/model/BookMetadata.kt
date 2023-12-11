@@ -13,7 +13,7 @@ data class BookMetadata(
     val linksLock: Boolean?,
     val number: String?,
     val numberLock: Boolean?,
-    val numberSort: Int?,
+    val numberSort: Float?,
     val numberSortLock: Boolean?,
     val releaseDate: String?,
     val releaseDateLock: Boolean?,

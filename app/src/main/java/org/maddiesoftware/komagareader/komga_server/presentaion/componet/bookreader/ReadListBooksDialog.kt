@@ -1,12 +1,15 @@
 package org.maddiesoftware.komagareader.komga_server.presentaion.componet.bookreader
 
+import android.content.Context
 import android.util.Log
 import android.view.Gravity
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
@@ -17,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -30,7 +34,10 @@ import androidx.compose.ui.window.DialogWindowProvider
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ramcosta.composedestinations.spec.DestinationStyle
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import org.maddiesoftware.komagareader.R
 import org.maddiesoftware.komagareader.core.data.local.ServerInfoSingleton
@@ -40,7 +47,7 @@ import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general
 import org.maddiesoftware.komagareader.komga_server.presentaion.componet.general.WarningMessage
 import org.maddiesoftware.komagareader.komga_server.presentaion.viewmodels.ReadListByIdViewModel
 
-@OptIn(ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class, FlowPreview::class)
 @Composable
 fun ReadListBooksDialog(
     setShowDialog: (Boolean) -> Unit,
@@ -58,16 +65,30 @@ fun ReadListBooksDialog(
         mutableStateOf(0)
     }
     var boxColor: Color = MaterialTheme.colors.surface
-
+    val context = LocalContext.current
+    val prefs by lazy {
+        context.getSharedPreferences("prefs", Context.MODE_PRIVATE)
+    }
     currentBookIndex = viewModel.calculateBookIndexInReadList(currentBookId)
     Log.d("komga1", " $currentBookId")
-    LaunchedEffect(true) {
-        Log.d("komga1", "Launch Scrollto")
-        repeat(25) {
-            delay(500)
-            Log.d("komga1", " $currentBookId")
-            scrollState.scrollToItem(currentBookIndex)
+    val scrollPosition =currentBookIndex
+    val lazyGridState = rememberLazyListState(
+        initialFirstVisibleItemIndex = scrollPosition
+    )
+
+    LaunchedEffect(lazyGridState) {
+        lazyGridState.scrollToItem(currentBookIndex)
+        snapshotFlow {
+            lazyGridState.firstVisibleItemIndex
         }
+            .debounce(500L)
+            .collectLatest { index ->
+                Log.d("BookState1","scrollPosition=$scrollPosition currentBookNumber=$currentBookIndex")
+                prefs.edit()
+                    .putInt("scroll_position", index)
+                    .apply()
+            }
+
     }
     Dialog(
         onDismissRequest = { setShowDialog(false) },
@@ -86,13 +107,13 @@ fun ReadListBooksDialog(
             shape = RoundedCornerShape(16.dp),
             color = Color.White
         ) {
-            LazyVerticalGrid(
-                state = scrollState,
+            LazyRow (
                 modifier = Modifier
-                    .width(screenWidth)
-                    .fillMaxHeight(.75f),
-                columns = GridCells.Adaptive(155.dp)
-            )
+                    .width(screenWidth.minus(20.dp))
+                    .height(280.dp),
+                state = lazyGridState,
+
+                )
             {
                 items(bookState.itemCount) { i ->
                     val book = bookState[i]
@@ -137,11 +158,6 @@ fun ReadListBooksDialog(
                         }
                     )
                 }
-
-
-            //    composableScope.launch {
-              //      scrollState.scrollToItem(currentBookIndex)
-               // }
             }
         }
     }

@@ -23,7 +23,7 @@ fun BookReaderControlButtons(
         shape = MaterialTheme.shapes.medium,
         modifier = modifier
             .width(100.dp)
-            .alpha(1f),//set to 1f to see buttons 0f to hide
+            .alpha(.25f),//set to 1f to see buttons 0f to hide
         onClick = onClickItem
     ) {}//NextButton
 

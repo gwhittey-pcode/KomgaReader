@@ -6,7 +6,7 @@ import androidx.paging.PagingState
 import org.maddiesoftware.komagareader.komga_server.data.remote.api.KomgaServerApi
 import org.maddiesoftware.komagareader.komga_server.domain.model.Book
 
-class BookFromReadListRemotePagingSource(private val api: KomgaServerApi, private val readListId: String?):
+class BookFromReadListRemotePagingSource(private val api: KomgaServerApi, private val readListId: String?,private val  pageSize:Int):
     PagingSource<Int, Book>() {
     override fun getRefreshKey(state: PagingState<Int, Book>): Int? {
         return state.anchorPosition
@@ -15,7 +15,7 @@ class BookFromReadListRemotePagingSource(private val api: KomgaServerApi, privat
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Book> {
         Log.d("BookCount", "BookFromReadListRemotePagingSource")
         val currentPage = params.key ?: 0
-        val response  = api.getBooksFromReadList(readListId = readListId.toString(), page = currentPage,)
+        val response  = api.getBooksFromReadList(readListId = readListId.toString(), page = currentPage,size=pageSize)
 
         val endOfPaginationReached = response.content.isEmpty()
 

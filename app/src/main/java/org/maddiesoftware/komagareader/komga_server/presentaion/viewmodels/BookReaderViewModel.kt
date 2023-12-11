@@ -54,6 +54,8 @@ class BookReaderViewModel @Inject constructor(
         }
         readUseDblPageSplit()
         getBookById()
+        getNextBook()
+        getPrevBook()
         getPages()
 
     }
@@ -82,7 +84,46 @@ class BookReaderViewModel @Inject constructor(
             }
         }
     }
-
+private fun getNextBook(){
+    viewModelScope.launch {
+        state = state.copy(isLoading = true)
+        val bookByIdResult = async { apiRepository.getNextBookInSeries(bookId = bookId.toString()) }
+        when (val result = bookByIdResult.await()) {
+            is Resource.Success -> {
+                state = state.copy(
+                    nextBookId = result.data?.id
+                )
+                if (!state.useDblPageSplit) calculateStarPage()
+            }
+            is Resource.Error -> {
+                state = state.copy(
+                    nextBookId = "none"
+                )
+            }
+            else -> Unit
+        }
+    }
+}
+    private fun getPrevBook(){
+        viewModelScope.launch {
+            state = state.copy(isLoading = true)
+            val bookByIdResult = async { apiRepository.getPreviousBookInSeries(bookId = bookId.toString()) }
+            when (val result = bookByIdResult.await()) {
+                is Resource.Success -> {
+                    state = state.copy(
+                        prevBookId = result.data?.id
+                    )
+                    if (!state.useDblPageSplit) calculateStarPage()
+                }
+                is Resource.Error -> {
+                    state = state.copy(
+                        prevBookId = "none"
+                    )
+                }
+                else -> Unit
+            }
+        }
+    }
     private fun getPages() {
         viewModelScope.launch {
             state = state.copy(isLoading = true)

@@ -45,6 +45,8 @@ fun BookReaderScreen(
     val configuration = LocalConfiguration.current
     val bookInfo = viewModel.state.bookInfo
     val pagesInfo = viewModel.state.pagesInfo
+    val nextBookId = viewModel.state.nextBookId
+    val prevBookId = viewModel.state.prevBookId
     val doingUpdateReadProgress = viewModel.state.doingUpdateReadProgress
     val useDblPageSplit = viewModel.state.useDblPageSplit
     val screenWidth = configuration.screenWidthDp.dp
@@ -54,7 +56,8 @@ fun BookReaderScreen(
     val startPage = viewModel.state.startPage
 
     val libraryList = libraryViewModule.state.libraryList
-
+    var goToPrevComic: Boolean = false
+    var goToNextComic: Boolean = false
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
     val showPageNavDialog = remember { mutableStateOf(false) }
@@ -199,15 +202,34 @@ fun BookReaderScreen(
                         end.linkTo(endGuideLine)
                         height = Dimension.fillToConstraints
                         width = (Dimension.percent(.1f))
-                    }, onClickItem = {
+                    }) {
                         scope.launch {
                             if (page != pageNum - 1) {
                                 pagerState.animateScrollToPage(page + 1)
                             } else {
-                                Toast.makeText(context, "At Last Page", Toast.LENGTH_LONG).show()
+                                if (!goToNextComic) {
+                                    Toast.makeText(
+                                        context,
+                                        "At Last Page Click Again to go to Next Comic",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                    goToNextComic = true
+
+                                }else{
+                                    if(nextBookId.toString() != "none") {
+                                        navigator.navigate(
+                                            BookReaderScreenDestination(
+                                                bookId = nextBookId.toString(),
+                                                readListId = readListId,
+                                                groupType = groupType,
+                                                seriesId = seriesId,
+                                            )
+                                        )
+                                    }
+                                }
                             }
                         }
-                    }) //end dialogOpenSeriesBookNavButton
+                    } //end dialogOpenSeriesBookNavButton
 
                     BookReaderControlButtons(modifier = Modifier.constrainAs(prevPageButton) {
                         start.linkTo(bookPageImg.start)
@@ -220,7 +242,29 @@ fun BookReaderScreen(
                             if (page != 0) {
                                 pagerState.animateScrollToPage(page - 1)
                             } else {
-                                Toast.makeText(context, "At First Page", Toast.LENGTH_LONG).show()
+
+
+                                if (!goToPrevComic) {
+                                    Toast.makeText(
+                                        context,
+                                        "At First Page Click Again to go to Prev Comic",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                    goToPrevComic = true
+                                }else{
+                                    if(prevBookId.toString() != "none") {
+                                        navigator.navigate(
+                                            BookReaderScreenDestination(
+                                                bookId = prevBookId.toString(),
+                                                readListId = readListId,
+                                                groupType = groupType,
+                                                seriesId = seriesId,
+                                            )
+                                        )
+                                    }
+
+                                }
+
                             }
                         }
                     })//End prevePAgeButton
@@ -256,7 +300,9 @@ fun BookReaderScreen(
                             top.linkTo(parent.top)
                             bottom.linkTo(parent.bottom)
                             width = (Dimension.percent(.5f))
+
                         },
+
                         onClickItem = {
                             mainViewModel.showTopBar.value = !mainViewModel.showTopBar.value
                         },

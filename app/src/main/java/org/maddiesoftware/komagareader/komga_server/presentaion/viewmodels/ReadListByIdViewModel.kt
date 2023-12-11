@@ -50,7 +50,7 @@ class ReadListByIdViewModel @Inject constructor(
 
     private fun getBooksFromReadList(){
         viewModelScope.launch {
-            readListUseCases.getBooksFromReadList.invoke(pageSize = PAGE_SIZE, readListId = readListId)
+            readListUseCases.getBooksFromReadList.invoke(pageSize = 5000, readListId = readListId)
                 .distinctUntilChanged()
                 .cachedIn(viewModelScope)
                 .collect {

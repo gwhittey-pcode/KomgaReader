@@ -163,7 +163,8 @@ class ApiRepositoryImpl @Inject constructor(
             pagingSourceFactory = {
                 BookFromSeriesRemotePagingSource(
                     api = api,
-                    seriesId = seriesId
+                    seriesId = seriesId,
+                    pageSize=pageSize
                 )
             }
         ).flow
@@ -271,7 +272,8 @@ class ApiRepositoryImpl @Inject constructor(
             pagingSourceFactory = {
                 BookFromReadListRemotePagingSource(
                     api = api,
-                    readListId = readListId
+                    readListId = readListId,
+                    pageSize=pageSize
                 )
             }
         ).flow
